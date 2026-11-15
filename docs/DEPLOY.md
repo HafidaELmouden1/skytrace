@@ -43,6 +43,14 @@ sans trafic et met environ une minute à se réveiller
 intervention. Pour forcer une reconstruction : *Manual Deploy → Clear build
 cache & deploy*.
 
+### Ce que l'instance hébergée ne conserve pas
+
+Le disque est éphémère. Les boutons « collecter » (`POST /api/collect`,
+`/api/targets/{slug}/fetch`) téléchargent bien de nouvelles poses depuis IRSA,
+mais elles disparaissent au redémarrage suivant : sur l'instance publique, la
+série livrée avec l'image reste la référence. Pour publier une nouvelle série,
+régénérer le paquet de données et reconstruire (voir plus bas).
+
 ### Garder l'instance éveillée
 
 `.github/workflows/keep-warm.yml` appelle `/api/health` toutes les 10 minutes

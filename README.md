@@ -32,10 +32,10 @@ Double-clic sur **`lancer.cmd`**, ou :
 
 ```bash
 uv run --python 3.13 --with fastapi --with uvicorn --with astropy --with numpy --with pillow \
-  uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 8000
+  uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 8010
 ```
 
-Puis **http://localhost:8000**. Trois pages : `/` (accueil), `/explore` (explorateur), `/learn` (méthode et limites).
+Puis **http://localhost:8010**. Le port 8000 est souvent occupé par Docker Desktop sur Windows. Trois pages : `/` (accueil), `/explore` (explorateur), `/learn` (méthode et limites).
 Interface en français et en anglais, choix mémorisé dans le navigateur.
 
 ![Détection de changement entre deux époques](docs/detection.webp)
