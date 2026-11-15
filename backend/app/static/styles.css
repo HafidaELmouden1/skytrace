@@ -556,3 +556,16 @@ footer a:hover { color: var(--ink); }
   background: rgba(76, 217, 156, .07);
 }
 .cand.is-track .s { color: #8ce8bd; }
+
+/* ---------------------------------------------------------------- zoom */
+
+.zoom { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.zoom button {
+  padding: 6px 9px; background: transparent; border: 0; cursor: pointer;
+  color: var(--ink-faint); font: 600 11px var(--font-mono); transition: all .16s;
+}
+.zoom button + button { border-left: 1px solid var(--line); }
+.zoom button:hover { color: var(--ink); background: rgba(122,162,255,.1); }
+.zoom button.on { color: #cfe0ff; background: rgba(76,125,255,.18); }
+
+.viewer img { transform: scale(var(--zoom, 1)); transform-origin: center; transition: transform .35s cubic-bezier(.2,.7,.3,1); }

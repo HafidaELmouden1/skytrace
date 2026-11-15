@@ -12,6 +12,8 @@ const I18N = {
     'track.error': 'Comparaison impossible pour ce champ.',
     'track.none': 'Aucun déplacement mesurable : rien ne change de position au-delà du bruit.',
     'track.found': '{n} déplacements mesurés, dont {c} confirmés sur au moins trois poses.',
+    'track.confirmed': 'confirmé',
+    'track.unconfirmed': 'à confirmer',
     'nav.gallery': 'Galerie',
     'gallery.eyebrow': 'Photothèque',
     'gallery.title': 'Toutes les photographies',
@@ -155,6 +157,8 @@ const I18N = {
     'track.error': 'This field cannot be compared.',
     'track.none': 'No measurable displacement: nothing moves beyond noise.',
     'track.found': '{n} displacements measured, {c} confirmed on at least three poses.',
+    'track.confirmed': 'confirmed',
+    'track.unconfirmed': 'needs confirmation',
     'nav.gallery': 'Gallery',
     'gallery.eyebrow': 'Photo library',
     'gallery.title': 'Every photograph',
@@ -736,7 +740,7 @@ async function showTracks() {
       <span class="n">#${i + 1}</span>
       <span class="p">${tr.displacement_arcsec}″ en ${tr.duration_minutes} min</span>
       <span class="p">${Math.round(tr.speed_arcsec_per_hour)}″/h</span>
-      <span class="s">${tr.steps} poses${tr.continues ? ' ✓' : ''}</span>
+      <span class="s">${tr.continues ? t('track.confirmed') : t('track.unconfirmed')}</span>
     </div>`).join('');
 }
 
@@ -917,6 +921,14 @@ function bindControls() {
   el('btnDiff').onclick = detectMotion;
   el('btnTrack').onclick = showTracks;
   el('btnTrackClose').onclick = () => { el('trackBox').hidden = true; };
+
+  document.querySelectorAll('.zoom button').forEach((b) => {
+    b.onclick = () => {
+      document.querySelectorAll('.zoom button').forEach((o) => o.classList.remove('on'));
+      b.classList.add('on');
+      el('viewer').style.setProperty('--zoom', b.dataset.zoom);
+    };
+  });
   el('btnDiffBack').onclick = closeDiff;
 
   el('btnRefresh').onclick = async () => {
