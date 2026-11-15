@@ -92,6 +92,14 @@ L'image ne contient pas les FITS : `data/` et `cache/` sont montés en volume.
 Pour un hébergement public, le même conteneur tourne sur Render, Fly.io ou un VPS —
 il suffit d'exposer le port 8000.
 
+## Hébergement gratuit
+
+`docs/DEPLOY.md` détaille la mise en ligne sur **Render** (plan Free, Docker, sans
+carte bancaire) en trois clics via `render.yaml`, ainsi que les limites de
+Cloudflare : Workers ne fournit que 10 ms de CPU par requête et ne peut pas
+exécuter `astropy`, Cloudflare Containers exige le plan payant à 5 $/mois, seule
+Cloudflare Pages reste gratuite — pour un site statique, pas pour ce serveur.
+
 ## Commandes
 
 ```bash
