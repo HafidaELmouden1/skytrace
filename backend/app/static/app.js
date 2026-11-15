@@ -14,7 +14,47 @@ const I18N = {
     'track.found': '{n} déplacements mesurés, dont {c} confirmés sur au moins trois poses.',
     'track.confirmed': 'confirmé',
     'track.unconfirmed': 'à confirmer',
+    'nav.about': 'SPHEREx',
+    'about.eyebrow': 'La mission',
+    'about.title': 'SPHEREx, un télescope qui voit l\u2019invisible',
+    'about.lede': 'Chaque six mois, SPHEREx photographie le ciel entier dans 102 couleurs infrarouge. Cette application montre ces images, et ce qui change d\u2019une campagne à l\u2019autre.',
+    'about.f1': 'bandes spectrales',
+    'about.f2': 'infrarouge proche',
+    'about.f3': 'pour tout le ciel',
+    'about.f4': 'détecteurs',
+    'about.f5': 'orbite héliosynchrone',
+    'about.h1': 'Pourquoi l\u2019infrarouge',
+    'about.p1': 'La lumière visible est arrêtée par la poussière. L\u2019infrarouge la traverse : il révèle les nuages où naissent les étoiles, la glace d\u2019eau accrochée aux grains, et des galaxies si lointaines que leur lumière a été étirée hors du spectre visible.',
+    'about.h2': 'Comment le ciel est balayé',
+    'about.p2': 'Le télescope ne pointe pas un objet : il balaie le ciel en bandes successives et enregistre une centaine d\u2019expositions par orbite. Chaque pose couvre plusieurs degrés de ciel, découpée en six images par les six détecteurs.',
+    'about.h3': 'Ce que montre une image',
+    'about.p3': 'Chaque carré de couleur est un pixel mesuré par SPHEREx, large de 6,2 secondes d\u2019arc. Un point brillant est une étoile ou une galaxie ; une tache allongée est souvent deux sources que le pixel ne sépare pas.',
+    'about.h4': 'Pourquoi comparer six mois',
+    'about.p4': 'Une même région revient tous les six mois. Comparer deux passages montre ce qui a changé : une étoile variable, une protubérance, un objet du système solaire qui s\u2019est déplacé. C\u2019est cette différence qui intéresse la mission.',
+    'about.h5': 'D\u2019où viennent les données',
+    'about.p5': 'Les images sont téléchargées à la demande depuis l\u2019archive IRSA (Caltech/IPAC), qui conserve les produits de la mission. Cette application ne fabrique aucune image : elle lit les fichiers FITS et les rend lisibles.',
+    'about.h6': 'Ce que l\u2019application ne fait pas',
+    'about.p6': 'Elle ne découvre rien. Un changement de luminosité ou une source sans contrepartie est un candidat, jamais une découverte : le bruit, la calibration et la taille du pixel produisent les mêmes signatures.',
+    'about.credit': 'Données : NASA/JPL-Caltech, archive IRSA à Caltech/IPAC. DOI 10.26131/IRSA678.',
+    'cmp.btn': '6 mois',
+    'cmp.title': 'Six mois plus tard',
+    'cmp.close': 'Fermer',
+    'cmp.working': 'Recherche de deux passages séparés de six mois…',
+    'cmp.nopair': 'Aucune paire d\u2019images séparées d\u2019environ six mois dans le même détecteur.',
+    'cmp.note': 'Deux passages du même champ, {d} jours d\u2019écart, même détecteur D{det}.',
+    'cmp.failed': 'La comparaison a échoué.',
+    'cmp.diffalt': 'Carte de différence entre les deux passages',
+    'cmp.diffnote': '{n} pics au niveau pixel. Rouge : plus brillant en 2026. Bleu : plus brillant en 2025.',
     'nav.gallery': 'Galerie',
+    'gallery.searchPlaceholder': 'Chercher un objet, une date, un détecteur…',
+    'gallery.sort': 'Trier',
+    'gallery.sort.recent': 'Les plus récentes',
+    'gallery.sort.oldest': 'Les plus anciennes',
+    'gallery.sort.sources': 'Les plus riches en étoiles',
+    'gallery.sort.brightest': 'Les plus brillantes',
+    'gallery.detector': 'Détecteur',
+    'gallery.count': '{n} photographies affichées sur {total}',
+    'gallery.stat.detectors': 'détecteurs utilisés',
     'gallery.eyebrow': 'Photothèque',
     'gallery.title': 'Toutes les photographies',
     'gallery.lede': 'Chaque vignette est une vraie image SPHEREx. Ouvre-en une pour voir le même endroit du ciel changer au fil du temps.',
@@ -159,7 +199,47 @@ const I18N = {
     'track.found': '{n} displacements measured, {c} confirmed on at least three poses.',
     'track.confirmed': 'confirmed',
     'track.unconfirmed': 'needs confirmation',
+    'nav.about': 'SPHEREx',
+    'about.eyebrow': 'The mission',
+    'about.title': 'SPHEREx, a telescope that sees the invisible',
+    'about.lede': 'Every six months SPHEREx photographs the entire sky in 102 infrared colours. This application shows those images, and what changes between survey passes.',
+    'about.f1': 'spectral bands',
+    'about.f2': 'near infrared',
+    'about.f3': 'for the whole sky',
+    'about.f4': 'detectors',
+    'about.f5': 'sun-synchronous orbit',
+    'about.h1': 'Why infrared',
+    'about.p1': 'Visible light is stopped by dust. Infrared passes through it: it reveals the clouds where stars are born, the water ice stuck to grains, and galaxies so distant that their light has been stretched out of the visible spectrum.',
+    'about.h2': 'How the sky is swept',
+    'about.p2': 'The telescope does not point at one object: it scans the sky in successive strips and records about a hundred exposures per orbit. Each exposure covers several degrees of sky, split into six images by the six detectors.',
+    'about.h3': 'What an image shows',
+    'about.p3': 'Every coloured square is a pixel measured by SPHEREx, 6.2 arcseconds wide. A bright point is a star or a galaxy; an elongated blob is often two sources the pixel cannot separate.',
+    'about.h4': 'Why compare six months',
+    'about.p4': 'The same region comes back every six months. Comparing two passes shows what changed: a variable star, an outburst, a solar system object that moved. That difference is what the mission is after.',
+    'about.h5': 'Where the data comes from',
+    'about.p5': 'Images are downloaded on demand from the IRSA archive (Caltech/IPAC), which holds the mission products. This application invents no image: it reads FITS files and makes them readable.',
+    'about.h6': 'What the application does not do',
+    'about.p6': 'It discovers nothing. A change in brightness or a source without a counterpart is a candidate, never a discovery: noise, calibration and pixel size all produce the same signature.',
+    'about.credit': 'Data: NASA/JPL-Caltech, IRSA archive at Caltech/IPAC. DOI 10.26131/IRSA678.',
+    'cmp.btn': '6 months',
+    'cmp.title': 'Six months later',
+    'cmp.close': 'Close',
+    'cmp.working': 'Looking for two passes six months apart...',
+    'cmp.nopair': 'No pair of images about six months apart in the same detector.',
+    'cmp.note': 'Two passes of the same field, {d} days apart, same detector D{det}.',
+    'cmp.failed': 'The comparison failed.',
+    'cmp.diffalt': 'Difference map between the two passes',
+    'cmp.diffnote': '{n} pixel-level peaks. Red: brighter in 2026. Blue: brighter in 2025.',
     'nav.gallery': 'Gallery',
+    'gallery.searchPlaceholder': 'Search an object, a date, a detector…',
+    'gallery.sort': 'Sort',
+    'gallery.sort.recent': 'Newest first',
+    'gallery.sort.oldest': 'Oldest first',
+    'gallery.sort.sources': 'Richest in stars',
+    'gallery.sort.brightest': 'Brightest',
+    'gallery.detector': 'Detector',
+    'gallery.count': '{n} of {total} photographs shown',
+    'gallery.stat.detectors': 'detectors used',
     'gallery.eyebrow': 'Photo library',
     'gallery.title': 'Every photograph',
     'gallery.lede': 'Each thumbnail is a real SPHEREx image. Open one to watch the same patch of sky change over time.',
@@ -314,7 +394,7 @@ function applyLang(lang) {
 
 /* ------------------------------------------------------------------ routage */
 
-const ROUTES = { '/': 'home', '/targets': 'targets', '/gallery': 'gallery', '/explore': 'explore', '/learn': 'learn' };
+const ROUTES = { '/': 'home', '/targets': 'targets', '/gallery': 'gallery', '/about': 'about', '/explore': 'explore', '/learn': 'learn' };
 
 function currentRoute() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -541,11 +621,11 @@ function pollAtlas() {
 /* ------------------------------------------------------------------ galerie */
 
 const TARGETS_LIST = [
-  { slug: 'barnard', name: "Barnard's Star" },
-  { slug: 'eps-indi-b', name: 'Epsilon Indi B' },
-  { slug: 'wise0855', name: 'WISE 0855' },
-  { slug: 'rw-aur', name: 'RW Aurigae' },
-  { slug: 'r-dra', name: 'R Draconis' },
+  { slug: 'barnard', name: "Barnard's Star", fr: "Étoile de Barnard" },
+  { slug: 'eps-indi-b', name: 'Epsilon Indi B', fr: 'Epsilon Indi B' },
+  { slug: 'wise0855', name: 'WISE 0855', fr: 'WISE 0855' },
+  { slug: 'rw-aur', name: 'RW Aurigae', fr: 'RW Aurigae' },
+  { slug: 'r-dra', name: 'R Draconis', fr: 'R Draconis' },
 ];
 
 const DETECTOR_COLOURS = {
@@ -553,7 +633,26 @@ const DETECTOR_COLOURS = {
 };
 
 let galleryCache = null;
-let galleryFilter = 'all';
+const galleryView = { filter: 'all', detector: 'all', query: '', sort: 'recent' };
+
+function targetLabel(slug) {
+  const found = TARGETS_LIST.find((t) => t.slug === slug);
+  if (!found) return slug;
+  return state.lang === 'fr' ? found.fr : found.name;
+}
+
+function searchableText(item) {
+  return [
+    targetLabel(item.slug),
+    item.slug,
+    item.obs_id,
+    item.date,
+    item.date.slice(0, 4),
+    'd' + item.detector,
+    item.detector + ' um',
+    item.wavelength_um.toFixed(2),
+  ].join(' ').toLowerCase();
+}
 
 async function loadGallery() {
   const grid = el('galleryGrid');
@@ -561,7 +660,7 @@ async function loadGallery() {
     try {
       galleryCache = await (await fetch('/api/gallery')).json();
     } catch (err) {
-      grid.innerHTML = `<p class="hint">${t('gallery.error')}</p>`;
+      grid.innerHTML = '<p class="hint">' + t('gallery.error') + '</p>';
       return;
     }
   }
@@ -569,12 +668,11 @@ async function loadGallery() {
 }
 
 function describeFrame(item) {
-  const band = `${item.wavelength_um.toFixed(2)}`;
   return t('gallery.card')
     .replace('{date}', item.date)
     .replace('{detector}', item.detector)
     .replace('{sources}', item.sources)
-    .replace('{band}', band)
+    .replace('{band}', item.wavelength_um.toFixed(2))
     .replace('{pct}', Math.round(item.valid_fraction * 100));
 }
 
@@ -583,129 +681,156 @@ function renderGallery() {
   if (!data) return;
 
   const summary = data.summary || {};
-  el('galleryStats').innerHTML = `
-    <div class="stat"><b>${data.total}</b><span>${t('gallery.stat.frames')}</span></div>
-    <div class="stat"><b>${Object.keys(summary).length}</b><span>${t('gallery.stat.fields')}</span></div>
-    <div class="stat"><b>${Object.values(summary).reduce((a, s) => a + s.days, 0)}</b><span>${t('gallery.stat.days')}</span></div>`;
+  el('galleryStats').innerHTML =
+    '<div class="stat"><b>' + data.total + '</b><span>' + t('gallery.stat.frames') + '</span></div>' +
+    '<div class="stat"><b>' + Object.keys(summary).length + '</b><span>' + t('gallery.stat.fields') + '</span></div>' +
+    '<div class="stat"><b>' + Object.values(summary).reduce((a, s) => a + s.days, 0) + '</b><span>' + t('gallery.stat.days') + '</span></div>' +
+    '<div class="stat"><b>' + new Set(data.items.map((i) => i.detector)).size + '</b><span>' + t('gallery.stat.detectors') + '</span></div>';
 
-  const entries = [['all', data.total, null]].concat(
+  const chips = [['all', data.total, null]].concat(
     TARGETS_LIST.map((tg) => [tg.slug, (summary[tg.slug] || {}).frames || 0, tg])
   );
-  el('galleryFilters').innerHTML = entries.map(([slug, count, tg]) => `
-    <button class="chip ${galleryFilter === slug ? 'on' : ''}" data-filter="${slug}">
-      ${slug === 'all' ? t('gallery.all') : (tg ? tg.name : slug)}
-      <span>${count}</span>
-    </button>`).join('');
 
-  el('galleryFilters').querySelectorAll('button').forEach((b) => {
-    b.onclick = () => { galleryFilter = b.dataset.filter; renderGallery(); };
+  const detectors = [...new Set(data.items.map((i) => i.detector))].sort();
+
+  el('galleryFilters').innerHTML =
+    '<div class="search-row">' +
+      '<input id="gallerySearch" type="search" autocomplete="off" ' +
+        'placeholder="' + t('gallery.searchPlaceholder') + '" value="' + galleryView.query.replace(/"/g, '&quot;') + '">' +
+      '<select id="gallerySort" aria-label="' + t('gallery.sort') + '">' +
+        ['recent', 'oldest', 'sources', 'brightest'].map((k) =>
+          '<option value="' + k + '"' + (galleryView.sort === k ? ' selected' : '') + '>' + t('gallery.sort.' + k) + '</option>'
+        ).join('') +
+      '</select>' +
+    '</div>' +
+    '<div class="chip-row">' +
+      chips.map(([slug, count, tg]) =>
+        '<button class="chip ' + (galleryView.filter === slug ? 'on' : '') + '" data-filter="' + slug + '">' +
+        (slug === 'all' ? t('gallery.all') : targetLabel(slug)) + '<span>' + count + '</span></button>'
+      ).join('') +
+    '</div>' +
+    '<div class="chip-row det-row">' +
+      '<span class="chip-label">' + t('gallery.detector') + '</span>' +
+      [['all', t('gallery.all')]].concat(detectors.map((d) => [String(d), 'D' + d])).map(([value, label]) =>
+        '<button class="chip mini ' + (galleryView.detector === value ? 'on' : '') + '" data-det="' + value + '">' + label + '</button>'
+      ).join('') +
+    '</div>';
+
+  el('gallerySearch').oninput = (ev) => {
+    galleryView.query = ev.target.value.trim().toLowerCase();
+    renderGallery();
+    const field = el('gallerySearch');
+    field.focus();
+    field.setSelectionRange(field.value.length, field.value.length);
+  };
+  el('gallerySort').onchange = (ev) => { galleryView.sort = ev.target.value; renderGallery(); };
+  el('galleryFilters').querySelectorAll('[data-filter]').forEach((b) => {
+    b.onclick = () => { galleryView.filter = b.dataset.filter; renderGallery(); };
+  });
+  el('galleryFilters').querySelectorAll('[data-det]').forEach((b) => {
+    b.onclick = () => { galleryView.detector = b.dataset.det; renderGallery(); };
   });
 
-  const items = data.items
-    .filter((i) => galleryFilter === 'all' || i.slug === galleryFilter)
-    .sort((a, b) => b.mjd - a.mjd);
+  const query = galleryView.query;
+  let items = data.items.filter((item) => {
+    if (galleryView.filter !== 'all' && item.slug !== galleryView.filter) return false;
+    if (galleryView.detector !== 'all' && String(item.detector) !== galleryView.detector) return false;
+    if (query && !searchableText(item).includes(query)) return false;
+    return true;
+  });
+
+  const order = {
+    recent: (a, b) => b.mjd - a.mjd,
+    oldest: (a, b) => a.mjd - b.mjd,
+    sources: (a, b) => b.sources - a.sources,
+    brightest: (a, b) => b.brightest - a.brightest,
+  };
+  items = items.sort(order[galleryView.sort] || order.recent);
+
+  el('galleryCount').textContent = t('gallery.count')
+    .replace('{n}', items.length)
+    .replace('{total}', data.total);
 
   if (!items.length) {
-    el('galleryGrid').innerHTML = `<p class="hint">${t('gallery.empty')}</p>`;
+    el('galleryGrid').innerHTML = '<p class="hint">' + t('gallery.empty') + '</p>';
     return;
   }
 
-  el('galleryGrid').innerHTML = items.map((item, index) => `
-    <article class="gcard" style="--det:${DETECTOR_COLOURS[item.detector] || '#7aa2ff'};--i:${Math.min(index, 24)}">
-      <a href="/explore?difftarget=${item.slug}" data-route class="gcard-img">
-        <img src="${item.image}" alt="${t('gallery.alt')} ${item.date}" loading="lazy" decoding="async">
-        <span class="gcard-det">D${item.detector}</span>
-      </a>
-      <div class="gcard-body">
-        <time>${item.date}</time>
-        <p>${describeFrame(item)}</p>
-      </div>
-    </article>`).join('');
+  el('galleryGrid').innerHTML = items.map((item, index) =>
+    '<article class="gcard" style="--det:' + (DETECTOR_COLOURS[item.detector] || '#7aa2ff') + ';--i:' + Math.min(index, 24) + '">' +
+      '<a href="/explore?target=' + item.slug + '" data-route class="gcard-img">' +
+        '<img src="' + item.image + '" alt="' + t('gallery.alt') + ' ' + item.date + '" loading="lazy" decoding="async">' +
+        '<span class="gcard-det">D' + item.detector + '</span>' +
+        '<span class="gcard-field">' + targetLabel(item.slug) + '</span>' +
+      '</a>' +
+      '<div class="gcard-body">' +
+        '<time>' + item.date + '</time>' +
+        '<p>' + describeFrame(item) + '</p>' +
+      '</div>' +
+    '</article>'
+  ).join('');
 }
 
-/* ------------------------------------------------------------------ mouvement */
+/* ------------------------------------------------------- comparaison six mois */
 
-async function detectMotion() {
-  if (state.epochs.length < 2) return;
-  stop();
+function pickSixMonthPair() {
+  const epochs = state.epochs;
+  let best = null;
+  for (let i = 0; i < epochs.length; i += 1) {
+    for (let j = i + 1; j < epochs.length; j += 1) {
+      const a = epochs[i];
+      const b = epochs[j];
+      if (a.detector !== b.detector) continue;
+      const gap = Math.abs(b.mjd - a.mjd);
+      if (gap < 120) continue;
+      const score = Math.abs(gap - 182);
+      if (!best || score < best.score) best = { a, b, gap, score };
+    }
+  }
+  return best;
+}
 
-  // A pair across different detectors cannot be compared: brightness changes
-  // with the wavelength each detector covers. Prefer the longest baseline
-  // taken with the same detector.
-  const byDetector = {};
-  state.epochs.forEach((e) => {
-    (byDetector[e.detector] = byDetector[e.detector] || []).push(e);
-  });
-  let first = state.epochs[0];
-  let last = state.epochs[state.epochs.length - 1];
-  const groups = Object.values(byDetector).filter((g) => g.length >= 2);
-  if (groups.length) {
-    const score = (g) => {
-      const baseline = g[g.length - 1].mjd - g[0].mjd;
-      return baseline * (1 + 0.5 * (g.length - 1));
-    };
-    const longest = groups.reduce((best, g) => (score(g) > score(best) ? g : best));
-    first = longest[0];
-    last = longest[longest.length - 1];
+async function compareSixMonths() {
+  const box = el('compareBox');
+  box.hidden = false;
+  el('cmpNote').textContent = t('cmp.working');
+  el('cmpResult').innerHTML = '';
+
+  const pair = pickSixMonthPair();
+  if (!pair) {
+    el('cmpNote').textContent = t('cmp.nopair');
+    return;
   }
 
-  el("diffNote").textContent = t("motion.working");
-  el("diffBox").hidden = false;
-  el("viewer").hidden = true;
-  el("diffMarks").innerHTML = "";
-  el("motionList").innerHTML = "";
+  el('cmpA').src = '/api/frames/' + pair.a.obs_id + '.webp';
+  el('cmpB').src = '/api/frames/' + pair.b.obs_id + '.webp';
+  el('cmpAdate').textContent = pair.a.date.slice(0, 10);
+  el('cmpBdate').textContent = pair.b.date.slice(0, 10);
 
-  let data;
+  let diff = null;
   try {
-    const response = await fetch(`/api/diff?a=${first.obs_id}&b=${last.obs_id}`);
-    if (!response.ok) throw new Error("diff failed");
-    data = await response.json();
+    const response = await fetch('/api/diff?a=' + pair.a.obs_id + '&b=' + pair.b.obs_id);
+    if (response.ok) diff = await response.json();
   } catch (err) {
-    el("diffNote").textContent = t("motion.failed");
+    diff = null;
+  }
+
+  el('cmpNote').textContent = t('cmp.note')
+    .replace('{d}', Math.round(pair.gap))
+    .replace('{det}', pair.a.detector);
+
+  if (!diff) {
+    el('cmpResult').innerHTML = '<p class="note">' + t('cmp.failed') + '</p>';
     return;
   }
 
-  el("diffImg").src = data.image;
-  const [ny, nx] = data.shape;
-  const sizePct = Math.min(26, (100 / nx) * 1.8);
-
-  el("diffMarks").innerHTML = data.candidates.map((c) => {
-    const left = ((c.x + 0.5) / nx) * 100;
-    const top = ((c.y + 0.5) / ny) * 100;
-    return `<div class="mark" style="left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;
-              width:${sizePct.toFixed(2)}%;aspect-ratio:1/1">
-              <span>${c.sigma}σ</span></div>`;
-  }).join("");
-
-  el("motionList").innerHTML = data.candidates.length
-    ? data.candidates.slice(0, 8).map((c, i) => `
-        <div class="cand">
-          <span class="n">#${i + 1}</span>
-          <span class="p">RA ${c.ra} · Dec ${c.dec}</span>
-          <span class="s">${c.sigma}σ</span>
-        </div>`).join("")
-    : `<p class="note">${t("motion.empty")}</p>`;
-
-  const verdict = data.verdict || "none";
-  const banner = document.createElement("div");
-  banner.className = "verdict v-" + verdict;
-  banner.textContent = t("verdict." + verdict)
-    .replace("{n}", data.counts.unmatched)
-    .replace("{total}", data.counts.epoch_a);
-  el("motionList").prepend(banner);
-
-  const same = data.compat.same_detector;
-  el("diffNote").textContent = [
-    t("motion.pixelpeaks").replace("{n}", data.pixel_peaks),
-    t("motion.tolerance").replace("{t}", data.tolerance_arcsec),
-    same ? "" : t("motion.crossband"),
-    `D${data.compat.detector_a} → D${data.compat.detector_b} · Δ ${data.compat.dt_days} j`,
-  ].filter(Boolean).join(" · ");
-}
-
-function closeDiff() {
-  el("diffBox").hidden = true;
-  el("viewer").hidden = false;
+  const verdictKey = diff.verdict === 'none' ? 'none' : diff.verdict;
+  el('cmpResult').innerHTML =
+    '<div class="verdict v-' + verdictKey + '">' +
+    t('verdict.' + verdictKey).replace('{n}', diff.counts.unmatched).replace('{total}', diff.counts.epoch_a) +
+    '</div>' +
+    '<img class="cmp-diff" src="' + diff.image + '" alt="' + t('cmp.diffalt') + '">' +
+    '<p class="note">' + t('cmp.diffnote').replace('{n}', diff.pixel_peaks) + '</p>';
 }
 
 /* ------------------------------------------------------------------ pistes */
@@ -919,6 +1044,8 @@ function bindControls() {
   el('btnBlink').onclick = blink;
   el('btnLast').onclick = () => { stop(); show(state.epochs.length - 1); };
   el('btnDiff').onclick = detectMotion;
+  el('btnCompare').onclick = compareSixMonths;
+  el('btnCompareClose').onclick = () => { el('compareBox').hidden = true; };
   el('btnTrack').onclick = showTracks;
   el('btnTrackClose').onclick = () => { el('trackBox').hidden = true; };
 

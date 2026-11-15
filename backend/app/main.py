@@ -690,6 +690,11 @@ def explore() -> HTMLResponse:
     return _page()
 
 
+@app.get("/about", response_class=HTMLResponse)
+def about() -> HTMLResponse:
+    return _page()
+
+
 @app.get("/gallery", response_class=HTMLResponse)
 def gallery_page() -> HTMLResponse:
     return _page()

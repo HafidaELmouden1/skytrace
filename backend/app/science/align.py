@@ -91,18 +91,22 @@ def phase_shift(a: np.ndarray, b: np.ndarray) -> tuple[float, float]:
     if dx > a.shape[1] // 2:
         dx -= a.shape[1]
 
-    def refine(centre: int, axis: int) -> float:
-        if centre <= 0 or centre >= correlation.shape[axis] - 1:
+    def parabola(cy: int, cx: int, along_y: bool) -> float:
+        """Sub-pixel offset around the peak, from its two neighbours."""
+        limit = correlation.shape[0] if along_y else correlation.shape[1]
+        centre = cy if along_y else cx
+        if centre <= 0 or centre >= limit - 1:
             return float(centre)
-        left = np.take(correlation, centre - 1, axis=axis)
-        mid = np.take(correlation, centre, axis=axis)
-        right = np.take(correlation, centre + 1, axis=axis)
-        denom = left - 2 * mid + right
+        if along_y:
+            left, mid, right = correlation[cy - 1, cx], correlation[cy, cx], correlation[cy + 1, cx]
+        else:
+            left, mid, right = correlation[cy, cx - 1], correlation[cy, cx], correlation[cy, cx + 1]
+        denom = float(left - 2 * mid + right)
         if denom == 0:
             return float(centre)
-        return centre + 0.5 * (left - right) / denom
+        return centre + 0.5 * float(left - right) / denom
 
-    return refine(dy, 0), refine(dx, 1)
+    return parabola(dy, dx, True), parabola(dy, dx, False)
 
 
 def stack_cutout(cut: Cutout) -> np.ndarray:

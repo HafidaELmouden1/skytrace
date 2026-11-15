@@ -23,6 +23,7 @@
       <a href="/targets" data-route data-i18n="nav.targets">Sky atlas</a>
       <a href="/gallery" data-route data-i18n="nav.gallery">Gallery</a>
       <a href="/explore" data-route data-i18n="nav.explore">Explore</a>
+      <a href="/about" data-route data-i18n="nav.about">SPHEREx</a>
       <a href="/learn" data-route data-i18n="nav.learn">Learn</a>
     </div>
 
@@ -181,6 +182,53 @@
   </div>
 </section>
 
+<!-- ============================================================ SPHEREX -->
+
+<section class="view" id="view-about" hidden>
+  <header class="page-head">
+    <p class="eyebrow" data-i18n="about.eyebrow">La mission</p>
+    <h1 data-i18n="about.title">SPHEREx, un télescope qui voit l'invisible</h1>
+    <p class="lede" data-i18n="about.lede">Chaque six mois, SPHEREx photographie le ciel entier dans 102 couleurs d'infrarouge. Cette application montre ces images, et ce qu'elles changent d'une campagne à l'autre.</p>
+  </header>
+
+  <div class="mission-band">
+    <div><b>102</b><span data-i18n="about.f1">bandes spectrales</span></div>
+    <div><b>0,75–5 µm</b><span data-i18n="about.f2">infrarouge proche</span></div>
+    <div><b>6 mois</b><span data-i18n="about.f3">pour tout le ciel</span></div>
+    <div><b>6</b><span data-i18n="about.f4">détecteurs</span></div>
+    <div><b>~700 km</b><span data-i18n="about.f5">orbite héliosynchrone</span></div>
+  </div>
+
+  <div class="about-grid">
+    <article>
+      <h2 data-i18n="about.h1">Pourquoi l'infrarouge</h2>
+      <p data-i18n="about.p1">La lumière visible est arrêtée par la poussière. L'infrarouge la traverse : il révèle les nuages où naissent les étoiles, la glace d'eau accrochée aux grains, et des galaxies si lointaines que leur lumière a été étirée hors du spectre visible.</p>
+    </article>
+    <article>
+      <h2 data-i18n="about.h2">Comment le ciel est balayé</h2>
+      <p data-i18n="about.p2">Le télescope ne pointe pas un objet : il balaie le ciel en bandes successives et enregistre une centaine d'expositions par orbite. Chaque pose couvre plusieurs degrés de ciel, découpée en six images par les six détecteurs.</p>
+    </article>
+    <article>
+      <h2 data-i18n="about.h3">Ce que montre une image</h2>
+      <p data-i18n="about.p3">Chaque carré de couleur est un pixel mesuré par SPHEREx, large de 6,2 secondes d'arc. Un point brillant est une étoile ou une galaxie ; une tache allongée est souvent deux sources que le pixel ne sépare pas.</p>
+    </article>
+    <article>
+      <h2 data-i18n="about.h4">Pourquoi comparer six mois</h2>
+      <p data-i18n="about.p4">Une même région revient tous les six mois. Comparer deux passages montre ce qui a changé : une étoile variable, une protubérance, un objet du système solaire qui s'est déplacé. C'est cette différence qui intéresse la mission.</p>
+    </article>
+    <article>
+      <h2 data-i18n="about.h5">D'où viennent les données</h2>
+      <p data-i18n="about.p5">Les images sont téléchargées à la demande depuis l'archive IRSA (Caltech/IPAC), qui conserve les produits de la mission. Cette application ne fabrique aucune image : elle lit les fichiers FITS et les rend lisibles.</p>
+    </article>
+    <article>
+      <h2 data-i18n="about.h6">Ce que l'application ne fait pas</h2>
+      <p data-i18n="about.p6">Elle ne découvre rien. Un changement de luminosité ou une source sans contrepartie est un candidat, jamais une découverte : le bruit, la calibration et la taille du pixel produisent les mêmes signatures.</p>
+    </article>
+  </div>
+
+  <p class="credit" data-i18n="about.credit">Données : NASA/JPL-Caltech, archive IRSA à Caltech/IPAC. DOI 10.26131/IRSA678.</p>
+</section>
+
 <!-- ============================================================ GALERIE -->
 
 <section class="view" id="view-gallery" hidden>
@@ -193,6 +241,7 @@
   <div class="gallery-stats" id="galleryStats"></div>
 
   <div class="filters" id="galleryFilters"></div>
+  <p class="gallery-count" id="galleryCount"></p>
 
   <div class="gallery-grid" id="galleryGrid">
     <p class="hint" data-i18n="gallery.loading">Chargement des images…</p>
@@ -234,6 +283,7 @@
             <button data-zoom="1.5">1,5×</button>
             <button data-zoom="2">2×</button>
           </span>
+          <button class="btn btn-sm" id="btnCompare"><span data-i18n="cmp.btn">6 mois</span></button>
           <button class="btn btn-sm" id="btnTrack">➜ <span data-i18n="track.btn">Objets mobiles</span></button>
           <button class="btn btn-sm btn-primary" id="btnDiff">◎ <span data-i18n="motion.btn">Détecter le mouvement</span></button>
         </div>
@@ -241,6 +291,19 @@
         <p class="note" data-i18n="explore.pixelnote">Un cutout de 0,1° fait 59 pixels : chaque carré est un pixel SPHEREx réel (6,2″), pas un artefact d'affichage.</p>
 
         <div class="describe" id="describe" hidden></div>
+
+        <div class="comparebox" id="compareBox" hidden>
+          <div class="diffhead">
+            <h3 data-i18n="cmp.title">Six mois plus tard</h3>
+            <button class="btn btn-sm" id="btnCompareClose" data-i18n="cmp.close">Fermer</button>
+          </div>
+          <p class="note" id="cmpNote"></p>
+          <div class="cmp-pair">
+            <figure><img id="cmpA" alt=""><figcaption id="cmpAdate"></figcaption></figure>
+            <figure><img id="cmpB" alt=""><figcaption id="cmpBdate"></figcaption></figure>
+          </div>
+          <div id="cmpResult"></div>
+        </div>
 
         <div class="trackbox" id="trackBox" hidden>
           <div class="diffhead">
