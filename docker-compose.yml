@@ -1,0 +1,11 @@
+services:
+  skytrace:
+    build: .
+    image: skytrace:local
+    ports:
+      - "8000:8000"
+    volumes:
+      # Frames and rendered WebP live outside the image: they are data, not code.
+      - ./data:/app/data
+      - ./cache:/app/cache
+    restart: unless-stopped

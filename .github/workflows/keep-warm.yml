@@ -1,0 +1,25 @@
+name: keep warm
+
+# A free Render instance stops after 15 minutes without traffic and takes about
+# a minute to start again. This wakes it during the hours a jury is likely to
+# click. 15 hours a day stays under the 750 free instance hours of the month.
+on:
+  schedule:
+    - cron: "*/10 6-20 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    env:
+      SKYTRACE_URL: ${{ vars.SKYTRACE_URL }}
+    steps:
+      - name: GET /api/health
+        run: |
+          url="${SKYTRACE_URL:-https://skytrace.onrender.com}/api/health"
+          for attempt in 1 2 3; do
+            code=$(curl -s -o /dev/null -m 90 -w '%{http_code}' "$url" || true)
+            [ "$code" = "200" ] && exit 0
+            sleep 20
+          done
+          echo "no response from $url"

@@ -1,0 +1,17 @@
+.git
+.gitignore
+.gitattributes
+.github
+docs
+out
+data
+cache
+**/__pycache__
+*.pyc
+*.log
+*.md
+!requirements.txt
+Dockerfile
+docker-compose.yml
+lancer.cmd
+Makefile

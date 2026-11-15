@@ -5,6 +5,26 @@ const I18N = {
     'brand.tag': 'SPHEREx · NASA',
     'nav.home': 'Accueil', 'nav.explore': 'Explorer', 'nav.learn': 'Comprendre',
     'nav.targets': 'Atlas du ciel',
+    'track.btn': 'Objets mobiles',
+    'track.title': 'Objets qui se déplacent',
+    'track.close': 'Fermer',
+    'track.working': 'Comparaison des poses successives…',
+    'track.error': 'Comparaison impossible pour ce champ.',
+    'track.none': 'Aucun déplacement mesurable : rien ne change de position au-delà du bruit.',
+    'track.found': '{n} déplacements mesurés, dont {c} confirmés sur au moins trois poses.',
+    'nav.gallery': 'Galerie',
+    'gallery.eyebrow': 'Photothèque',
+    'gallery.title': 'Toutes les photographies',
+    'gallery.lede': 'Chaque vignette est une vraie image SPHEREx. Ouvre-en une pour voir le même endroit du ciel changer au fil du temps.',
+    'gallery.loading': 'Chargement des images…',
+    'gallery.error': 'Impossible de charger les images.',
+    'gallery.empty': 'Aucune image pour ce champ.',
+    'gallery.all': 'Tout',
+    'gallery.alt': 'Image du ciel du',
+    'gallery.stat.frames': 'photographies',
+    'gallery.stat.fields': 'champs du ciel',
+    'gallery.stat.days': 'nuits observées',
+    'gallery.card': 'Prise le {date} par le détecteur {detector}. On y distingue {sources} points brillants — des étoiles, et parfois une galaxie lointaine. Bande {band} µm, {pct} % de l’image exploitable.',
     'nav.cta': 'Choisir un lieu',
 
     'targets.eyebrow': 'Atlas du ciel',
@@ -128,6 +148,26 @@ const I18N = {
     'brand.tag': 'SPHEREx · NASA',
     'nav.home': 'Home', 'nav.explore': 'Explore', 'nav.learn': 'Learn',
     'nav.targets': 'Sky atlas', 'nav.cta': 'Pick a place',
+    'track.btn': 'Moving objects',
+    'track.title': 'Objects that move',
+    'track.close': 'Close',
+    'track.working': 'Comparing successive poses…',
+    'track.error': 'This field cannot be compared.',
+    'track.none': 'No measurable displacement: nothing moves beyond noise.',
+    'track.found': '{n} displacements measured, {c} confirmed on at least three poses.',
+    'nav.gallery': 'Gallery',
+    'gallery.eyebrow': 'Photo library',
+    'gallery.title': 'Every photograph',
+    'gallery.lede': 'Each thumbnail is a real SPHEREx image. Open one to watch the same patch of sky change over time.',
+    'gallery.loading': 'Loading images…',
+    'gallery.error': 'The images could not be loaded.',
+    'gallery.empty': 'No image for this field.',
+    'gallery.all': 'All',
+    'gallery.alt': 'Sky image from',
+    'gallery.stat.frames': 'photographs',
+    'gallery.stat.fields': 'sky fields',
+    'gallery.stat.days': 'nights observed',
+    'gallery.card': 'Taken on {date} by detector {detector}. About {sources} bright points stand out — stars, and occasionally a distant galaxy. {band} µm band, {pct}% of the frame usable.',
 
     'targets.eyebrow': 'Sky atlas',
     'targets.title': 'Choose where to look',
@@ -270,7 +310,7 @@ function applyLang(lang) {
 
 /* ------------------------------------------------------------------ routage */
 
-const ROUTES = { '/': 'home', '/targets': 'targets', '/explore': 'explore', '/learn': 'learn' };
+const ROUTES = { '/': 'home', '/targets': 'targets', '/gallery': 'gallery', '/explore': 'explore', '/learn': 'learn' };
 
 function currentRoute() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -288,6 +328,7 @@ function showRoute() {
   if (name === 'explore') loadEpochs();
   if (name === 'home') loadStats();
   if (name === 'targets') loadAtlas();
+  if (name === 'gallery') loadGallery();
 }
 
 document.addEventListener('click', (ev) => {
@@ -493,6 +534,91 @@ function pollAtlas() {
   }, 8000);
 }
 
+/* ------------------------------------------------------------------ galerie */
+
+const TARGETS_LIST = [
+  { slug: 'barnard', name: "Barnard's Star" },
+  { slug: 'eps-indi-b', name: 'Epsilon Indi B' },
+  { slug: 'wise0855', name: 'WISE 0855' },
+  { slug: 'rw-aur', name: 'RW Aurigae' },
+  { slug: 'r-dra', name: 'R Draconis' },
+];
+
+const DETECTOR_COLOURS = {
+  1: '#7aa2ff', 2: '#4cd99c', 3: '#ffb020', 4: '#ff6b8a', 5: '#b78cff', 6: '#4fd8e8',
+};
+
+let galleryCache = null;
+let galleryFilter = 'all';
+
+async function loadGallery() {
+  const grid = el('galleryGrid');
+  if (!galleryCache) {
+    try {
+      galleryCache = await (await fetch('/api/gallery')).json();
+    } catch (err) {
+      grid.innerHTML = `<p class="hint">${t('gallery.error')}</p>`;
+      return;
+    }
+  }
+  renderGallery();
+}
+
+function describeFrame(item) {
+  const band = `${item.wavelength_um.toFixed(2)}`;
+  return t('gallery.card')
+    .replace('{date}', item.date)
+    .replace('{detector}', item.detector)
+    .replace('{sources}', item.sources)
+    .replace('{band}', band)
+    .replace('{pct}', Math.round(item.valid_fraction * 100));
+}
+
+function renderGallery() {
+  const data = galleryCache;
+  if (!data) return;
+
+  const summary = data.summary || {};
+  el('galleryStats').innerHTML = `
+    <div class="stat"><b>${data.total}</b><span>${t('gallery.stat.frames')}</span></div>
+    <div class="stat"><b>${Object.keys(summary).length}</b><span>${t('gallery.stat.fields')}</span></div>
+    <div class="stat"><b>${Object.values(summary).reduce((a, s) => a + s.days, 0)}</b><span>${t('gallery.stat.days')}</span></div>`;
+
+  const entries = [['all', data.total, null]].concat(
+    TARGETS_LIST.map((tg) => [tg.slug, (summary[tg.slug] || {}).frames || 0, tg])
+  );
+  el('galleryFilters').innerHTML = entries.map(([slug, count, tg]) => `
+    <button class="chip ${galleryFilter === slug ? 'on' : ''}" data-filter="${slug}">
+      ${slug === 'all' ? t('gallery.all') : (tg ? tg.name : slug)}
+      <span>${count}</span>
+    </button>`).join('');
+
+  el('galleryFilters').querySelectorAll('button').forEach((b) => {
+    b.onclick = () => { galleryFilter = b.dataset.filter; renderGallery(); };
+  });
+
+  const items = data.items
+    .filter((i) => galleryFilter === 'all' || i.slug === galleryFilter)
+    .sort((a, b) => b.mjd - a.mjd);
+
+  if (!items.length) {
+    el('galleryGrid').innerHTML = `<p class="hint">${t('gallery.empty')}</p>`;
+    return;
+  }
+
+  el('galleryGrid').innerHTML = items.map((item, index) => `
+    <article class="gcard" style="--det:${DETECTOR_COLOURS[item.detector] || '#7aa2ff'};--i:${Math.min(index, 24)}">
+      <a href="/explore?difftarget=${item.slug}" data-route class="gcard-img">
+        <img src="${item.image}" alt="${t('gallery.alt')} ${item.date}" loading="lazy" decoding="async">
+        <span class="gcard-det">D${item.detector}</span>
+      </a>
+      <div class="gcard-body">
+        <time>${item.date}</time>
+        <p>${describeFrame(item)}</p>
+      </div>
+    </article>`).join('');
+}
+
 /* ------------------------------------------------------------------ mouvement */
 
 async function detectMotion() {
@@ -576,6 +702,42 @@ async function detectMotion() {
 function closeDiff() {
   el("diffBox").hidden = true;
   el("viewer").hidden = false;
+}
+
+/* ------------------------------------------------------------------ pistes */
+
+async function showTracks() {
+  const box = el('trackBox');
+  box.hidden = false;
+  el('trackNote').textContent = t('track.working');
+  el('trackList').innerHTML = '';
+
+  let data;
+  try {
+    const response = await fetch(`/api/track?target=${state.target}`);
+    if (!response.ok) throw new Error('track failed');
+    data = await response.json();
+  } catch (err) {
+    el('trackNote').textContent = t('track.error');
+    return;
+  }
+
+  if (!data.tracks.length) {
+    el('trackNote').textContent = t('track.none');
+    return;
+  }
+
+  el('trackNote').textContent = t('track.found')
+    .replace('{n}', data.tracks.length)
+    .replace('{c}', data.tracked);
+
+  el('trackList').innerHTML = data.tracks.slice(0, 10).map((tr, i) => `
+    <div class="cand ${tr.continues ? 'is-track' : ''}">
+      <span class="n">#${i + 1}</span>
+      <span class="p">${tr.displacement_arcsec}″ en ${tr.duration_minutes} min</span>
+      <span class="p">${Math.round(tr.speed_arcsec_per_hour)}″/h</span>
+      <span class="s">${tr.steps} poses${tr.continues ? ' ✓' : ''}</span>
+    </div>`).join('');
 }
 
 /* ------------------------------------------------------------------ affichage */
@@ -753,6 +915,8 @@ function bindControls() {
   el('btnBlink').onclick = blink;
   el('btnLast').onclick = () => { stop(); show(state.epochs.length - 1); };
   el('btnDiff').onclick = detectMotion;
+  el('btnTrack').onclick = showTracks;
+  el('btnTrackClose').onclick = () => { el('trackBox').hidden = true; };
   el('btnDiffBack').onclick = closeDiff;
 
   el('btnRefresh').onclick = async () => {
@@ -817,9 +981,17 @@ function init() {
   showRoute();
   loadStats();
 
-  // ?diff=1 opens the comparison straight away, so a shared link points at an
-  // analysis instead of just a field.
+  // A link carries the field it points at, so a shared URL opens the same sky.
   const params = new URLSearchParams(location.search);
+  if (params.get('target')) state.target = params.get('target');
+  const linkRa = parseFloat(params.get('ra'));
+  const linkDec = parseFloat(params.get('dec'));
+  if (Number.isFinite(linkRa) && Number.isFinite(linkDec)) {
+    state.target = 'custom';
+    fetch(`/api/collect?ra=${linkRa}&dec=${linkDec}&slug=custom&limit=8`, { method: 'POST' })
+      .then(() => setTimeout(loadEpochs, 1500))
+      .catch(() => loadEpochs());
+  }
   if (params.get("diff") === "1") {
     const wait = setInterval(() => {
       if (state.epochs.length > 1) {

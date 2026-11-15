@@ -16,18 +16,32 @@ from astropy.wcs import WCS
 from .render import Cutout, background_stats, valid_mask
 
 
+def _wcs(header) -> WCS:
+    """Linear WCS of a cutout, without its SIP distortion.
+
+    Cutout headers keep the SIP coefficients of the full 2040x2040 detector
+    while their reference pixel has been moved, so inverting the polynomial
+    diverges. Across a 59 pixel cutout the correction is well under a pixel,
+    so the linear part alone is accurate and always invertible.
+    """
+    wcs = WCS(header)
+    if wcs.sip is not None:
+        wcs = wcs.deepcopy()
+        wcs.sip = None
+    return wcs
+
+
 def _world_grid(header, shape: tuple[int, int]) -> tuple[np.ndarray, np.ndarray]:
     ny, nx = shape
     yy, xx = np.mgrid[0:ny, 0:nx]
-    wcs = WCS(header)
-    ra, dec = wcs.all_pix2world(xx.ravel(), yy.ravel(), 0)
+    ra, dec = _wcs(header).all_pix2world(xx.ravel(), yy.ravel(), 0)
     return np.asarray(ra), np.asarray(dec)
 
 
 def resample(src: np.ndarray, src_header, shape: tuple[int, int],
              dst_ra: np.ndarray, dst_dec: np.ndarray) -> np.ndarray:
     """Sample ``src`` at the sky positions of the destination grid."""
-    wcs = WCS(src_header)
+    wcs = _wcs(src_header)
     x, y = wcs.all_world2pix(dst_ra, dst_dec, 0)
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)

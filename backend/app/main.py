@@ -24,7 +24,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from .science.align import compare_sources, difference, render_difference
+from .science.align import _wcs, compare_sources, difference, render_difference
+from .science.track import Pose, build_tracks, sky_position, slew_key
 from .science.render import (
     detect_sources,
     load_cutout,
@@ -115,6 +116,8 @@ class FrameRecord:
     key: str
     path: Path
     slug: str = "wise0855"
+    sources: int = 0
+    brightest: float = 0.0
 
 
 _frames: dict[str, FrameRecord] = {}
@@ -137,8 +140,32 @@ def _available(slug: str | None = None) -> dict[str, Path]:
     return out
 
 
+def assign_target(cut) -> str | None:
+    """Nearest known field to the centre of this cutout.
+
+    Files land in data/frames without a folder per target, so the sky position
+    is what decides which of the five challenge objects an image belongs to.
+    """
+    try:
+        frame = _wcs(cut.header)
+        ny, nx = cut.image.shape
+        ra, dec = frame.all_pix2world(nx / 2.0, ny / 2.0, 0)
+    except Exception:
+        return None
+
+    best, best_sep = None, 1e9
+    for target in TARGETS:
+        sep = np.hypot((float(ra) - target["ra"]) * np.cos(np.radians(target["dec"])),
+                       float(dec) - target["dec"])
+        if sep < best_sep:
+            best, best_sep = target["slug"], sep
+    return best if best_sep < 0.35 else None
+
+
 def build_frames() -> None:
+    global _frames_ordered
     CACHE.mkdir(exist_ok=True)
+    _frames_ordered = []
     _frames.clear()
     skipped.clear()
     for obs_id, path in _available().items():
@@ -169,6 +196,7 @@ def build_frames() -> None:
         if not pretty_out.exists():
             save_pretty(pretty, str(pretty_out))
 
+        found = detect_sources(cut)
         ny, nx = cut.image.shape
         _frames[obs_id] = FrameRecord(
             obs_id=obs_id,
@@ -179,7 +207,9 @@ def build_frames() -> None:
             valid_fraction=cut.valid_fraction,
             key=pretty_key,
             path=pretty_out,
-            slug=FILES.get(obs_id, (None, "wise0855"))[1],
+            slug=assign_target(cut) or FILES.get(obs_id, (None, "wise0855"))[1],
+            sources=int(found["count"]),
+            brightest=float(found["peak_sigma"]),
         )
     _frames_ordered = sorted(_frames.values(), key=lambda f: f.mjd)
 
@@ -490,6 +520,96 @@ def diff(
     }
 
 
+@app.get("/api/track")
+def track(
+    target: str = Query("wise0855", max_length=40),
+    threshold: float = Query(5.0, ge=3.0, le=15.0),
+) -> dict:
+    """Follow sources that move between consecutive pointings."""
+    available = _available(target)
+    if len(available) < 2:
+        raise HTTPException(404, "not enough epochs for this field")
+
+    groups: dict[str, list[Path]] = {}
+    for obs_id, path in available.items():
+        groups.setdefault(slew_key(obs_id), []).append(path)
+
+    results = []
+    detail = []
+    for key, paths in sorted(groups.items()):
+        detail.append({"slew": key, "poses": len(paths)})
+        if len(paths) < 2:
+            continue
+        poses = []
+        for path in sorted(paths):
+            cut = load_cutout(str(path))
+            poses.append(Pose(
+                obs_id=path.stem,
+                mjd=float(cut.meta["mjd"]),
+                detector=int(cut.meta["detector"]),
+                cutout=cut,
+            ))
+
+        built = build_tracks(poses, threshold)
+        for item in built["tracks"]:
+            item["slew"] = key
+            item["from_position"] = sky_position(poses[0].cutout, item["start"]["x"], item["start"]["y"])
+            item["to_position"] = sky_position(poses[0].cutout, item["end"]["x"], item["end"]["y"])
+        results.extend(built["tracks"])
+
+    results.sort(key=lambda t: (-t["steps"], -t["displacement_px"]))
+    return {
+        "target": target,
+        "tracks": results[:40],
+        "slews": len(groups),
+        "detail": detail,
+        "tracked": sum(1 for r in results if r["continues"]),
+        "pixel_arcsec": 6.2,
+        "note": (
+            "Motion is only observable within one pointing or between pointings "
+            "hours apart. Across months every moving object has left the field."
+        ),
+    }
+
+
+@app.get("/api/gallery")
+def gallery(target: str | None = Query(None, max_length=40)) -> dict:
+    """Every rendered frame with the numbers a plain description needs."""
+    items = []
+    for frame in _frames_ordered:
+        if target and frame.slug != target:
+            continue
+        items.append({
+            "obs_id": frame.obs_id,
+            "slug": frame.slug,
+            "date": frame.date[:10],
+            "mjd": round(frame.mjd, 4),
+            "detector": frame.detector,
+            "wavelength_um": round(frame.wavelength, 3),
+            "valid_fraction": round(frame.valid_fraction, 3),
+            "sources": frame.sources,
+            "brightest": round(frame.brightest, 1),
+            "image": f"/api/frames/{frame.obs_id}.webp",
+        })
+
+    fields = {}
+    for item in items:
+        fields.setdefault(item["slug"], []).append(item["mjd"])
+    summary = {
+        slug: {
+            "frames": len(mjds),
+            "days": len({round(m) for m in mjds}),
+            "span": round(max(mjds) - min(mjds), 1),
+        }
+        for slug, mjds in fields.items()
+    }
+
+    return {"items": items, "total": len(items), "summary": summary}
+
+
+@app.get("/api/cache/{key}.webp")
+
+
 @app.get("/api/cache/{key}.webp")
 def cached(key: str) -> FileResponse:
     if not re.fullmatch(r"[0-9a-f]{24}", key):
@@ -567,6 +687,11 @@ def index() -> HTMLResponse:
 
 @app.get("/explore", response_class=HTMLResponse)
 def explore() -> HTMLResponse:
+    return _page()
+
+
+@app.get("/gallery", response_class=HTMLResponse)
+def gallery_page() -> HTMLResponse:
     return _page()
 
 

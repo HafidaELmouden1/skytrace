@@ -55,6 +55,8 @@ et pas seulement vers un champ.
 | `GET /api/spectrum` | spectre construit sur les poses |
 | `GET /api/targets` | les cinq cibles du challenge |
 | `GET /api/diff?a=&b=` | compare deux époques : carte de différence + sources sans contrepartie |
+| `GET /api/track` | objets qui se déplacent entre poses successives : déplacement, durée, vitesse |
+| `GET /api/gallery` | toutes les images rendues, groupées par champ, avec leurs chiffres |
 | `POST /api/refresh` | intègre les nouveaux fichiers déposés dans `data/frames/` |
 
 ### Comparer deux époques
@@ -79,6 +81,16 @@ uv run --python 3.13 --with astropy --with numpy python scripts/fetch_series.py 
 
 Le script interroge SIA2, retient une pose par date et écrit les cutouts dans `data/frames/`.
 Un `POST /api/refresh` (ou le bouton « Actualiser les données ») les rend visibles sans redémarrage.
+
+## Docker
+
+```bash
+docker compose up --build
+```
+
+L'image ne contient pas les FITS : `data/` et `cache/` sont montés en volume.
+Pour un hébergement public, le même conteneur tourne sur Render, Fly.io ou un VPS —
+il suffit d'exposer le port 8000.
 
 ## Commandes
 
