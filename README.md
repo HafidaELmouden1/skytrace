@@ -38,6 +38,11 @@ uv run --python 3.13 --with fastapi --with uvicorn --with astropy --with numpy -
 Puis **http://localhost:8000**. Trois pages : `/` (accueil), `/explore` (explorateur), `/learn` (méthode et limites).
 Interface en français et en anglais, choix mémorisé dans le navigateur.
 
+![Détection de changement entre deux époques](docs/detection.webp)
+
+`/explore?diff=1` ouvre directement la comparaison, pour qu'un lien pointe vers une analyse
+et pas seulement vers un champ.
+
 ### API
 
 | Route | Rôle |
