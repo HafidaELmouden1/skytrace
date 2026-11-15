@@ -4,7 +4,9 @@
 .github
 docs
 out
-data
+data/frames
+data/cache
+data/*.fits
 cache
 **/__pycache__
 *.pyc

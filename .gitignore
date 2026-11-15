@@ -3,7 +3,9 @@ __pycache__/
 .venv/
 node_modules/
 out/
-data/
+data/frames/
+data/cache/
+data/*.fits
 cache/
 .env
 .DS_Store

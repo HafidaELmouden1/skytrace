@@ -11,19 +11,23 @@ RUN pip install --quiet -r requirements.txt
 
 COPY backend ./backend
 COPY scripts ./scripts
+COPY data/manifest.json ./data/manifest.json
 
-# Frames and rendered WebP are data, not code: they live in the repository's
-# data release rather than in git. A free instance has no persistent disk, so
-# they are baked into the image. Pass --build-arg DATA_URL= to skip the
-# download and mount ./data instead.
-ARG DATA_URL=https://github.com/HafidaELmouden1/skytrace/releases/download/data-v1/skytrace-data.tar.gz
+# The FITS are not in git and a free instance has no persistent disk, so the
+# build asks IRSA for the cutouts listed in the manifest. DATA_URL can instead
+# point at a tarball holding data/ and cache/ (a frozen snapshot); leaving it
+# empty rebuilds the series from the archive.
+ARG DATA_URL=
+RUN if [ -n "$DATA_URL" ]; then \
+        python -c "import os, tarfile, tempfile, urllib.request as request; \
+p = tempfile.mktemp(suffix='.tar.gz'); \
+request.urlretrieve(os.environ['DATA_URL'], p); \
+tarfile.open(p).extractall('/app', filter='data')"; \
+    else \
+        python scripts/fetch_manifest.py; \
+    fi
 
-RUN python -c "\
-import os, tarfile, tempfile, urllib.request;\
-url = os.environ.get('DATA_URL', '').strip();\
-print('data:', url or 'none');\
-url and (lambda p: (urllib.request.urlretrieve(url, p), tarfile.open(p).extractall('/app', filter='data')))(tempfile.mktemp(suffix='.tar.gz'))" \
-    && mkdir -p /app/data/frames /app/cache
+RUN mkdir -p /app/data/frames /app/cache
 
 EXPOSE 8000
 

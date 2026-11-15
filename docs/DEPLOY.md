@@ -32,9 +32,9 @@ sans trafic et met environ une minute à se réveiller
 1. Créer un compte sur <https://dashboard.render.com/register> avec **GitHub**.
 2. *New* → **Blueprint** → choisir le dépôt `HafidaELmouden1/skytrace`.
    Render lit `render.yaml` et propose le service `skytrace` en plan Free.
-3. **Apply**. La construction prend 5 à 8 minutes : elle installe les
-   dépendances puis télécharge les données (149 Mo) depuis la release
-   `data-v1` du dépôt.
+3. **Apply**. La construction prend 5 à 10 minutes : elle installe les
+   dépendances puis télécharge les cutouts décrits dans `data/manifest.json`
+   depuis IRSA (fait réseau rapide, ~200 Mo).
 4. Ouvrir l'URL affichée, du type `https://skytrace.onrender.com`.
 
 ### Après chaque `git push`
@@ -63,27 +63,37 @@ journée reste dans le quota.
 
 ## Les données ne sont pas dans git
 
-`data/` et `cache/` pèsent 150 Mo. Ils sont publiés à part, dans la release
-[`data-v1`](https://github.com/HafidaELmouden1/skytrace/releases/tag/data-v1),
-et l'image les télécharge à la construction. Pour les régénérer après une
-nouvelle collecte :
+`data/frames` pèse plus de 400 Mo : les FITS ne sont pas versionnés. À la place,
+`data/manifest.json` décrit chaque pose retenue — `obs_id`, cible, position
+céleste, URL du service IRSA, taille — et `scripts/fetch_manifest.py` les
+retélécharge à la construction, sur le réseau de l'hébergeur. Le build est donc
+reproductible sans transférer les fichiers depuis un poste local.
+
+Après une nouvelle collecte, régénérer le manifeste :
+
+```bash
+uv run --python 3.13 --with astropy --with numpy python scripts/build_manifest.py
+git add data/manifest.json && git commit -m "Refresh the observation manifest"
+```
+
+Pour figer un instantané exact (sans dépendre d'IRSA au build), passer une
+archive en argument de construction :
 
 ```bash
 tar -czf skytrace-data.tar.gz data cache
-gh release upload data-v1 skytrace-data.tar.gz --clobber
+# puis dans Render : Environment → Build argument DATA_URL=<url de l'archive>
 ```
-
-Puis *Manual Deploy → Clear build cache & deploy*.
 
 ## Lancer l'image en local
 
 ```bash
-docker build --build-arg DATA_URL= -t skytrace:local .
+docker build -t skytrace:local .
 docker run --rm -p 8000:8000 -v "$PWD/data:/app/data" -v "$PWD/cache:/app/cache" skytrace:local
 ```
 
-`DATA_URL=` vide la valeur par défaut : l'image n'essaie pas de télécharger les
-données et utilise celles montées depuis le disque.
+Le disque monté contient déjà les FITS : `fetch_manifest.py` les voit présents
+et ne télécharge rien. Pour forcer le téléchargement, supprimer `data/frames`
+ou construire l'image sans volume.
 
 ## Un lien public immédiat, sans hébergeur
 
