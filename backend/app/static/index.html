@@ -210,11 +210,25 @@
           <button class="btn btn-sm btn-primary" id="btnPlay">▶ <span data-i18n="explore.play">Lire la séquence</span></button>
           <button class="btn btn-sm" id="btnBlink">⟳ <span data-i18n="explore.blink">Comparer A/B</span></button>
           <button class="btn btn-sm" id="btnLast"><span data-i18n="explore.last">Dernière</span></button>
+          <button class="btn btn-sm btn-primary" id="btnDiff">◎ <span data-i18n="motion.btn">Détecter le mouvement</span></button>
         </div>
 
         <p class="note" data-i18n="explore.pixelnote">Un cutout de 0,1° fait 59 pixels : chaque carré est un pixel SPHEREx réel (6,2″), pas un artefact d'affichage.</p>
 
         <div class="describe" id="describe" hidden></div>
+
+        <div class="diffbox" id="diffBox" hidden>
+          <div class="diffview" id="diffViewer">
+            <img id="diffImg" alt="Image de différence">
+            <div id="diffMarks"></div>
+          </div>
+          <div class="diffhead">
+            <h3 data-i18n="motion.title">Différence entre deux époques</h3>
+            <button class="btn btn-sm" id="btnDiffBack" data-i18n="motion.back">Revenir aux images</button>
+          </div>
+          <p class="note" id="diffNote"></p>
+          <div id="motionList"></div>
+        </div>
 
         <div class="timeline">
           <div class="track" id="track"></div>

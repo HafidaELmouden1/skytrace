@@ -49,7 +49,17 @@ Interface en français et en anglais, choix mémorisé dans le navigateur.
 | `GET /api/metadata/{obs_id}` | en-têtes, flags, calibration |
 | `GET /api/spectrum` | spectre construit sur les poses |
 | `GET /api/targets` | les cinq cibles du challenge |
+| `GET /api/diff?a=&b=` | compare deux époques : carte de différence + sources sans contrepartie |
 | `POST /api/refresh` | intègre les nouveaux fichiers déposés dans `data/frames/` |
+
+### Comparer deux époques
+
+`GET /api/diff?a=<obs>&b=<obs>` aligne les deux images sur une grille commune,
+soustrait les fonds, puis compare les **catalogues de sources** plutôt que les pixels.
+À 6,2″ par pixel une étoile tient dans un seul pixel : soustraire les images marque
+chaque source, comparer les catalogues ne garde que ce qui n'a vraiment pas de
+contrepartie. Le verdict est rendu explicitement — `none`, `isolated` ou `many` —
+pour qu'aucun résidu ne passe pour une découverte.
 
 Le serveur scanne `data/frames/` à chaque démarrage et rejette toute image dont le cutout
 tombe hors du détecteur (`CRPIX ∉ [1, 2040]`) : ces observations existent dans l'archive mais

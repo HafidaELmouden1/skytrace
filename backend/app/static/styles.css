@@ -410,6 +410,45 @@ table.spec td { color: var(--ink-dim); }
 }
 .describe b { color: var(--ink); font-weight: 600; }
 
+/* ---------------------------------------------------------------- différence */
+
+.diffbox { margin-top: 14px; }
+.diffview {
+  position: relative; width: 100%; aspect-ratio: 1/1; max-height: 60vh;
+  border-radius: 12px; overflow: hidden; background: #04070d;
+  border: 1px solid var(--line-soft);
+}
+.diffview img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.diffview .mark {
+  position: absolute; transform: translate(-50%, -50%);
+  border: 1.5px solid #ffb020; border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 176, 32, .5);
+  pointer-events: none;
+}
+.diffview .mark span {
+  position: absolute; left: 50%; top: -16px; transform: translateX(-50%);
+  font: 600 9px var(--font-mono); color: #ffb020; white-space: nowrap;
+}
+.diffhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+.diffhead h3 { font-size: 14px; }
+
+.cand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border: 1px solid var(--line); border-radius: 9px;
+  background: rgba(16, 26, 46, .6); margin-top: 7px; font-size: 12.5px;
+}
+.cand .n { font: 600 11px var(--font-mono); color: var(--warn); min-width: 26px; }
+.cand .p { font: 11.5px var(--font-mono); color: var(--ink-dim); }
+.cand .s { margin-left: auto; font: 600 11.5px var(--font-mono); color: var(--ink); }
+
+.verdict {
+  padding: 10px 13px; border-radius: 9px; font-size: 12.5px; line-height: 1.45;
+  margin-bottom: 10px; border: 1px solid;
+}
+.verdict.v-many { border-color: rgba(255, 176, 32, .45); background: rgba(255, 176, 32, .09); color: #ffcf7a; }
+.verdict.v-isolated   { border-color: rgba(76, 217, 156, .45); background: rgba(76, 217, 156, .08); color: #8ce8bd; }
+.verdict.v-none       { border-color: var(--line); background: rgba(16, 26, 46, .6); color: var(--ink-dim); }
+
 /* ---------------------------------------------------------------- footer */
 
 footer { border-top: 1px solid var(--line-soft); padding: 30px 0 44px; margin-top: 40px; }

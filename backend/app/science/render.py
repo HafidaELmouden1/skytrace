@@ -38,6 +38,7 @@ class Cutout:
     wavelength: np.ndarray
     bandwidth: np.ndarray
     grid: WaveGrid
+    header: object = None
     meta: dict = field(default_factory=dict)
 
     @property
@@ -73,7 +74,7 @@ def load_cutout(path: str) -> Cutout:
             "wave_range": (grid.lo, grid.hi),
         }
 
-    return Cutout(image, flags, variance, zodi, wavelength, bandwidth, grid, meta)
+    return Cutout(image, flags, variance, zodi, wavelength, bandwidth, grid, header, meta)
 
 
 def _percentiles(values: np.ndarray, low: float = 0.5, high: float = 99.5) -> tuple[float, float]:

@@ -24,6 +24,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from .science.align import compare_sources, difference, render_difference
 from .science.render import (
     detect_sources,
     load_cutout,
@@ -420,6 +421,84 @@ def metadata(obs_id: str) -> dict:
         "benign_bits": [FLAG_SOURCE],
         "provenance": {"collection": "spherex_dr1", "calib": "l2b-v27-2026-197"},
     }
+
+
+@app.get("/api/diff")
+def diff(
+    a: str = Query(..., min_length=6, max_length=40),
+    b: str = Query(..., min_length=6, max_length=40),
+    threshold: float = Query(5.0, ge=3.0, le=20.0),
+) -> dict:
+    """Mark what changed between two epochs of the same field."""
+    for obs in (a, b):
+        if not OBS_ID_RE.match(obs):
+            raise HTTPException(400, "invalid observation id")
+    entry_a, entry_b = FILES.get(a), FILES.get(b)
+    if entry_a is None or entry_b is None:
+        raise HTTPException(404, "unknown observation")
+    if not entry_a[0].exists() or not entry_b[0].exists():
+        raise HTTPException(404, "missing file on disk")
+    if a == b:
+        raise HTTPException(409, "the two epochs must differ")
+
+    cut_a = load_cutout(str(entry_a[0]))
+    cut_b = load_cutout(str(entry_b[0]))
+
+    pixel = difference(cut_a, cut_b, threshold)
+    rgb = render_difference(pixel.pop("significance"))
+    key = _key(a, b, "diff", round(threshold, 2), rgb.shape)
+    path = CACHE / f"{key}.webp"
+    if not path.exists():
+        from PIL import Image
+        Image.fromarray(rgb).resize((640, 640), Image.LANCZOS).save(
+            path, format="WEBP", quality=90, method=5)
+
+    catalogue = compare_sources(cut_a, cut_b, threshold)
+
+    dt_days = float(cut_b.meta["mjd"] - cut_a.meta["mjd"])
+    return {
+        "a": a, "b": b,
+        "image": f"/api/cache/{key}.webp",
+        "candidates": catalogue["unmatched"][:12],
+        "verdict": catalogue["verdict"],
+        "counts": {
+            "epoch_a": catalogue["count_a"],
+            "epoch_b": catalogue["count_b"],
+            "matched": catalogue["matched"],
+            "unmatched": len(catalogue["unmatched"]),
+            "ratio": catalogue["ratio"],
+        },
+        "pixel_peaks": len(pixel["candidates"]),
+        "shift_px": catalogue["shift_px"],
+        "coverage": pixel["coverage"],
+        "shape": pixel["shape"],
+        "threshold": threshold,
+        "tolerance_arcsec": round(catalogue["tolerance_px"] * 6.2, 1),
+        "compat": {
+            "detector_a": cut_a.meta["detector"],
+            "detector_b": cut_b.meta["detector"],
+            "band_a": [round(cut_a.grid.lo, 2), round(cut_a.grid.hi, 2)],
+            "band_b": [round(cut_b.grid.lo, 2), round(cut_b.grid.hi, 2)],
+            "same_detector": cut_a.meta["detector"] == cut_b.meta["detector"],
+            "dt_days": round(dt_days, 2),
+        },
+        "note": (
+            "A source present at one epoch and absent at the other is a "
+            "candidate, not a discovery: variable stars, cosmic rays, flag "
+            "gaps and the 6.2 arcsec pixel all produce the same signature."
+        ),
+    }
+
+
+@app.get("/api/cache/{key}.webp")
+def cached(key: str) -> FileResponse:
+    if not re.fullmatch(r"[0-9a-f]{24}", key):
+        raise HTTPException(400, "invalid key")
+    path = CACHE / f"{key}.webp"
+    if not path.exists():
+        raise HTTPException(404, "not rendered")
+    return FileResponse(path, media_type="image/webp",
+                        headers={"Cache-Control": "public, max-age=31536000, immutable"})
 
 
 @app.get("/api/describe/{obs_id}")

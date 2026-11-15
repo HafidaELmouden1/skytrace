@@ -93,6 +93,24 @@ const I18N = {
     'learn.p5': "Les images proviennent du Data Release 1 de SPHEREx, archivé à l'Infrared Science Archive (Caltech/IPAC). Les cutouts sont produits par le service de découpe d'IRSA et traités localement.",
 
     'describe.title': 'Ce que montre cette image :',
+    'motion.btn': 'Détecter le mouvement',
+    'motion.back': 'Revenir aux images',
+    'motion.title': 'Différence entre deux époques',
+    'motion.working': 'Calcul de la différence…',
+    'motion.failed': 'Impossible de comparer ces deux époques.',
+    'motion.empty': 'Aucun pic au-dessus de 5σ entre ces deux époques : rien ne change au-delà du bruit.',
+    'motion.peaks': 'pics au-dessus de 5σ',
+    'motion.dipole': 'dipôle',
+    'motion.residual': 'résidu',
+    'motion.dipoleCount': 'en dipôle (signature d’un déplacement)',
+    'motion.noDipole': 'aucun en dipôle : ce sont des résidus de PSF',
+    'verdict.none': 'Aucune source sans contrepartie : rien ne change au-delà du bruit.',
+    'verdict.isolated': '{n} source(s) sur {total} sans contrepartie à l’autre époque. Candidat à examiner, pas une découverte : étoile variable, rayon cosmique ou bord de champ donnent la même signature.',
+    'verdict.many': '{n} sources sur {total} sans contrepartie. Trop nombreuses pour un déplacement réel : couverture, bande ou seuil à vérifier avant toute conclusion.',
+    'motion.pixelpeaks': '{n} pics au niveau pixel, avant comparaison des catalogues',
+    'motion.tolerance': 'appariement à ±{t}″',
+    'motion.crossband': 'Détecteurs différents : la couleur n’est pas comparable, seule la position l’est.',
+    'motion.note': 'Un pic ici est une différence, pas un objet qui bouge : calibration, bande et bruit laissent des résidus.',
     'foot.left': 'SkyTrace · données NASA/JPL-Caltech · IPAC/IRSA · citer 10.26131/IRSA678',
     'foot.link': 'Méthode et limites',
 
@@ -195,6 +213,24 @@ const I18N = {
     'learn.p5': 'Images come from the SPHEREx Data Release 1, archived at the Infrared Science Archive (Caltech/IPAC). Cutouts are produced by the IRSA cutout service and processed locally.',
 
     'describe.title': 'What this frame contains:',
+    'motion.btn': 'Detect motion',
+    'motion.back': 'Back to frames',
+    'motion.title': 'Difference between two epochs',
+    'motion.working': 'Computing the difference…',
+    'motion.failed': 'These two epochs cannot be compared.',
+    'motion.empty': 'No peak above 5σ between these epochs: nothing changes beyond noise.',
+    'motion.peaks': 'peaks above 5σ',
+    'motion.dipole': 'dipole',
+    'motion.residual': 'residual',
+    'motion.dipoleCount': 'dipole-shaped (signature of motion)',
+    'motion.noDipole': 'none dipole-shaped: these are PSF residuals',
+    'verdict.none': 'No source without a counterpart: nothing changes beyond noise.',
+    'verdict.isolated': '{n} of {total} sources have no counterpart at the other epoch. Worth checking, not a discovery: variable stars, cosmic rays and field edges look the same.',
+    'verdict.many': '{n} of {total} sources have no counterpart. Too many for real motion: check coverage, band and threshold before concluding anything.',
+    'motion.pixelpeaks': '{n} pixel-level peaks, before catalogue comparison',
+    'motion.tolerance': 'matched within ±{t}″',
+    'motion.crossband': 'Different detectors: brightness is not comparable, only position is.',
+    'motion.note': 'A peak here is a difference, not a moving object: calibration, band and noise all leave residuals.',
     'foot.left': 'SkyTrace · data NASA/JPL-Caltech · IPAC/IRSA · cite 10.26131/IRSA678',
     'foot.link': 'Method and limits',
 
@@ -457,6 +493,91 @@ function pollAtlas() {
   }, 8000);
 }
 
+/* ------------------------------------------------------------------ mouvement */
+
+async function detectMotion() {
+  if (state.epochs.length < 2) return;
+  stop();
+
+  // A pair across different detectors cannot be compared: brightness changes
+  // with the wavelength each detector covers. Prefer the longest baseline
+  // taken with the same detector.
+  const byDetector = {};
+  state.epochs.forEach((e) => {
+    (byDetector[e.detector] = byDetector[e.detector] || []).push(e);
+  });
+  let first = state.epochs[0];
+  let last = state.epochs[state.epochs.length - 1];
+  const groups = Object.values(byDetector).filter((g) => g.length >= 2);
+  if (groups.length) {
+    const score = (g) => {
+      const baseline = g[g.length - 1].mjd - g[0].mjd;
+      return baseline * (1 + 0.5 * (g.length - 1));
+    };
+    const longest = groups.reduce((best, g) => (score(g) > score(best) ? g : best));
+    first = longest[0];
+    last = longest[longest.length - 1];
+  }
+
+  el("diffNote").textContent = t("motion.working");
+  el("diffBox").hidden = false;
+  el("viewer").hidden = true;
+  el("diffMarks").innerHTML = "";
+  el("motionList").innerHTML = "";
+
+  let data;
+  try {
+    const response = await fetch(`/api/diff?a=${first.obs_id}&b=${last.obs_id}`);
+    if (!response.ok) throw new Error("diff failed");
+    data = await response.json();
+  } catch (err) {
+    el("diffNote").textContent = t("motion.failed");
+    return;
+  }
+
+  el("diffImg").src = data.image;
+  const [ny, nx] = data.shape;
+  const sizePct = Math.min(26, (100 / nx) * 1.8);
+
+  el("diffMarks").innerHTML = data.candidates.map((c) => {
+    const left = ((c.x + 0.5) / nx) * 100;
+    const top = ((c.y + 0.5) / ny) * 100;
+    return `<div class="mark" style="left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;
+              width:${sizePct.toFixed(2)}%;aspect-ratio:1/1">
+              <span>${c.sigma}σ</span></div>`;
+  }).join("");
+
+  el("motionList").innerHTML = data.candidates.length
+    ? data.candidates.slice(0, 8).map((c, i) => `
+        <div class="cand">
+          <span class="n">#${i + 1}</span>
+          <span class="p">RA ${c.ra} · Dec ${c.dec}</span>
+          <span class="s">${c.sigma}σ</span>
+        </div>`).join("")
+    : `<p class="note">${t("motion.empty")}</p>`;
+
+  const verdict = data.verdict || "none";
+  const banner = document.createElement("div");
+  banner.className = "verdict v-" + verdict;
+  banner.textContent = t("verdict." + verdict)
+    .replace("{n}", data.counts.unmatched)
+    .replace("{total}", data.counts.epoch_a);
+  el("motionList").prepend(banner);
+
+  const same = data.compat.same_detector;
+  el("diffNote").textContent = [
+    t("motion.pixelpeaks").replace("{n}", data.pixel_peaks),
+    t("motion.tolerance").replace("{t}", data.tolerance_arcsec),
+    same ? "" : t("motion.crossband"),
+    `D${data.compat.detector_a} → D${data.compat.detector_b} · Δ ${data.compat.dt_days} j`,
+  ].filter(Boolean).join(" · ");
+}
+
+function closeDiff() {
+  el("diffBox").hidden = true;
+  el("viewer").hidden = false;
+}
+
 /* ------------------------------------------------------------------ affichage */
 
 function setFrames(a, b) {
@@ -631,6 +752,8 @@ function bindControls() {
   el('btnPlay').onclick = play;
   el('btnBlink').onclick = blink;
   el('btnLast').onclick = () => { stop(); show(state.epochs.length - 1); };
+  el('btnDiff').onclick = detectMotion;
+  el('btnDiffBack').onclick = closeDiff;
 
   el('btnRefresh').onclick = async () => {
     el('btnRefresh').disabled = true;
@@ -693,6 +816,19 @@ function init() {
   initReveal();
   showRoute();
   loadStats();
+
+  // ?diff=1 opens the comparison straight away, so a shared link points at an
+  // analysis instead of just a field.
+  const params = new URLSearchParams(location.search);
+  if (params.get("diff") === "1") {
+    const wait = setInterval(() => {
+      if (state.epochs.length > 1) {
+        clearInterval(wait);
+        detectMotion();
+      }
+    }, 300);
+    setTimeout(() => clearInterval(wait), 20000);
+  }
 }
 
 init();
