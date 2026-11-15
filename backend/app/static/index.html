@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyTrace — voir le ciel bouger</title>
+<meta name="description" content="Explorez les images du ciel de la mission SPHEREx de la NASA et comparez-les dans le temps.">
+<meta name="theme-color" content="#05070f">
+<link rel="stylesheet" href="/static/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230b3d91'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23fc3d21' stroke-width='2'/></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/" data-route>
+      <span class="brand-mark"></span>
+      <span>SkyTrace<small data-i18n="brand.tag">SPHEREx · NASA</small></span>
+    </a>
+
+    <div class="nav-links">
+      <a href="/" data-route data-i18n="nav.home">Home</a>
+      <a href="/targets" data-route data-i18n="nav.targets">Sky atlas</a>
+      <a href="/explore" data-route data-i18n="nav.explore">Explore</a>
+      <a href="/learn" data-route data-i18n="nav.learn">Learn</a>
+    </div>
+
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Language">
+        <button data-lang="fr">FR</button>
+        <button data-lang="en" class="on">EN</button>
+      </div>
+      <a class="btn btn-primary btn-sm" href="/targets" data-route data-i18n="nav.cta">Choisir un lieu</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================ ACCUEIL -->
+<section class="view" id="view-home">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow" data-i18n="home.eyebrow">Mission SPHEREx · Data Release 1</p>
+          <h1>
+            <span data-i18n="home.h1a">Voir le ciel</span>
+            <span class="accent" data-i18n="home.h1b">bouger</span>
+          </h1>
+          <p class="lead" data-i18n="home.lead">
+            SPHEREx cartographie tout le ciel tous les six mois, dans 102 bandes
+            infrarouges. SkyTrace vous montre la même parcelle de ciel à des dates
+            différentes — et ce qui a changé entre les deux.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/explore" data-route data-i18n="home.cta1">Explorer le ciel</a>
+            <a class="btn btn-ghost" href="/learn" data-route data-i18n="home.cta2">Comprendre les données</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat"><b id="statFrames">—</b><span data-i18n="home.stat1">observations chargées</span></div>
+            <div class="stat"><b id="statDays">—</b><span data-i18n="home.stat2">jours de couverture</span></div>
+            <div class="stat"><b id="statDet">—</b><span data-i18n="home.stat3">détecteurs</span></div>
+            <div class="stat"><b>102</b><span data-i18n="home.stat4">canaux spectraux</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <img id="heroImg" alt="Champ d'étoiles observé par SPHEREx">
+          <span class="corner c1"></span>
+          <span class="corner c2"></span>
+          <div class="scan"></div>
+          <div class="frame-tag"><b>WISE 0855</b><br><span data-i18n="home.tag">0,1° · naine brune</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="home.steps.eyebrow">Trois gestes</p>
+        <h2 data-i18n="home.steps.title">D'un point du ciel à une comparaison</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <h3 data-i18n="home.step1.t">Choisir un point</h3>
+          <p data-i18n="home.step1.d">Une cible du challenge. L'outil interroge l'archive IRSA de la NASA et ne garde que les observations exploitables.</p>
+        </div>
+        <div class="step">
+          <h3 data-i18n="home.step2.t">Charger les dates</h3>
+          <p data-i18n="home.step2.d">Chaque date est une observation réelle : identifiant, détecteur, longueur d'onde, qualité des pixels.</p>
+        </div>
+        <div class="step">
+          <h3 data-i18n="home.step3.t">Comparer</h3>
+          <p data-i18n="home.step3.d">Lecture séquentielle, alternance entre deux époques, et spectre construit sur les poses successives.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="home.features.eyebrow">Dans l'explorateur</p>
+        <h2 data-i18n="home.features.title">Quatre façons de lire le ciel</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">◷</div>
+          <h3 data-i18n="home.f1.t">Frise temporelle</h3>
+          <p data-i18n="home.f1.d">Les observations classées par date, avec l'écart réel depuis la première : minutes, heures ou mois.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⇄</div>
+          <h3 data-i18n="home.f2.t">Comparaison A / B</h3>
+          <p data-i18n="home.f2.d">Alternance rapide entre deux époques. Ce qui apparaît, disparaît ou se déplace devient visible.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">λ</div>
+          <h3 data-i18n="home.f3.t">Spectre sur les poses</h3>
+          <p data-i18n="home.f3.d">SPHEREx mesure une couleur en décalant la source d'un canal à chaque pose. Le spectre en est la trace.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⌗</div>
+          <h3 data-i18n="home.f4.t">Traçabilité</h3>
+          <p data-i18n="home.f4.d">Chaque image affiche son identifiant d'observation, sa calibration et la part de pixels rejetés.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section reveal">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="home.data.eyebrow">Provenance</p>
+        <h2 data-i18n="home.data.title">Des données publiques, citées</h2>
+        <p class="lead" data-i18n="home.data.lead">Images spectrales de niveau 2 du Data Release 1, servies par l'Infrared Science Archive du Caltech/IPAC. Aucune donnée simulée.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <span class="num">IRSA / IPAC</span>
+          <h3 data-i18n="home.data1.t">Archive</h3>
+          <p>10.26131/IRSA678 · 10.26131/IRSA679</p>
+        </div>
+        <div class="card">
+          <span class="num">DR1</span>
+          <h3 data-i18n="home.data2.t">Version des images</h3>
+          <p>l2b-v27 · 0,75 – 5,0 µm · 6,2″ par pixel</p>
+        </div>
+        <div class="card">
+          <span class="num">NASA / JPL</span>
+          <h3 data-i18n="home.data3.t">Mission</h3>
+          <p>Spectro-Photometer for the History of the Universe, Epoch of Reionization and Ices Explorer</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ ATLAS -->
+<section class="view" id="view-targets" hidden>
+  <div class="wrap">
+    <div class="explore-head">
+      <div>
+        <p class="eyebrow" data-i18n="targets.eyebrow">Sky atlas</p>
+        <h2 data-i18n="targets.title">Choose where to look</h2>
+        <p data-i18n="targets.lead">Every entry points at a real patch of sky. Pick a challenge target, or enter your own coordinates — SPHEREx does not cover the whole sky yet, so some fields return nothing.</p>
+      </div>
+    </div>
+
+    <div class="atlas" id="atlas"></div>
+
+    <div class="panel" style="margin-top:22px">
+      <h2 data-i18n="targets.custom">Custom position</h2>
+      <p class="hint" data-i18n="targets.customHint">Right ascension in degrees (0–360) and declination (−90 to +90). The collector queries IRSA, keeps one exposure per date and validates each cutout.</p>
+      <form id="coordForm" class="coords">
+        <label>RA <input id="inRa" type="number" step="0.0001" min="0" max="360" value="133.7951" required></label>
+        <label>Dec <input id="inDec" type="number" step="0.0001" min="-90" max="90" value="-7.2451" required></label>
+        <button class="btn btn-primary btn-sm" type="submit" data-i18n="targets.collect">Collect this field</button>
+      </form>
+      <p class="note" id="collectNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ EXPLORATEUR -->
+<section class="view" id="view-explore" hidden>
+  <div class="wrap">
+    <div class="explore-head">
+      <div>
+        <p class="eyebrow" data-i18n="explore.eyebrow">Explorateur</p>
+        <h2 id="exploreTitle" data-i18n="explore.title">WISE 0855 — naine brune</h2>
+        <p data-i18n="explore.lead">Même parcelle de ciel, plusieurs instants. Utilisez la frise ou lancez la séquence pour voir ce qui change.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-sm" id="btnRefresh" data-i18n="explore.refresh">Actualiser les données</button>
+        <span class="chip"><span class="dot"></span><b id="chipFrames">—</b></span>
+      </div>
+    </div>
+
+    <div class="viewer-grid">
+      <section class="stage">
+        <div class="viewer" id="viewer">
+          <div id="viewerEmpty" style="color:var(--ink-faint);font-size:13px" data-i18n="explore.loading">Chargement des observations…</div>
+          <img id="frameA" alt="Image SPHEREx">
+          <img id="frameB" alt="Image SPHEREx">
+          <div class="stamp" id="stamp"></div>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-sm" id="btnPrev">◀ <span data-i18n="explore.prev">Précédente</span></button>
+          <button class="btn btn-sm" id="btnNext"><span data-i18n="explore.next">Suivante</span> ▶</button>
+          <button class="btn btn-sm btn-primary" id="btnPlay">▶ <span data-i18n="explore.play">Lire la séquence</span></button>
+          <button class="btn btn-sm" id="btnBlink">⟳ <span data-i18n="explore.blink">Comparer A/B</span></button>
+          <button class="btn btn-sm" id="btnLast"><span data-i18n="explore.last">Dernière</span></button>
+        </div>
+
+        <p class="note" data-i18n="explore.pixelnote">Un cutout de 0,1° fait 59 pixels : chaque carré est un pixel SPHEREx réel (6,2″), pas un artefact d'affichage.</p>
+
+        <div class="describe" id="describe" hidden></div>
+
+        <div class="timeline">
+          <div class="track" id="track"></div>
+          <p class="note" id="axisNote"></p>
+          <p class="note warn" id="compatNote" hidden></p>
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel">
+          <h2 data-i18n="explore.targets">Cibles du challenge</h2>
+          <p class="hint" data-i18n="explore.targetsHint">Les cinq objets imposés. Un badge indique les fichiers déjà présents sur la machine.</p>
+          <div class="targets" id="targets"></div>
+          <p class="note warn" id="targetNote" hidden></p>
+        </div>
+
+        <div class="panel">
+          <h2 data-i18n="explore.obs">Observation</h2>
+          <p class="hint" data-i18n="explore.obsHint">Ce que le fichier de la NASA contient pour l'image affichée.</p>
+          <dl id="meta"><dt>—</dt><dd></dd></dl>
+        </div>
+
+        <div class="panel">
+          <h2 data-i18n="explore.spec">Spectre — 4 poses</h2>
+          <p class="hint" data-i18n="explore.specHint">Chaque pose décale la source d'un canal du filtre. Ces points sont la vraie mesure de couleur de SPHEREx.</p>
+          <div id="spectrum"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ COMPRENDRE -->
+<section class="view" id="view-learn" hidden>
+  <div class="wrap">
+    <div class="explore-head">
+      <div>
+        <p class="eyebrow" data-i18n="learn.eyebrow">Comprendre</p>
+        <h2 data-i18n="learn.title">Lire une image d'archive</h2>
+        <p data-i18n="learn.lead">Ce qu'il faut savoir pour interpréter ce que l'explorateur affiche — et ce qu'il ne faut pas en conclure.</p>
+      </div>
+    </div>
+
+    <div class="article">
+      <h2 data-i18n="learn.h1">La mission en trois phrases</h2>
+      <p data-i18n="learn.p1">SPHEREx est un télescope spatial de la NASA lancé en mars 2025. Il observe le ciel entier en lumière infrarouge proche, de 0,75 à 5 micromètres, et refait le tour du ciel tous les six mois. Chaque image n'est pas une simple photo : elle contient un spectre, c'est-à-dire une décomposition en longueurs d'onde.</p>
+
+      <h2 data-i18n="learn.h2">Pourquoi les pixels sont si gros</h2>
+      <p data-i18n="learn.p2">La résolution de SPHEREx est de <strong>6,2 secondes d'arc par pixel</strong>. Un cutout de 0,1 degré ne fait donc que 59 pixels de large. Ce n'est pas un défaut d'affichage : c'est la taille réelle de l'information disponible. Deux objets séparés de moins de douze secondes d'arc ne sont pas distinguables.</p>
+
+      <div class="callout">
+        <p data-i18n="learn.callout">Un écart visible entre deux images ne prouve pas à lui seul qu'un objet a bougé. Il peut venir d'une calibration différente, d'un pixel défectueux ou d'un résidu de fond de ciel. Un déplacement ne devient une piste qu'accompagné d'une mesure et d'une incertitude.</p>
+      </div>
+
+      <h2 data-i18n="learn.h3">Les quatre axes de temps</h2>
+      <p data-i18n="learn.p3">Les observations ne sont pas réparties au hasard. Elles suivent quatre échelles que l'explorateur distingue :</p>
+      <table class="spec">
+        <tr>
+          <th data-i18n="learn.t.axis">Axe</th>
+          <th data-i18n="learn.t.dt">Écart</th>
+          <th data-i18n="learn.t.what">Ce qu'on y voit</th>
+        </tr>
+        <tr>
+          <td data-i18n="learn.axis.intra">Intra-slew</td>
+          <td data-i18n="learn.a1.dt">≈ 6 minutes</td>
+          <td data-i18n="learn.a1.w">Astéroïdes proches, satellites, tout ce qui file vite</td>
+        </tr>
+        <tr>
+          <td data-i18n="learn.axis.night">Nuit</td>
+          <td data-i18n="learn.a2.dt">≈ 8 heures</td>
+          <td data-i18n="learn.a2.w">La même zone revisitée dans la même nuit</td>
+        </tr>
+        <tr>
+          <td data-i18n="learn.axis.epoch">Époque</td>
+          <td data-i18n="learn.a3.dt">≈ 6 mois</td>
+          <td data-i18n="learn.a3.w">Mouvement propre des étoiles proches, parallaxe</td>
+        </tr>
+        <tr>
+          <td data-i18n="learn.axis.spectral">Spectral</td>
+          <td data-i18n="learn.a4.dt">continu</td>
+          <td data-i18n="learn.a4.w">Les 102 canaux, une couleur par canal</td>
+        </tr>
+      </table>
+
+      <h2 data-i18n="learn.h4">Ce que SPHEREx ne peut pas faire</h2>
+      <ul>
+        <li data-i18n="learn.l1">Mesurer une position au milliarcseconde : c'est le domaine de Gaia.</li>
+        <li data-i18n="learn.l2">Voir un déplacement lent sur six mois : à 1″/an, cela fait un douzième de pixel.</li>
+        <li data-i18n="learn.l3">Séparer deux sources distantes de moins de 12″.</li>
+        <li data-i18n="learn.l4">Soustraire le zodiaque automatiquement : le modèle existe, l'appliquer est un choix.</li>
+      </ul>
+
+      <h2 data-i18n="learn.h5">Données et crédits</h2>
+      <p data-i18n="learn.p5">Les images proviennent du <strong>Data Release 1</strong> de SPHEREx, archivé à l'Infrared Science Archive (Caltech/IPAC). Les cutouts sont produits par le service de découpe d'IRSA et traités localement.</p>
+      <table class="spec">
+        <tr><td data-i18n="learn.k.doi">DOI</td><td>10.26131/IRSA678 (images) · 10.26131/IRSA679 (cube)</td></tr>
+        <tr><td data-i18n="learn.k.calib">Calibration</td><td>l2b-v27</td></tr>
+        <tr><td data-i18n="learn.k.units">Unités</td><td>MJy/sr · variance en (MJy/sr)²</td></tr>
+        <tr><td data-i18n="learn.k.licence">Licence</td><td><a href="https://irsa.ipac.caltech.edu/data_use_terms.html" target="_blank" rel="noopener">IRSA Data Use Terms</a></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <p data-i18n="foot.left">SkyTrace · données NASA/JPL-Caltech · IPAC/IRSA · citer 10.26131/IRSA678</p>
+    <p><a href="/learn" data-route data-i18n="foot.link">Méthode et limites</a></p>
+  </div>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

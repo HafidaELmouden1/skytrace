@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.fits binary
+*.webp binary
+*.png binary
+lancer.cmd text eol=crlf
+Makefile text eol=lf
