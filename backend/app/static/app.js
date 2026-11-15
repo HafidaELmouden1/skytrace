@@ -771,6 +771,124 @@ function renderGallery() {
   ).join('');
 }
 
+/* ------------------------------------------------------------------ mouvement */
+
+async function detectMotion() {
+  if (state.epochs.length < 2) return;
+  stop();
+
+  // A pair across different detectors cannot be compared: brightness changes
+  // with the wavelength each detector covers. Prefer the longest baseline
+  // taken with the same detector.
+  const byDetector = {};
+  state.epochs.forEach((e) => {
+    (byDetector[e.detector] = byDetector[e.detector] || []).push(e);
+  });
+  let first = state.epochs[0];
+  let last = state.epochs[state.epochs.length - 1];
+  const groups = Object.values(byDetector).filter((g) => g.length >= 2);
+  if (groups.length) {
+    const score = (g) => {
+      const baseline = g[g.length - 1].mjd - g[0].mjd;
+      return baseline * (1 + 0.5 * (g.length - 1));
+    };
+    const longest = groups.reduce((best, g) => (score(g) > score(best) ? g : best));
+    first = longest[0];
+    last = longest[longest.length - 1];
+  }
+
+  el('diffNote').textContent = t('motion.working');
+  el('diffBox').hidden = false;
+  el('viewer').hidden = true;
+  el('diffMarks').innerHTML = '';
+  el('motionList').innerHTML = '';
+
+  let data;
+  try {
+    const response = await fetch('/api/diff?a=' + first.obs_id + '&b=' + last.obs_id);
+    if (!response.ok) throw new Error('diff failed');
+    data = await response.json();
+  } catch (err) {
+    el('diffNote').textContent = t('motion.failed');
+    return;
+  }
+
+  el('diffImg').src = data.image;
+  const ny = data.shape[0];
+  const nx = data.shape[1];
+  const sizePct = Math.min(26, (100 / nx) * 1.8);
+
+  el('diffMarks').innerHTML = data.candidates.map((c) => {
+    const left = ((c.x + 0.5) / nx) * 100;
+    const top = ((c.y + 0.5) / ny) * 100;
+    return '<div class="mark" style="left:' + left.toFixed(2) + '%;top:' + top.toFixed(2) +
+      '%;width:' + sizePct.toFixed(2) + '%;aspect-ratio:1/1"><span>' + c.sigma + 'σ</span></div>';
+  }).join('');
+
+  el('motionList').innerHTML = data.candidates.length
+    ? data.candidates.slice(0, 8).map((c, i) =>
+        '<div class="cand"><span class="n">#' + (i + 1) + '</span>' +
+        '<span class="p">RA ' + c.ra + ' · Dec ' + c.dec + '</span>' +
+        '<span class="s">' + c.sigma + 'σ</span></div>').join('')
+    : '<p class="note">' + t('motion.empty') + '</p>';
+
+  const verdict = data.verdict || 'none';
+  const banner = document.createElement('div');
+  banner.className = 'verdict v-' + verdict;
+  banner.textContent = t('verdict.' + verdict)
+    .replace('{n}', data.counts.unmatched)
+    .replace('{total}', data.counts.epoch_a);
+  el('motionList').prepend(banner);
+
+  el('diffNote').textContent = [
+    t('motion.pixelpeaks').replace('{n}', data.pixel_peaks),
+    t('motion.tolerance').replace('{t}', data.tolerance_arcsec),
+    data.compat.same_detector ? '' : t('motion.crossband'),
+    'D' + data.compat.detector_a + ' → D' + data.compat.detector_b + ' · Δ ' + data.compat.dt_days + ' j',
+  ].filter(Boolean).join(' · ');
+}
+
+function closeDiff() {
+  el('diffBox').hidden = true;
+  el('viewer').hidden = false;
+}
+
+/* ------------------------------------------------------------------ pistes */
+
+async function showTracks() {
+  const box = el('trackBox');
+  box.hidden = false;
+  el('trackNote').textContent = t('track.working');
+  el('trackList').innerHTML = '';
+
+  let data;
+  try {
+    const response = await fetch('/api/track?target=' + state.target);
+    if (!response.ok) throw new Error('track failed');
+    data = await response.json();
+  } catch (err) {
+    el('trackNote').textContent = t('track.error');
+    return;
+  }
+
+  if (!data.tracks.length) {
+    el('trackNote').textContent = t('track.none');
+    return;
+  }
+
+  el('trackNote').textContent = t('track.found')
+    .replace('{n}', data.tracks.length)
+    .replace('{c}', data.tracked);
+
+  el('trackList').innerHTML = data.tracks.slice(0, 10).map((tr, i) =>
+    '<div class="cand ' + (tr.continues ? 'is-track' : '') + '">' +
+      '<span class="n">#' + (i + 1) + '</span>' +
+      '<span class="p">' + tr.displacement_arcsec + '″ en ' + tr.duration_minutes + ' min</span>' +
+      '<span class="p">' + Math.round(tr.speed_arcsec_per_hour) + '″/h</span>' +
+      '<span class="s">' + (tr.continues ? t('track.confirmed') : t('track.unconfirmed')) + '</span>' +
+    '</div>').join('');
+}
+
 /* ------------------------------------------------------- comparaison six mois */
 
 function pickSixMonthPair() {
