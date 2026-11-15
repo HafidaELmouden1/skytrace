@@ -156,13 +156,18 @@ def pretty_image(cutout: "Cutout", clip: float = 12.0) -> np.ndarray:
     if noise <= 0:
         noise = 1.0
 
-    excess = np.nan_to_num(stack - median, nan=0.0, posinf=0.0, neginf=0.0)
-    ratio = np.clip(excess / noise, 0.0, None)
+    # Flagged pixels are NaN after cleaning. Left as zero they would punch a
+    # black square in the middle of the brightest star, so they take the
+    # brightest value of the frame: a saturated pixel is at least that bright.
+    surplus = stack - median
+    finite = np.isfinite(surplus)
+    ratio = np.where(finite, surplus / noise, np.nan)
 
-    # The top of the range is set by the brightest pixels of this frame, so a
-    # crowded field and an almost empty one both use the full tonal scale.
-    top = float(np.percentile(ratio, 99.9))
+    top = float(np.nanpercentile(ratio, 99.9)) if finite.any() else clip
     top = max(top, clip)
+    ratio = np.where(finite, ratio, top)
+    ratio = np.clip(ratio, 0.0, None)
+
     stretched = np.log1p(ratio) / np.log1p(top)
     return np.clip(stretched * 255, 0, 255).astype("uint8")
 
