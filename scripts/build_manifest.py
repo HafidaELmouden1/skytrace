@@ -94,6 +94,16 @@ def main() -> None:
                 })
 
     entries.sort(key=lambda entry: (entry["target"], entry["obs_id"]))
+
+    # A collection that answered 502 for a whole target would silently drop it
+    # from the series; refuse to write a manifest that misses a field the app
+    # advertises.
+    covered = {entry["target"] for entry in entries}
+    missing = [slug for slug, _, _ in TARGETS if slug not in covered]
+    if missing:
+        raise SystemExit(
+            "manifeste non ecrit, cibles sans aucune pose: " + ", ".join(missing))
+
     MANIFEST.write_text(json.dumps({
         "collections": list(COLLECTIONS),
         "size_deg": SIZE_DEG,

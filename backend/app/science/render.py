@@ -138,22 +138,32 @@ def background_stats(data: np.ndarray) -> tuple[float, float]:
     return median, (mad if mad > 0 else float(np.std(finite)) or 1.0)
 
 
-def pretty_image(cutout: "Cutout", gain: float = 6.0, clip: float = 12.0) -> np.ndarray:
-    """Background-subtracted, signed asinh render meant for display.
+def pretty_image(cutout: "Cutout", clip: float = 12.0) -> np.ndarray:
+    """Background-subtracted, logarithmically stretched render.
 
     Raw calibrated values sit on a sky pedestal roughly as bright as the
     faintest sources, so a plain percentile stretch produces grey noise with
     white blocks. Removing the pedestal first, then scaling by the noise,
     makes stars stand out and the field readable.
+
+    A linear or arcsine scale saturates the moment a bright star enters the
+    field: the whole frame turns white. A logarithmic ramp keeps the halo of
+    that star readable while faint neighbours stay visible.
     """
     data = cutout.clean()
     stack = np.nanmean(data, axis=0) if data.ndim == 3 else data
     median, noise = background_stats(stack)
-    excess = stack - median
-    scale = noise * clip if noise > 0 else 1.0
-    norm = np.clip(excess / scale, -0.15, 1.0)
-    norm = np.nan_to_num(norm, nan=0.0, posinf=1.0, neginf=-0.15)
-    stretched = np.arcsinh(norm * gain) / np.arcsinh(gain)
+    if noise <= 0:
+        noise = 1.0
+
+    excess = np.nan_to_num(stack - median, nan=0.0, posinf=0.0, neginf=0.0)
+    ratio = np.clip(excess / noise, 0.0, None)
+
+    # The top of the range is set by the brightest pixels of this frame, so a
+    # crowded field and an almost empty one both use the full tonal scale.
+    top = float(np.percentile(ratio, 99.9))
+    top = max(top, clip)
+    stretched = np.log1p(ratio) / np.log1p(top)
     return np.clip(stretched * 255, 0, 255).astype("uint8")
 
 

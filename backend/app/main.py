@@ -191,7 +191,7 @@ def build_frames() -> None:
             save_webp(img8, str(out))
 
         pretty = pretty_image(cut)
-        pretty_key = _key(obs_id, "pretty", "asinh-noise", pretty.shape)
+        pretty_key = _key(obs_id, "pretty", "log-noise-v2", pretty.shape)
         pretty_out = CACHE / f"{pretty_key}.webp"
         if not pretty_out.exists():
             save_pretty(pretty, str(pretty_out))
