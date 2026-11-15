@@ -22,7 +22,8 @@ RUN python -c "\
 import os, tarfile, tempfile, urllib.request;\
 url = os.environ.get('DATA_URL', '').strip();\
 print('data:', url or 'none');\
-url and (lambda p: (urllib.request.urlretrieve(url, p), tarfile.open(p).extractall('/app', filter='data')))(tempfile.mktemp(suffix='.tar.gz'))"
+url and (lambda p: (urllib.request.urlretrieve(url, p), tarfile.open(p).extractall('/app', filter='data')))(tempfile.mktemp(suffix='.tar.gz'))" \
+    && mkdir -p /app/data/frames /app/cache
 
 EXPOSE 8000
 
