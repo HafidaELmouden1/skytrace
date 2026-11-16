@@ -169,6 +169,8 @@
 
     <div class="atlas" id="atlas"></div>
 
+    <aside class="sheetbox" id="sheetBox" aria-live="polite" hidden></aside>
+
     <div class="panel" style="margin-top:22px">
       <h2 data-i18n="targets.custom">Custom position</h2>
       <p class="hint" data-i18n="targets.customHint">Right ascension in degrees (0–360) and declination (−90 to +90). The collector queries IRSA, keeps one exposure per date and validates each cutout.</p>
@@ -185,6 +187,7 @@
 <!-- ============================================================ SPHEREX -->
 
 <section class="view" id="view-about" hidden>
+  <div class="wrap">
   <header class="page-head">
     <p class="eyebrow" data-i18n="about.eyebrow">La mission</p>
     <h1 data-i18n="about.title">SPHEREx, un télescope qui voit l'invisible</h1>
@@ -193,11 +196,17 @@
 
   <div class="mission-band">
     <div><b>102</b><span data-i18n="about.f1">bandes spectrales</span></div>
-    <div><b>0,75–5 µm</b><span data-i18n="about.f2">infrarouge proche</span></div>
-    <div><b>6 mois</b><span data-i18n="about.f3">pour tout le ciel</span></div>
+    <div><b>0,75 – 5 µm</b><span data-i18n="about.f2">infrarouge proche</span></div>
+    <div><b data-i18n="about.f3value">6 mois</b><span data-i18n="about.f3">pour tout le ciel</span></div>
     <div><b>6</b><span data-i18n="about.f4">détecteurs</span></div>
     <div><b>~700 km</b><span data-i18n="about.f5">orbite héliosynchrone</span></div>
   </div>
+
+  <section class="bands-block">
+    <h2 data-i18n="bands.title">Les six détecteurs, du proche au moyen infrarouge</h2>
+    <p class="lede" data-i18n="bands.lede">Chaque détecteur couvre une tranche de longueur d'onde.</p>
+    <div class="band-strip" id="bandStrip"><p class="hint" data-i18n="bands.loading">Mesure des bandes…</p></div>
+  </section>
 
   <div class="about-grid">
     <article>
@@ -227,6 +236,7 @@
   </div>
 
   <p class="credit" data-i18n="about.credit">Données : NASA/JPL-Caltech, archive IRSA à Caltech/IPAC. DOI 10.26131/IRSA678.</p>
+  </div>
 </section>
 
 <!-- ============================================================ GALERIE -->
@@ -292,11 +302,13 @@
 
         <div class="describe" id="describe" hidden></div>
 
-        <div class="comparebox" id="compareBox" hidden>
-          <div class="diffhead">
-            <h3 data-i18n="cmp.title">Six mois plus tard</h3>
+        <div class="cadencebox" id="compareBox" hidden>
+          <div class="cadence-head">
+            <h3 data-i18n="cmp.title">Frise des campagnes</h3>
+            <span class="cadence-baseline" id="cmpBaseline"></span>
             <button class="btn btn-sm" id="btnCompareClose" data-i18n="cmp.close">Fermer</button>
           </div>
+          <div class="cadence-passes" id="cadencePasses"></div>
           <p class="note" id="cmpNote"></p>
           <div class="cmp-pair">
             <figure><img id="cmpA" alt=""><figcaption id="cmpAdate"></figcaption></figure>

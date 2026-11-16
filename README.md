@@ -57,6 +57,8 @@ et pas seulement vers un champ.
 | `GET /api/diff?a=&b=` | compare deux époques : carte de différence + sources sans contrepartie |
 | `GET /api/track` | objets qui se déplacent entre poses successives : déplacement, durée, vitesse |
 | `GET /api/gallery` | toutes les images rendues, groupées par champ, avec leurs chiffres |
+| `GET /api/cadence` | campagnes d'un champ, regroupées par passage du satellite |
+| `GET /api/bands` | plage de longueur d'onde de chaque détecteur, mesurée sur les images locales |
 | `POST /api/refresh` | intègre les nouveaux fichiers déposés dans `data/frames/` |
 
 ### Comparer deux époques
@@ -71,6 +73,22 @@ pour qu'aucun résidu ne passe pour une découverte.
 Le serveur scanne `data/frames/` à chaque démarrage et rejette toute image dont le cutout
 tombe hors du détecteur (`CRPIX ∉ [1, 2040]`) : ces observations existent dans l'archive mais
 ne contiennent pas la cible.
+
+### Choisir deux passages
+
+Le bouton **6 mois** de l'explorateur (`/explore?cadence=1`) liste les campagnes d'un champ.
+`/api/cadence` découpe la série en passages : deux poses séparées de plus de 90 jours
+ouvrent une nouvelle campagne, ce qui suit le rythme réel du satellite au lieu d'un
+découpage arbitraire en fenêtres de 182 jours. Deux passages se choisissent à la main,
+puis `/api/diff` apparie les sources entre les deux. Quand les poses viennent de détecteurs
+différents, seule la position reste comparable : la luminosité ne l'est pas.
+
+### Fiches des cibles
+
+La page `/targets` ouvre pour chacun des cinq objets du défi une fiche de quelques
+phrases — type d'objet, distance, ce qu'il faut regarder dans les images — sans jargon.
+Les valeurs viennent de la littérature ; les images servent à les confronter au ciel,
+jamais à annoncer une découverte.
 
 ### Ajouter une série temporelle
 

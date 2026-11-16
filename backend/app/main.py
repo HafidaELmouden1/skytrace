@@ -607,7 +607,63 @@ def gallery(target: str | None = Query(None, max_length=40)) -> dict:
     return {"items": items, "total": len(items), "summary": summary}
 
 
-@app.get("/api/cache/{key}.webp")
+@app.get("/api/cadence")
+def cadence(target: str = Query("wise0855", max_length=40)) -> dict:
+    """Group the epochs of one field into survey passes of about six months."""
+    frames = [f for f in _frames_ordered if f.slug == target]
+    if not frames:
+        raise HTTPException(404, "no frame for this field")
+
+    frames.sort(key=lambda f: f.mjd)
+
+    # A survey pass is a run of observations without a long interruption.
+    # Binning by a fixed 182-day window splits real passes in two whenever the
+    # first exposure falls mid-campaign, so the gaps decide instead.
+    clusters: list[list] = []
+    for frame in frames:
+        if clusters and (frame.mjd - clusters[-1][-1].mjd) <= 90:
+            clusters[-1].append(frame)
+        else:
+            clusters.append([frame])
+
+    passes = []
+    for members in clusters:
+        best = max(members, key=lambda f: f.valid_fraction)
+        passes.append({
+            "index": len(passes) + 1,
+            "mjd": round(members[0].mjd, 2),
+            "start": members[0].date[:10],
+            "end": members[-1].date[:10],
+            "frames": len(members),
+            "best": {"obs_id": best.obs_id, "date": best.date[:10],
+                     "detector": best.detector, "sources": best.sources},
+        })
+
+    baselines = [
+        {"from": a["index"], "to": b["index"], "days": round(b["mjd"] - a["mjd"], 1)}
+        for a, b in zip(passes, passes[1:])
+    ]
+
+    return {"target": target, "passes": passes, "baselines": baselines,
+            "cadence_days": 182.6, "pixel_arcsec": 6.2}
+
+
+@app.get("/api/bands")
+def bands() -> dict:
+    """Wavelength span of each detector, measured on the frames we hold."""
+    spans: dict[int, dict] = {}
+    for frame in _frames_ordered:
+        entry = spans.setdefault(frame.detector,
+                                 {"detector": frame.detector, "min_um": 9.9, "max_um": 0.0, "frames": 0})
+        entry["min_um"] = min(entry["min_um"], frame.wavelength)
+        entry["max_um"] = max(entry["max_um"], frame.wavelength)
+        entry["frames"] += 1
+
+    ordered = sorted(spans.values(), key=lambda e: e["min_um"])
+    for entry in ordered:
+        entry["min_um"] = round(entry["min_um"], 2)
+        entry["max_um"] = round(entry["max_um"], 2)
+    return {"bands": ordered}
 
 
 @app.get("/api/cache/{key}.webp")

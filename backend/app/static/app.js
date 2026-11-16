@@ -21,6 +21,7 @@ const I18N = {
     'about.f1': 'bandes spectrales',
     'about.f2': 'infrarouge proche',
     'about.f3': 'pour tout le ciel',
+    'about.f3value': '6 mois',
     'about.f4': 'détecteurs',
     'about.f5': 'orbite héliosynchrone',
     'about.h1': 'Pourquoi l\u2019infrarouge',
@@ -36,11 +37,29 @@ const I18N = {
     'about.h6': 'Ce que l\u2019application ne fait pas',
     'about.p6': 'Elle ne découvre rien. Un changement de luminosité ou une source sans contrepartie est un candidat, jamais une découverte : le bruit, la calibration et la taille du pixel produisent les mêmes signatures.',
     'about.credit': 'Données : NASA/JPL-Caltech, archive IRSA à Caltech/IPAC. DOI 10.26131/IRSA678.',
+    'bands.title': 'Les six détecteurs, du proche au moyen infrarouge',
+    'bands.lede': 'Chaque détecteur couvre une tranche de longueur d’onde. Les barres ci-dessous sont mesurées sur les images réellement présentes dans cette installation.',
+    'bands.frames': 'images',
+    'bands.loading': 'Mesure des bandes…',
     'cmp.btn': '6 mois',
-    'cmp.title': 'Six mois plus tard',
+    'cmp.title': 'Frise des campagnes',
     'cmp.close': 'Fermer',
+    'cmp.pass': 'Passage',
+    'cmp.frames': 'poses',
+    'cmp.setA': 'Époque 1',
+    'cmp.setB': 'Époque 2',
+    'cmp.loading': 'Lecture des campagnes…',
+    'cmp.chooseTwo': 'Choisis deux passages à comparer.',
+    'cmp.sameEpoch': 'Choisis deux passages différents.',
+    'cmp.epoch1': 'Époque 1',
+    'cmp.epoch2': 'Époque 2',
+    'cmp.m.a': 'sources, époque 1',
+    'cmp.m.b': 'sources, époque 2',
+    'cmp.m.matched': 'appariées',
+    'cmp.m.unmatched': 'sans contrepartie',
     'cmp.working': 'Recherche de deux passages séparés de six mois…',
     'cmp.nopair': 'Aucune paire d\u2019images séparées d\u2019environ six mois dans le même détecteur.',
+    'cmp.noteDiff': 'Deux passages du même champ, {d} jours d’écart, détecteurs D{det} et D{detB} : seule la position est comparable, pas la luminosité.',
     'cmp.note': 'Deux passages du même champ, {d} jours d\u2019écart, même détecteur D{det}.',
     'cmp.failed': 'La comparaison a échoué.',
     'cmp.diffalt': 'Carte de différence entre les deux passages',
@@ -86,6 +105,11 @@ const I18N = {
     'targets.done': 'Collecte terminée. Les nouvelles époques apparaissent dans l’explorateur.',
     'targets.noobs': 'Aucune observation exploitable pour ce champ.',
     'targets.obs': 'observations',
+    'sheet.btn': 'Fiche',
+    'sheet.eyebrow': 'Objet du défi',
+    'sheet.close': 'Fermer',
+    'sheet.open': 'Voir les images',
+    'sheet.source': 'Repères publiés ; les images de cette installation servent à les confronter au ciel, jamais à annoncer une découverte.',
 
     'home.eyebrow': 'Mission SPHEREx · Data Release 1',
     'home.h1a': 'Voir le ciel', 'home.h1b': 'bouger',
@@ -206,6 +230,7 @@ const I18N = {
     'about.f1': 'spectral bands',
     'about.f2': 'near infrared',
     'about.f3': 'for the whole sky',
+    'about.f3value': '6 months',
     'about.f4': 'detectors',
     'about.f5': 'sun-synchronous orbit',
     'about.h1': 'Why infrared',
@@ -222,10 +247,28 @@ const I18N = {
     'about.p6': 'It discovers nothing. A change in brightness or a source without a counterpart is a candidate, never a discovery: noise, calibration and pixel size all produce the same signature.',
     'about.credit': 'Data: NASA/JPL-Caltech, IRSA archive at Caltech/IPAC. DOI 10.26131/IRSA678.',
     'cmp.btn': '6 months',
-    'cmp.title': 'Six months later',
+    'cmp.pass': 'Pass',
+    'cmp.frames': 'exposures',
+    'cmp.setA': 'Epoch 1',
+    'cmp.setB': 'Epoch 2',
+    'cmp.loading': 'Reading the survey passes…',
+    'cmp.chooseTwo': 'Pick two passes to compare them.',
+    'cmp.sameEpoch': 'Pick two different passes.',
+    'cmp.epoch1': 'Epoch 1',
+    'cmp.epoch2': 'Epoch 2',
+    'cmp.m.a': 'sources, epoch 1',
+    'cmp.m.b': 'sources, epoch 2',
+    'cmp.m.matched': 'matched',
+    'cmp.m.unmatched': 'without counterpart',
+    'bands.title': 'The six detectors, from near to mid infrared',
+    'bands.lede': 'Each detector covers a slice of wavelength. The bars below are measured on the images actually present in this installation.',
+    'bands.frames': 'images',
+    'bands.loading': 'Measuring the bands…',
+    'cmp.title': 'Survey cadence',
     'cmp.close': 'Close',
     'cmp.working': 'Looking for two passes six months apart...',
     'cmp.nopair': 'No pair of images about six months apart in the same detector.',
+    'cmp.noteDiff': 'Two passes of the same field, {d} days apart, detectors D{det} and D{detB}: only position is comparable, not brightness.',
     'cmp.note': 'Two passes of the same field, {d} days apart, same detector D{det}.',
     'cmp.failed': 'The comparison failed.',
     'cmp.diffalt': 'Difference map between the two passes',
@@ -270,6 +313,11 @@ const I18N = {
     'targets.done': 'Collection finished. New epochs appear in the explorer.',
     'targets.noobs': 'No usable observation for this field.',
     'targets.obs': 'observations',
+    'sheet.btn': 'Fact sheet',
+    'sheet.eyebrow': 'Challenge target',
+    'sheet.close': 'Close',
+    'sheet.open': 'Open the images',
+    'sheet.source': 'Published reference values; the images in this installation put them to the test on the sky, and never announce a discovery.',
 
     'home.eyebrow': 'SPHEREx mission · Data Release 1',
     'home.h1a': 'Watch the sky', 'home.h1b': 'move',
@@ -390,6 +438,8 @@ function applyLang(lang) {
   });
   localStorage.setItem('skytrace.v2.lang', lang);
   renderDynamic();
+  if (openSlug) renderSheet(openSlug);
+  if (cadence.passes.length && !el('compareBox').hidden) { renderCadence(); runCompare(); }
 }
 
 /* ------------------------------------------------------------------ routage */
@@ -409,10 +459,12 @@ function showRoute() {
     a.classList.toggle('active', ROUTES[target] === name);
   });
   window.scrollTo({ top: 0, behavior: 'instant' });
+  if (name !== 'targets') closeSheet();
   if (name === 'explore') loadEpochs();
   if (name === 'home') loadStats();
   if (name === 'targets') loadAtlas();
   if (name === 'gallery') loadGallery();
+  if (name === 'about') renderBands();
 }
 
 document.addEventListener('click', (ev) => {
@@ -570,10 +622,15 @@ async function loadAtlas() {
         <div class="row">
           ${ready ? `<span class="chip"><b>${tg.frames}</b> ${t('targets.obs')}</span>` : ''}
           ${action}
+          <button class="btn btn-sm btn-ghost" data-sheet="${tg.slug}" aria-controls="sheetBox">${t('sheet.btn')}</button>
         </div>
       </div>
     </article>`;
   }).join('');
+
+  atlas.querySelectorAll('[data-sheet]').forEach((b) => {
+    b.onclick = () => openSheet(b.dataset.sheet);
+  });
 
   atlas.querySelectorAll('[data-open]').forEach((b) => {
     b.onclick = () => {
@@ -616,6 +673,122 @@ function pollAtlas() {
     await fetch('/api/refresh', { method: 'POST' });
     loadAtlas();
   }, 8000);
+}
+
+/* ------------------------------------------------------------------- fiches */
+
+const SHEETS = {
+  barnard: {
+    name: { fr: "Étoile de Barnard", en: "Barnard’s Star" },
+    facts: [
+      { k: { fr: "Type", en: "Type" }, v: { fr: "naine rouge", en: "red dwarf" } },
+      { k: { fr: "Distance", en: "Distance" }, v: { fr: "6 années-lumière", en: "6 light-years" } },
+      { k: { fr: "Repère", en: "Landmark" }, v: { fr: "10,3″ par an sur le ciel", en: "10.3″ per year across the sky" } },
+    ],
+    text: {
+      fr: "Une étoile rouge sombre, à peine plus large qu’une planète géante, à six années-lumière de nous : c’est l’une des voisines les plus proches du Soleil. Elle glisse sur le ciel plus vite qu’aucune autre étoile, un peu plus de dix secondes d’arc par an, parce qu’elle passe tout près de notre système. Sur deux poses prises à quelques mois d’écart, elle n’occupe donc plus le même pixel. C’est le déplacement le plus facile à mesurer de tout le ciel.",
+      en: "A dark red star, barely wider than a gas giant, six light-years away: one of the closest neighbours of the Sun. It slides across the sky faster than any other star, a little over ten arcseconds a year, because it passes close to our system. On two exposures taken months apart it no longer sits on the same pixel. It is the easiest motion to measure in the whole sky.",
+    },
+  },
+  "eps-indi-b": {
+    name: { fr: "Epsilon Indi B", en: "Epsilon Indi B" },
+    facts: [
+      { k: { fr: "Type", en: "Type" }, v: { fr: "naine brune", en: "brown dwarf" } },
+      { k: { fr: "Distance", en: "Distance" }, v: { fr: "12 années-lumière", en: "12 light-years" } },
+      { k: { fr: "Repère", en: "Landmark" }, v: { fr: "paire sous un seul pixel", en: "pair inside a single pixel" } },
+    ],
+    text: {
+      fr: "Une naine brune : un objet trop peu massif pour briller comme une étoile, mais bien plus chaud qu’une planète. Elle accompagne Epsilon Indi, une étoile orangée visible à l’œil nu, à douze années-lumière de nous. Vue d’ici, la paire est si serrée que SPHEREx ne peut pas la séparer : les deux astres partagent un seul pixel de 6,2 secondes d’arc. Sur nos images, elle apparaît donc comme une tache légèrement allongée, pas comme deux points.",
+      en: "A brown dwarf: an object with too little mass to shine like a star, yet far hotter than a planet. It keeps company with Epsilon Indi, an orange star visible to the naked eye, twelve light-years away. From here the pair sits so close that SPHEREx cannot split it: both bodies share one 6.2-arcsecond pixel. In our images it shows as a slightly elongated patch, not as two points.",
+    },
+  },
+  wise0855: {
+    name: { fr: "WISE 0855", en: "WISE 0855" },
+    facts: [
+      { k: { fr: "Type", en: "Type" }, v: { fr: "naine brune froide", en: "cold brown dwarf" } },
+      { k: { fr: "Distance", en: "Distance" }, v: { fr: "7 années-lumière", en: "7 light-years" } },
+      { k: { fr: "Repère", en: "Landmark" }, v: { fr: "~8″ par an sur le ciel", en: "~8″ per year across the sky" } },
+    ],
+    text: {
+      fr: "Une naine brune parmi les plus froides que l’on connaisse, à environ sept années-lumière, repérée en 2014 dans les données du télescope WISE. Elle n’émet presque pas de lumière visible : SPHEREx la capte dans l’infrarouge, là où la chaleur qu’elle conserve encore reste mesurable. Elle file d’environ huit secondes d’arc par an, ce qui la rend facile à retrouver d’une campagne à l’autre. Nos images la montrent comme une source faible, à confirmer par les passages suivants.",
+      en: "One of the coldest brown dwarfs known, about seven light-years away, spotted in 2014 in data from the WISE telescope. It gives off almost no visible light: SPHEREx catches it in the infrared, where the heat it still holds can be measured. It races along at roughly eight arcseconds a year, which makes it easy to find again from one survey pass to the next. Our images show a faint source, to be confirmed by later passes.",
+    },
+  },
+  "rw-aur": {
+    name: { fr: "RW Aurigae", en: "RW Aurigae" },
+    facts: [
+      { k: { fr: "Type", en: "Type" }, v: { fr: "étoile jeune, variable", en: "young variable star" } },
+      { k: { fr: "Distance", en: "Distance" }, v: { fr: "450 années-lumière", en: "450 light-years" } },
+      { k: { fr: "Repère", en: "Landmark" }, v: { fr: "éclat qui varie, position fixe", en: "brightness varies, position fixed" } },
+    ],
+    text: {
+      fr: "Une jeune étoile encore prise dans le disque de gaz et de poussière où se forment les planètes, à environ 450 années-lumière, dans la région de formation d’étoiles du Taureau. Son éclat change fortement d’une année à l’autre : la poussière du disque, ou la matière qu’elle projette, cache parfois une partie de sa surface. Elle ne se déplace pas de façon mesurable sur le ciel, donc c’est la luminosité, et non la position, qu’il faut suivre. Entre deux passages, un écart d’éclat est un indice à vérifier, pas une preuve.",
+      en: "A young star still caught in the disc of gas and dust where planets form, about 450 light-years away in the Taurus star-forming region. Its brightness swings strongly from year to year: dust in the disc, or the material it throws off, sometimes hides part of its surface. It does not move measurably across the sky, so brightness rather than position is what to follow. Between two passes, a gap in brightness is a clue to check, not a proof.",
+    },
+  },
+  "r-dra": {
+    name: { fr: "R Draconis", en: "R Draconis" },
+    facts: [
+      { k: { fr: "Type", en: "Type" }, v: { fr: "géante rouge variable (Mira)", en: "red giant variable (Mira)" } },
+      { k: { fr: "Cycle", en: "Cycle" }, v: { fr: "environ 245 jours", en: "about 245 days" } },
+      { k: { fr: "Champ", en: "Field" }, v: { fr: "222 jours d’images", en: "222 days of images" } },
+    ],
+    text: {
+      fr: "Une étoile géante rouge qui gonfle et se contracte lentement, sur un cycle d’environ huit mois. À son plus fort, on la distingue dans de petites jumelles ; à son plus faible, il faut un télescope : c’est une variable de type Mira. Elle est trop lointaine pour que SPHEREx suive son éclat avec précision, mais le champ qui l’entoure contient des centaines de sources stables. Ces sources servent de repères, et nos images de ce champ couvrent 222 jours, assez pour les suivre dans le temps.",
+      en: "A red giant star that swells and shrinks slowly, on a cycle of about eight months. At its brightest it shows in small binoculars; at its faintest it takes a telescope: astronomers call it a Mira variable. It sits too far away for SPHEREx to follow its brightness closely, but the field around it holds hundreds of steady sources. Those sources act as references, and our images of that field cover 222 days, enough to follow them over time.",
+    },
+  },
+};
+
+let openSlug = null;
+
+function renderSheet(slug) {
+  const box = el('sheetBox');
+  const sheet = SHEETS[slug];
+  if (!box || !sheet) return;
+  const lang = state.lang;
+  openSlug = slug;
+
+  box.innerHTML = `
+    <div class="sheet-head">
+      <div>
+        <p class="eyebrow">${t('sheet.eyebrow')}</p>
+        <h2>${sheet.name[lang]}</h2>
+      </div>
+      <button class="btn btn-sm" id="btnSheetClose">${t('sheet.close')}</button>
+    </div>
+    <dl class="sheet-facts">
+      ${sheet.facts.map((f) => `<div><dt>${f.k[lang]}</dt><dd>${f.v[lang]}</dd></div>`).join('')}
+    </dl>
+    <p class="sheet-text">${sheet.text[lang]}</p>
+    <div class="sheet-foot">
+      <button class="btn btn-sm btn-primary" id="btnSheetOpen">${t('sheet.open')}</button>
+      <p class="note">${t('sheet.source')}</p>
+    </div>`;
+
+  box.hidden = false;
+  box.setAttribute('tabindex', '-1');
+  el('btnSheetClose').onclick = closeSheet;
+  el('btnSheetOpen').onclick = () => {
+    state.target = slug;
+    localStorage.setItem('skytrace.v2.target', slug);
+    history.pushState({}, '', '/explore');
+    showRoute();
+  };
+  box.focus({ preventScroll: true });
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function openSheet(slug) {
+  renderSheet(slug);
+}
+
+function closeSheet() {
+  const box = el('sheetBox');
+  if (!box) return;
+  box.hidden = true;
+  box.innerHTML = '';
+  openSlug = null;
 }
 
 /* ------------------------------------------------------------------ galerie */
@@ -889,103 +1062,205 @@ async function showTracks() {
     '</div>').join('');
 }
 
-/* ------------------------------------------------------- comparaison six mois */
+/* ------------------------------------------------------------ bandes détecteurs */
 
-function pickSixMonthPair() {
-  const epochs = state.epochs;
-  let best = null;
-  for (let i = 0; i < epochs.length; i += 1) {
-    for (let j = i + 1; j < epochs.length; j += 1) {
-      const a = epochs[i];
-      const b = epochs[j];
-      if (a.detector !== b.detector) continue;
-      const gap = Math.abs(b.mjd - a.mjd);
-      if (gap < 120) continue;
-      const score = Math.abs(gap - 182);
-      if (!best || score < best.score) best = { a, b, gap, score };
-    }
+const BAND_COLOURS = {
+  1: '#7aa2ff', 2: '#4cd99c', 3: '#ffb020', 4: '#ff6b8a', 5: '#b78cff', 6: '#4fd8e8',
+};
+
+async function renderBands() {
+  const strip = el('bandStrip');
+  if (!strip || strip.dataset.ready === '1') return;
+
+  let data;
+  try {
+    data = await (await fetch('/api/bands')).json();
+  } catch (err) {
+    strip.innerHTML = '<p class="hint">' + t('gallery.error') + '</p>';
+    return;
   }
-  return best;
+
+  const bands = data.bands || [];
+  if (!bands.length) {
+    strip.innerHTML = '<p class="hint">' + t('bands.loading') + '</p>';
+    return;
+  }
+
+  const total = bands.reduce((sum, b) => sum + Math.max(b.max_um - b.min_um, 0.1), 0);
+
+  strip.innerHTML = bands.map((b) => {
+    const span = Math.max(b.max_um - b.min_um, 0.1);
+    const share = (span / total) * 100;
+    const colour = BAND_COLOURS[b.detector] || '#7aa2ff';
+    return '<div class="band-seg" style="flex:' + share.toFixed(2) + ';--band:' + colour + '" ' +
+      'title="D' + b.detector + ' · ' + b.min_um + '–' + b.max_um + ' µm · ' + b.frames + ' ' + t('bands.frames') + '">' +
+      '<b>D' + b.detector + '</b>' +
+      '<span>' + b.min_um.toFixed(2) + '–' + b.max_um.toFixed(2) + ' µm</span>' +
+      '<i>' + b.frames + '</i>' +
+    '</div>';
+  }).join('');
+
+  strip.dataset.ready = '1';
 }
 
-async function compareSixMonths() {
-  const box = el('compareBox');
-  box.hidden = false;
-  el('cmpNote').textContent = t('cmp.working');
+/* ------------------------------------------------------- frise des campagnes */
+
+const cadence = { passes: [], epochA: null, epochB: null, target: null };
+
+function passLabel(index) {
+  return t('cmp.pass') + ' ' + index;
+}
+
+function shortMonth(date) {
+  const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  const monthsEn = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
+  const list = state.lang === 'fr' ? months : monthsEn;
+  const parts = date.split('-');
+  return list[Number(parts[1]) - 1] + ' ' + parts[0];
+}
+
+async function openCadence() {
+  el('compareBox').hidden = false;
+  el('cmpNote').textContent = t('cmp.loading');
+  el('cadencePasses').innerHTML = '';
   el('cmpResult').innerHTML = '';
 
-  const pair = pickSixMonthPair();
-  if (!pair) {
+  if (cadence.target !== state.target) {
+    cadence.passes = [];
+    cadence.epochA = null;
+    cadence.epochB = null;
+    cadence.target = state.target;
+  }
+
+  try {
+    const response = await fetch('/api/cadence?target=' + state.target);
+    if (!response.ok) throw new Error('cadence failed');
+    const data = await response.json();
+    cadence.passes = data.passes || [];
+    cadence.baselines = data.baselines || [];
+  } catch (err) {
     el('cmpNote').textContent = t('cmp.nopair');
     return;
   }
 
-  el('cmpA').src = '/api/frames/' + pair.a.obs_id + '.webp';
-  el('cmpB').src = '/api/frames/' + pair.b.obs_id + '.webp';
-  el('cmpAdate').textContent = pair.a.date.slice(0, 10);
-  el('cmpBdate').textContent = pair.b.date.slice(0, 10);
+  if (!cadence.passes.length) {
+    el('cmpNote').textContent = t('cmp.nopair');
+    return;
+  }
+
+  if (!cadence.epochA && cadence.passes.length > 1) {
+    // Default to the consecutive pair whose separation is closest to one
+    // survey cadence, preferring the same detector so brightness is comparable.
+    let best = null;
+    for (let i = 0; i < cadence.passes.length - 1; i += 1) {
+      const a = cadence.passes[i];
+      const b = cadence.passes[i + 1];
+      const gap = Math.abs(b.mjd - a.mjd);
+      const score = Math.abs(gap - 182.6) + (a.best.detector === b.best.detector ? 0 : 400);
+      if (!best || score < best.score) best = { a, b, score };
+    }
+    cadence.epochA = best.a.best.obs_id;
+    cadence.epochB = best.b.best.obs_id;
+  } else if (!cadence.epochA) {
+    cadence.epochA = cadence.passes[0].best.obs_id;
+  }
+
+  renderCadence();
+  if (cadence.epochA && cadence.epochB) runCompare();
+}
+
+function renderCadence() {
+  el('cadencePasses').innerHTML = cadence.passes.map((pass) => {
+    const chosenA = cadence.epochA === pass.best.obs_id;
+    const chosenB = cadence.epochB === pass.best.obs_id;
+    return '<article class="pass ' + (chosenA ? 'is-a' : '') + (chosenB ? ' is-b' : '') + '">' +
+      '<header><b>' + passLabel(pass.index) + '</b><time>' + pass.start + '</time></header>' +
+      '<p class="pass-sub">' + shortMonth(pass.start) + ' · ' + pass.frames + ' ' + t('cmp.frames') +
+        ' · D' + pass.best.detector + '</p>' +
+      '<div class="pass-actions">' +
+        '<button class="pick-a ' + (chosenA ? 'on' : '') + '" data-a="' + pass.best.obs_id + '">' + t('cmp.setA') + '</button>' +
+        '<button class="pick-b ' + (chosenB ? 'on' : '') + '" data-b="' + pass.best.obs_id + '">' + t('cmp.setB') + '</button>' +
+      '</div>' +
+    '</article>';
+  }).join('');
+
+  el('cadencePasses').querySelectorAll('[data-a]').forEach((btn) => {
+    btn.onclick = () => { cadence.epochA = btn.dataset.a; renderCadence(); runCompare(); };
+  });
+  el('cadencePasses').querySelectorAll('[data-b]').forEach((btn) => {
+    btn.onclick = () => { cadence.epochB = btn.dataset.b; renderCadence(); runCompare(); };
+  });
+
+  const label = el('cmpBaseline');
+  const a = cadence.epochA && cadence.passes.find((x) => x.best.obs_id === cadence.epochA);
+  const b = cadence.epochB && cadence.passes.find((x) => x.best.obs_id === cadence.epochB);
+  if (a && b && a !== b) {
+    label.textContent = shortMonth(a.start) + ' → ' + shortMonth(b.start);
+    label.hidden = false;
+  } else {
+    label.hidden = true;
+  }
+}
+
+async function runCompare() {
+  if (!cadence.epochA || !cadence.epochB) {
+    el('cmpNote').textContent = t('cmp.chooseTwo');
+    return;
+  }
+  if (cadence.epochA === cadence.epochB) {
+    el('cmpNote').textContent = t('cmp.sameEpoch');
+    return;
+  }
+
+  el('cmpNote').textContent = t('cmp.working');
+  el('cmpA').src = '/api/frames/' + cadence.epochA + '.webp';
+  el('cmpB').src = '/api/frames/' + cadence.epochB + '.webp';
+  el('cmpAdate').textContent = t('cmp.epoch1');
+  el('cmpBdate').textContent = t('cmp.epoch2');
 
   let diff = null;
   try {
-    const response = await fetch('/api/diff?a=' + pair.a.obs_id + '&b=' + pair.b.obs_id);
+    const response = await fetch('/api/diff?a=' + cadence.epochA + '&b=' + cadence.epochB);
     if (response.ok) diff = await response.json();
   } catch (err) {
     diff = null;
   }
 
-  el('cmpNote').textContent = t('cmp.note')
-    .replace('{d}', Math.round(pair.gap))
-    .replace('{det}', pair.a.detector);
-
   if (!diff) {
-    el('cmpResult').innerHTML = '<p class="note">' + t('cmp.failed') + '</p>';
+    el('cmpNote').textContent = t('cmp.failed');
+    el('cmpResult').innerHTML = '';
     return;
   }
 
+  const same = diff.compat.same_detector;
+  el('cmpNote').textContent = [
+    (same ? t('cmp.note') : t('cmp.noteDiff'))
+      .replace('{d}', Math.round(diff.compat.dt_days))
+      .replace('{det}', diff.compat.detector_a)
+      .replace('{detB}', diff.compat.detector_b),
+  ].filter(Boolean).join(' · ');
+
   const verdictKey = diff.verdict === 'none' ? 'none' : diff.verdict;
+  const metrics = [
+    [diff.counts.epoch_a, t('cmp.m.a')],
+    [diff.counts.epoch_b, t('cmp.m.b')],
+    [diff.counts.matched, t('cmp.m.matched')],
+    [diff.counts.unmatched, t('cmp.m.unmatched')],
+  ];
+
   el('cmpResult').innerHTML =
     '<div class="verdict v-' + verdictKey + '">' +
-    t('verdict.' + verdictKey).replace('{n}', diff.counts.unmatched).replace('{total}', diff.counts.epoch_a) +
+      t('verdict.' + verdictKey).replace('{n}', diff.counts.unmatched).replace('{total}', diff.counts.epoch_a) +
+    '</div>' +
+    '<div class="cmp-metrics">' +
+      metrics.map(([v, label]) => '<div><b>' + v + '</b><span>' + label + '</span></div>').join('') +
     '</div>' +
     '<img class="cmp-diff" src="' + diff.image + '" alt="' + t('cmp.diffalt') + '">' +
     '<p class="note">' + t('cmp.diffnote').replace('{n}', diff.pixel_peaks) + '</p>';
 }
 
-/* ------------------------------------------------------------------ pistes */
-
-async function showTracks() {
-  const box = el('trackBox');
-  box.hidden = false;
-  el('trackNote').textContent = t('track.working');
-  el('trackList').innerHTML = '';
-
-  let data;
-  try {
-    const response = await fetch(`/api/track?target=${state.target}`);
-    if (!response.ok) throw new Error('track failed');
-    data = await response.json();
-  } catch (err) {
-    el('trackNote').textContent = t('track.error');
-    return;
-  }
-
-  if (!data.tracks.length) {
-    el('trackNote').textContent = t('track.none');
-    return;
-  }
-
-  el('trackNote').textContent = t('track.found')
-    .replace('{n}', data.tracks.length)
-    .replace('{c}', data.tracked);
-
-  el('trackList').innerHTML = data.tracks.slice(0, 10).map((tr, i) => `
-    <div class="cand ${tr.continues ? 'is-track' : ''}">
-      <span class="n">#${i + 1}</span>
-      <span class="p">${tr.displacement_arcsec}″ en ${tr.duration_minutes} min</span>
-      <span class="p">${Math.round(tr.speed_arcsec_per_hour)}″/h</span>
-      <span class="s">${tr.continues ? t('track.confirmed') : t('track.unconfirmed')}</span>
-    </div>`).join('');
-}
 
 /* ------------------------------------------------------------------ affichage */
 
@@ -1162,7 +1437,7 @@ function bindControls() {
   el('btnBlink').onclick = blink;
   el('btnLast').onclick = () => { stop(); show(state.epochs.length - 1); };
   el('btnDiff').onclick = detectMotion;
-  el('btnCompare').onclick = compareSixMonths;
+  el('btnCompare').onclick = openCadence;
   el('btnCompareClose').onclick = () => { el('compareBox').hidden = true; };
   el('btnTrack').onclick = showTracks;
   el('btnTrackClose').onclick = () => { el('trackBox').hidden = true; };
@@ -1185,6 +1460,10 @@ function bindControls() {
       el('btnRefresh').disabled = false;
     }
   };
+
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && !el('sheetBox').hidden) closeSheet();
+  });
 
   document.addEventListener('keydown', (ev) => {
     if (currentRoute() !== 'explore') return;
@@ -1249,6 +1528,16 @@ function init() {
       .then(() => setTimeout(loadEpochs, 1500))
       .catch(() => loadEpochs());
   }
+  if (params.get("cadence") === "1") {
+    const waitCadence = setInterval(() => {
+      if (state.epochs.length > 1) {
+        clearInterval(waitCadence);
+        openCadence();
+      }
+    }, 300);
+    setTimeout(() => clearInterval(waitCadence), 25000);
+  }
+
   if (params.get("diff") === "1") {
     const wait = setInterval(() => {
       if (state.epochs.length > 1) {
