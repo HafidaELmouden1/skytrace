@@ -111,11 +111,48 @@ const I18N = {
     'sheet.open': 'Voir les images',
     'sheet.source': 'Repères publiés ; les images de cette installation servent à les confronter au ciel, jamais à annoncer une découverte.',
 
+    'home.images': 'images',
+    'home.h1a': "Le ciel n'est",
+    'home.h1b': 'jamais immobile',
+    'home.lead': "SPHEREx observe le ciel entier dans 102 bandes infrarouges, tous les six mois. SkyTrace montre ces observations réelles et ce qui change d'une campagne à l'autre.",
+    'home.cta1': 'Parcourir les images',
+    'home.cta2': 'Comparer deux dates',
+    'home.stat1': 'observations',
+    'home.stat2': 'jours couverts',
+    'home.stat3': 'détecteurs',
+    'home.stat4': 'bandes',
+    'mod1.kicker': 'Relevé infrarouge du ciel entier',
+    'mod1.title': 'Explorateur de données SPHEREx',
+    'mod1.lede': "Choisis une région du ciel. L'outil interroge l'archive IRSA et ne garde que les expositions exploitables, avec leurs métadonnées réelles.",
+    'mod1.cta': 'Saisir des coordonnées',
+    'mod1.cta2': 'Voir toutes les images',
+    'mod2.kicker': 'Comparaison multi-époques',
+    'mod2.title': 'Machine temporelle',
+    'mod2.lede': 'Deux observations de la même région, prises dans la même bande spectrale à des dates différentes, alignées pixel par pixel.',
+    'mod2.cta': 'Ouvrir la machine temporelle',
+    'mod2.pairs': '{n} champs sur {total} ont au moins deux dates comparables',
+    'mod3.kicker': 'Analyse des différences',
+    'mod3.title': 'Signaux cosmiques',
+    'mod3.lede': "Une soustraction pixel à pixel entre deux dates souligne ce qui a changé. Chaque tache reste un candidat non vérifié : rayons cosmiques, artéfacts et calibration produisent les mêmes signatures.",
+    'mod3.cta': 'Lancer une soustraction',
+    'det.eyebrow': 'Six détecteurs',
+    'det.title': 'Les six détecteurs de SPHEREx',
+    'det.lede': "Chaque détecteur couvre une tranche du proche infrarouge. Clique sur une bande pour voir les images correspondantes.",
+    'det.d1': "La lumière juste au-delà de ce que l'œil perçoit : étoiles et galaxies lointaines.",
+    'det.d2': "Traverse la poussière fine et révèle les amas d'étoiles cachés.",
+    'det.d3': "Montre la charpente stellaire des galaxies là où la poussière bloque le visible.",
+    'det.d4': "Détecte la glace d'eau et les molécules organiques des nurseries stellaires.",
+    'det.d5': "Bande fine accordée sur la glace de dioxyde de carbone des disques protoplanétaires.",
+    'det.d6': "Mesure la poussière chaude et le monoxyde de carbone gelé.",
+    'home.step1.t': 'Le relevé infrarouge',
+    'home.step1.d': "SPHEREx balaie le ciel avec six détecteurs. Chaque exposition enregistre la brillance de surface en MJy/sr sur une parcelle de plusieurs degrés.",
+    'home.step2.t': "L'alignement même bande",
+    'home.step2.d': 'Deux dates ne se comparent que si elles partagent la même bande. Les images sont reprojetées sur une grille commune, orientée au nord.',
+    'home.step3.t': 'La différence transparente',
+    'home.step3.d': "Soustraire l'époque ancienne de la récente révèle les variations. Chaque détection est publiée comme candidate, jamais comme découverte.",
+    'home.images': 'images',
+
     'home.eyebrow': 'Mission SPHEREx · Data Release 1',
-    'home.h1a': 'Voir le ciel', 'home.h1b': 'bouger',
-    'home.lead': "SPHEREx cartographie tout le ciel tous les six mois, dans 102 bandes infrarouges. SkyTrace vous montre la même parcelle de ciel à des dates différentes — et ce qui a changé entre les deux.",
-    'home.cta1': 'Explorer le ciel', 'home.cta2': 'Comprendre les données',
-    'home.stat1': 'observations chargées', 'home.stat2': 'jours de couverture',
     'home.stat3': 'détecteurs', 'home.stat4': 'canaux spectraux',
     'home.tag': "0,1° · naine brune",
     'home.steps.eyebrow': 'Trois gestes', 'home.steps.title': "D'un point du ciel à une comparaison",
@@ -211,6 +248,44 @@ const I18N = {
   },
 
   en: {
+    'home.h1a': 'The sky is never',
+    'home.h1b': 'standing still',
+    'home.lead': 'SPHEREx observes the entire sky in 102 infrared bands, every six months. SkyTrace shows these real observations and what changes between passes.',
+    'home.cta1': 'Browse the images',
+    'home.cta2': 'Compare two dates',
+    'home.stat1': 'observations',
+    'home.stat2': 'days covered',
+    'home.stat3': 'detectors',
+    'home.stat4': 'bands',
+    'mod1.kicker': 'Infrared all-sky survey',
+    'mod1.title': 'SPHEREx Data Explorer',
+    'mod1.lede': 'Pick a region of the sky. The tool queries the IRSA archive and keeps only usable exposures, with their real metadata.',
+    'mod1.cta': 'Enter coordinates',
+    'mod1.cta2': 'See every image',
+    'mod2.kicker': 'Multi-epoch comparison',
+    'mod2.title': 'Time Machine',
+    'mod2.lede': 'Two observations of the same region, taken in the same spectral band on different dates, aligned pixel for pixel.',
+    'mod2.cta': 'Open the time machine',
+    'mod2.pairs': '{n} of {total} fields have at least two comparable dates',
+    'mod3.kicker': 'Spectral difference analysis',
+    'mod3.title': 'Cosmic Signals',
+    'mod3.lede': 'A pixel-by-pixel subtraction between two dates highlights what changed. Every spot stays an unverified candidate: cosmic rays, artefacts and calibration produce the same signature.',
+    'mod3.cta': 'Run a subtraction',
+    'det.eyebrow': 'Six detectors',
+    'det.title': "SPHEREx's six detectors",
+    'det.lede': 'Each detector covers a slice of the near infrared. Click a band to see the matching images.',
+    'det.d1': 'Light just beyond what the eye sees: stars and distant galaxies.',
+    'det.d2': 'Passes through thin dust and reveals hidden star clusters.',
+    'det.d3': 'Shows the stellar backbone of galaxies where dust blocks visible light.',
+    'det.d4': 'Detects water ice and organic molecules inside star-forming nurseries.',
+    'det.d5': 'A narrow band tuned to frozen carbon dioxide in planet-forming disks.',
+    'det.d6': 'Measures warm dust and frozen carbon monoxide.',
+    'home.step1.t': 'The infrared survey',
+    'home.step1.d': 'SPHEREx sweeps the sky with six detectors. Each exposure records surface brightness in MJy/sr over a patch several degrees wide.',
+    'home.step2.t': 'Same-band alignment',
+    'home.step2.d': 'Two dates only compare when they share a band. Images are reprojected onto a common north-up grid.',
+    'home.step3.t': 'The transparent difference',
+    'home.step3.d': 'Subtracting the earlier pass from the later one reveals variations. Every detection is published as a candidate, never as a discovery.',
     'brand.tag': 'SPHEREx · NASA',
     'nav.home': 'Home', 'nav.explore': 'Explore', 'nav.learn': 'Learn',
     'nav.targets': 'Sky atlas', 'nav.cta': 'Pick a place',
@@ -320,10 +395,6 @@ const I18N = {
     'sheet.source': 'Published reference values; the images in this installation put them to the test on the sky, and never announce a discovery.',
 
     'home.eyebrow': 'SPHEREx mission · Data Release 1',
-    'home.h1a': 'Watch the sky', 'home.h1b': 'move',
-    'home.lead': 'SPHEREx maps the entire sky every six months in 102 infrared bands. SkyTrace shows the same patch of sky at different dates — and what changed in between.',
-    'home.cta1': 'Explore the sky', 'home.cta2': 'Understand the data',
-    'home.stat1': 'observations loaded', 'home.stat2': 'days of coverage',
     'home.stat3': 'detectors', 'home.stat4': 'spectral channels',
     'home.tag': '0.1° · brown dwarf',
     'home.steps.eyebrow': 'Three steps', 'home.steps.title': 'From a point in the sky to a comparison',
@@ -461,7 +532,7 @@ function showRoute() {
   window.scrollTo({ top: 0, behavior: 'instant' });
   if (name !== 'targets') closeSheet();
   if (name === 'explore') loadEpochs();
-  if (name === 'home') loadStats();
+  if (name === 'home') { loadStats(); loadHomeModules(); }
   if (name === 'targets') loadAtlas();
   if (name === 'gallery') loadGallery();
   if (name === 'about') renderBands();
@@ -506,12 +577,14 @@ function delta(first, mjd) {
 
 async function loadStats() {
   try {
-    const s = await fetch(`/api/stats?target=${state.target}`).then((r) => r.json());
+    // The home page reports the whole archive, not one field.
+    const s = await fetch('/api/stats').then((r) => r.json());
     state.stats = s;
-    el('statFrames').textContent = s.frames ?? '—';
-    el('statDays').textContent = s.days ? Math.round(s.days) : '—';
-    el('statDet').textContent = s.detectors ?? '—';
-    if (s.frames) {
+    if (el('statFrames')) el('statFrames').textContent = s.frames ?? '—';
+    if (el('statDays')) el('statDays').textContent = s.days ? Math.round(s.days) : '—';
+    if (el('statDet')) el('statDet').textContent = s.detectors ?? '—';
+
+    if (s.frames && el('heroImg')) {
       const eps = await fetch(`/api/epochs?target=${state.target}`).then((r) => r.json());
       if (eps.epochs && eps.epochs.length) {
         el('heroImg').src = `/api/frames/${eps.epochs[0].obs_id}.webp`;
@@ -791,6 +864,74 @@ function closeSheet() {
   openSlug = null;
 }
 
+/* ------------------------------------------------------------------ accueil */
+
+const DETECTORS = [
+  { id: 1, band: '0,75–1,09 µm', group: 'SWIR' },
+  { id: 2, band: '1,10–1,62 µm', group: 'SWIR' },
+  { id: 3, band: '1,63–2,41 µm', group: 'SWIR' },
+  { id: 4, band: '2,42–3,82 µm', group: 'MWIR' },
+  { id: 5, band: '3,83–4,41 µm', group: 'MWIR' },
+  { id: 6, band: '4,42–5,00 µm', group: 'MWIR' },
+];
+
+async function loadHomeModules() {
+  let data = galleryCache;
+  if (!data) {
+    try {
+      data = await (await fetch('/api/gallery')).json();
+      galleryCache = data;
+    } catch (err) {
+      return;
+    }
+  }
+
+  const summary = data.summary || {};
+  const regions = el('quickRegions');
+  if (regions) {
+    regions.innerHTML = TARGETS_LIST.map((tg) => {
+      const count = (summary[tg.slug] || {}).frames || 0;
+      return '<a class="region" href="/explore?target=' + tg.slug + '" data-route>' +
+        '<b>' + targetLabel(tg.slug) + '</b>' +
+        '<span>' + count + ' ' + t('home.images') + '</span></a>';
+    }).join('');
+  }
+
+  const grid = el('detectorGrid');
+  if (grid) {
+    const counts = {};
+    data.items.forEach((i) => { counts[i.detector] = (counts[i.detector] || 0) + 1; });
+    grid.innerHTML = DETECTORS.map((d) => {
+      const count = counts[d.id] || 0;
+      return '<a class="detector" href="/gallery" data-route data-det-jump="' + d.id + '" style="--det:' +
+        (DETECTOR_COLOURS[d.id] || '#7aa2ff') + '">' +
+        '<header><span class="det-id">D' + d.id + '</span><span class="det-group">' + d.group + '</span></header>' +
+        '<span class="det-band">' + d.band + '</span>' +
+        '<p>' + t('det.d' + d.id) + '</p>' +
+        '<footer>' + count + ' ' + t('home.images') + '</footer></a>';
+    }).join('');
+
+    grid.querySelectorAll('[data-det-jump]').forEach((link) => {
+      link.addEventListener('click', () => {
+        galleryView.detector = link.dataset.detJump;
+        galleryView.filter = 'all';
+        galleryView.query = '';
+      });
+    });
+  }
+
+  const pairs = el('pairCount');
+  if (pairs) {
+    let compatible = 0;
+    Object.values(summary).forEach((s) => {
+      if (s.frames >= 2) compatible += 1;
+    });
+    pairs.textContent = t('mod2.pairs')
+      .replace('{n}', compatible)
+      .replace('{total}', Object.keys(summary).length);
+  }
+}
+
 /* ------------------------------------------------------------------ galerie */
 
 const TARGETS_LIST = [
@@ -799,6 +940,9 @@ const TARGETS_LIST = [
   { slug: 'wise0855', name: 'WISE 0855', fr: 'WISE 0855' },
   { slug: 'rw-aur', name: 'RW Aurigae', fr: 'RW Aurigae' },
   { slug: 'r-dra', name: 'R Draconis', fr: 'R Draconis' },
+  { slug: 'south-deep', name: 'South Deep Field', fr: 'Champ profond sud' },
+  { slug: 'north-deep', name: 'North Deep Field', fr: 'Champ profond nord' },
+  { slug: 'equator-strip', name: 'Equatorial Strip', fr: 'Bande équatoriale' },
 ];
 
 const DETECTOR_COLOURS = {

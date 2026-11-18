@@ -57,6 +57,12 @@ TARGETS = [
      "type": "variable", "note": "variabilité d'éclat, pas de mouvement"},
     {"slug": "r-dra", "name": "R Draconis", "ra": 248.1680, "dec": 66.7547,
      "type": "variable Mira", "note": "champ profond, 222 jours observés"},
+    {"slug": "south-deep", "name": "South Deep Field", "ra": 59.9, "dec": -66.5,
+     "type": "champ profond", "note": "zone de calibration profonde, répétée souvent"},
+    {"slug": "north-deep", "name": "North Deep Field", "ra": 276.0, "dec": 65.0,
+     "type": "champ profond", "note": "zone de calibration profonde, répétée souvent"},
+    {"slug": "equator-strip", "name": "Equatorial Strip", "ra": 170.0, "dec": -4.0,
+     "type": "bande équatoriale", "note": "balayage équatorial, forte densité d'étoiles"},
 ]
 
 FILES: dict[str, tuple[Path, str]] = {}
@@ -356,8 +362,9 @@ def frame(obs_id: str) -> FileResponse:
 
 
 @app.get("/api/stats")
-def stats(target: str = Query("wise0855")) -> dict:
-    frames = sorted((f for f in _frames.values() if f.slug == target), key=lambda f: f.mjd)
+def stats(target: str = Query("all")) -> dict:
+    chosen = _frames.values() if target == "all" else (f for f in _frames.values() if f.slug == target)
+    frames = sorted(chosen, key=lambda f: f.mjd)
     if not frames:
         return {"frames": 0, "days": 0, "detectors": 0, "date_from": None, "date_to": None,
                 "target": target}
@@ -370,7 +377,7 @@ def stats(target: str = Query("wise0855")) -> dict:
         "date_from": frames[0].date,
         "date_to": frames[-1].date,
         "channels": 102,
-        "target": {"name": "WISE 0855", "ra": 133.7951, "dec": -7.2451},
+        "target": target,
     }
 
 

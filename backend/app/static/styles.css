@@ -777,3 +777,91 @@ footer a:hover { color: var(--ink); }
 .sheet-text { font-size: 14px; line-height: 1.72; color: var(--ink-dim); max-width: 78ch; }
 .sheet-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
 .sheet-foot .note { margin: 0; flex: 1 1 320px; }
+
+/* --------------------------------------------------------- modules accueil */
+
+.module {
+  margin: 34px 0; padding: 26px 26px 24px; border-radius: 16px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(76,125,255,.10), transparent 55%),
+    linear-gradient(170deg, rgba(16,26,46,.85), rgba(9,14,26,.92));
+  transition: border-color .25s, transform .25s;
+}
+.module:hover { border-color: rgba(122,162,255,.42); transform: translateY(-2px); }
+
+.module-head { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
+.module-no {
+  font: 700 13px var(--font-mono); letter-spacing: .04em;
+  color: #0b1120; background: linear-gradient(135deg, #7aa2ff, #4cd99c);
+  padding: 5px 9px; border-radius: 7px; flex: 0 0 auto;
+}
+.module-kicker {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-faint); margin-bottom: 3px;
+}
+.module h2 { font-size: 23px; letter-spacing: -.015em; }
+.module-lede { font-size: 13.5px; line-height: 1.65; color: var(--ink-dim); max-width: 68ch; margin-bottom: 16px; }
+.module-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.module-note { font: 11.5px var(--font-mono); color: var(--ink-faint); }
+.module-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.region-row { display: grid; gap: 9px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); margin-bottom: 16px; }
+.region {
+  display: flex; flex-direction: column; gap: 2px; padding: 12px 13px;
+  border-radius: 10px; border: 1px solid var(--line);
+  background: rgba(8,13,25,.6); text-decoration: none;
+  transition: border-color .18s, background .18s, transform .18s;
+}
+.region:hover { border-color: #4c7dff; background: rgba(76,125,255,.1); transform: translateY(-1px); }
+.region b { font-size: 12.5px; color: var(--ink); font-weight: 600; }
+.region span { font: 10.5px var(--font-mono); color: var(--ink-faint); }
+
+.section-lede { font-size: 13px; color: var(--ink-dim); max-width: 70ch; margin-top: 6px; }
+
+/* ------------------------------------------------------------- détecteurs */
+
+.detector-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); margin-top: 20px; }
+@media (max-width: 900px) { .detector-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .detector-grid { grid-template-columns: 1fr; } }
+.detector {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 16px; border-radius: 13px; text-decoration: none;
+  border: 1px solid var(--line);
+  background: linear-gradient(165deg, rgba(16,26,46,.9), rgba(9,14,26,.95));
+  position: relative; overflow: hidden;
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), border-color .22s;
+}
+.detector::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, var(--det), transparent);
+  opacity: .85;
+}
+.detector:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--det) 55%, transparent);
+}
+.detector header { display: flex; justify-content: space-between; align-items: center; }
+.det-id { font: 700 15px var(--font-mono); color: var(--det); }
+.det-group {
+  font: 600 9.5px var(--font-mono); letter-spacing: .08em;
+  padding: 2px 6px; border-radius: 5px;
+  color: var(--det); border: 1px solid color-mix(in srgb, var(--det) 40%, transparent);
+}
+.det-band { font: 600 12px var(--font-mono); color: var(--ink); }
+.detector p { font-size: 11.8px; line-height: 1.55; color: var(--ink-faint); flex: 1; }
+.detector footer {
+  font: 10.5px var(--font-mono); color: var(--ink-faint);
+  border-top: 1px solid var(--line-soft); padding-top: 8px;
+}
+
+.step-no {
+  display: block; font: 700 11px var(--font-mono); color: #7aa2ff;
+  letter-spacing: .08em; margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .module { padding: 20px 18px; }
+  .module h2 { font-size: 19px; }
+  .module-no { font-size: 11px; }
+}

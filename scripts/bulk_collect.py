@@ -32,6 +32,9 @@ FIELDS = [
     ("wise0855", 133.7951, -7.2451),
     ("rw-aur", 76.9560, 30.4014),
     ("r-dra", 248.1680, 66.7547),
+    ("south-deep", 59.9, -66.5),
+    ("north-deep", 276.0, 65.0),
+    ("equator-strip", 170.0, -4.0),
 ]
 
 COLLECTIONS = ("spherex_dr1", "spherex_dr1_deep", "spherex_qr3", "spherex_qr3_deep")

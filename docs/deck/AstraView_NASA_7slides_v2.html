@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ASTRAVIEW — 7-slide presentation · NASA Space Apps Challenge 2026</title>
+<style>
+  :root{
+    --ink:#eef4fd; --dim:#95a3ba; --acc:#38bdf8; --acc2:#22d3a5; --violet:#a78bfa;
+    --line:rgba(255,255,255,.10); --panel:rgba(255,255,255,.035);
+    --mono:"Consolas","SF Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#04060b;color:var(--ink);font-family:"Segoe UI",Inter,system-ui,sans-serif;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .slide{position:relative;width:1600px;height:900px;overflow:hidden;padding:52px 74px 48px;
+    background:
+      radial-gradient(1200px 680px at 84% -6%,rgba(29,58,110,.85) 0%,rgba(7,11,20,.2) 46%,transparent 70%),
+      radial-gradient(760px 520px at -8% 108%,rgba(76,29,149,.42) 0%,transparent 62%),
+      linear-gradient(180deg,#060a12 0%,#04070c 100%);
+    display:flex;flex-direction:column;page-break-after:always;break-after:page}
+  .slide:last-of-type{page-break-after:auto;break-after:auto}
+  @page{size:1600px 900px;margin:0}
+  .slide:before{content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:80px 80px;
+    -webkit-mask-image:radial-gradient(900px 600px at 60% 10%,#000 10%,transparent 78%);
+    mask-image:radial-gradient(900px 600px at 60% 10%,#000 10%,transparent 78%)}
+
+  h1{font-size:126px;line-height:.95;letter-spacing:.005em;font-weight:700}
+  h2{font-size:44px;line-height:1.14;letter-spacing:-.025em;font-weight:650;max-width:1250px}
+  h3{font-size:18px;font-weight:650;letter-spacing:-.01em}
+  h4{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#7f8ea6}
+  p,li{font-size:17.5px;line-height:1.5;color:#c4cfe2}
+  .eyebrow{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--acc);font-weight:700}
+  .foot{position:absolute;left:74px;right:74px;bottom:18px;display:flex;justify-content:space-between;
+    font-size:10.5px;color:#55627a;letter-spacing:.08em;text-transform:uppercase}
+  .mono{font-family:var(--mono)}
+  .kbd{font-family:var(--mono);font-size:13px;color:#a5dcff;background:rgba(56,189,248,.10);
+    border:1px solid rgba(56,189,248,.24);border-radius:6px;padding:2px 7px}
+  .cy{color:#7dd3fc}
+
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .rail{display:flex;gap:5px;align-items:center}
+  .rail i{display:block;width:14px;height:3px;border-radius:2px;background:rgba(255,255,255,.14)}
+  .rail i.on{background:linear-gradient(90deg,#38bdf8,#a78bfa);width:26px}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+    border:1px solid var(--line);border-radius:15px}
+  .frame{border:1px solid rgba(255,255,255,.13);border-radius:12px;overflow:hidden;background:#070b13;
+    box-shadow:0 26px 64px rgba(0,0,0,.6)}
+  .frame .bar{display:flex;align-items:center;gap:5px;padding:7px 11px;background:rgba(255,255,255,.05);
+    border-bottom:1px solid rgba(255,255,255,.08)}
+  .frame .dot{width:6px;height:6px;border-radius:50%;background:#3c4a62;display:block}
+  .frame .addr{margin-left:7px;font-family:var(--mono);font-size:9.5px;color:#8494ac;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis}
+  .frame img{display:block;width:100%}
+  .cap{font-size:11.5px;color:#8393ab;line-height:1.5}
+
+  /* 1 cover */
+  .cover{padding:0}
+  .cover .bg{position:absolute;inset:0;background:url(astra/cover-stars.png) center 38%/cover no-repeat;opacity:.5}
+  .cover .veil{position:absolute;inset:0;background:
+    linear-gradient(100deg,#04060b 4%,rgba(4,6,11,.95) 40%,rgba(4,6,11,.58) 74%,rgba(4,6,11,.92) 100%),
+    radial-gradient(820px 460px at 16% 78%,rgba(56,189,248,.20),transparent 68%),
+    radial-gradient(680px 420px at 74% 12%,rgba(167,139,250,.18),transparent 70%)}
+  .cover .wrap{position:relative;height:100%;padding:62px 74px 50px;display:flex;flex-direction:column;
+    justify-content:space-between}
+  .cover .badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:#9fb2cc;border:1px solid rgba(255,255,255,.16);border-radius:999px;
+    padding:7px 15px;background:rgba(255,255,255,.04)}
+  .cover .badge b{color:#7dd3fc;font-weight:600}
+  .cover h1{font-size:130px;margin:26px 0 12px;color:#f4f9ff;letter-spacing:-.01em}
+  .cover h1 span{color:#8fd6ff}
+  .cover .tagline{font-size:31px;letter-spacing:-.02em;color:#f2f7ff;font-weight:600;margin-bottom:14px}
+  .cover .sub{font-size:18.5px;color:#b9c6db;max-width:690px;line-height:1.6}
+  .coverGrid{display:grid;grid-template-columns:1fr 596px;gap:40px;align-items:center;margin-top:4px}
+  .cover .hero{position:relative}
+  .cover .hero .halo{position:absolute;inset:-70px -50px -80px -40px;border-radius:44px;
+    background:radial-gradient(closest-side,rgba(56,189,248,.20),transparent 76%)}
+  .cover .strip{border-top:1px solid rgba(255,255,255,.12);padding-top:16px;
+    display:grid;grid-template-columns:1.45fr .72fr 1fr;gap:28px}
+  .cover .k{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#6d7b93;margin-bottom:6px}
+  .cover .v{font-size:15px;color:#e4ecf8;line-height:1.42}
+  .url{font-family:var(--mono);font-size:14px;color:#7dd3fc;word-break:break-all}
+
+  .two{display:grid;gap:44px;align-items:start}
+  .bullets{list-style:none;display:flex;flex-direction:column;gap:13px}
+  .bullets li{position:relative;padding-left:24px;font-size:16.8px}
+  .bullets li:before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:2px;
+    background:linear-gradient(135deg,#38bdf8,#a78bfa)}
+  .stat{padding:14px 17px}
+  .stat .big{font-family:var(--mono);font-size:30px;letter-spacing:-.02em;color:#fff;line-height:1.05}
+  .stat .big small{font-size:14px;color:#38bdf8}
+  .stat .s{font-size:12.5px;color:var(--dim);margin-top:5px;line-height:1.4}
+
+  .mods{display:grid;grid-template-columns:1.3fr 1fr;gap:17px;align-items:start}
+  .stack{display:grid;grid-template-rows:1fr 1fr;gap:15px;min-height:0}
+  .modcard{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  .modcard .frame{border:0;border-radius:0;box-shadow:none;flex:0 0 auto;overflow:hidden}
+  .modcard .frame img{height:auto;object-fit:cover;object-position:top left}
+  .modbody{padding:10px 14px 12px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+    border-top:1px solid rgba(255,255,255,.07)}
+  .modbody p{font-size:12.2px;line-height:1.45;color:#a2b0c7;margin-top:3px}
+  .pill{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:#8ff0d4;background:rgba(34,211,165,.12);border:1px solid rgba(34,211,165,.3);
+    border-radius:999px;padding:2px 8px;margin-left:9px;vertical-align:2px}
+
+  .specbar{display:flex;height:50px;border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+  .specbar div{flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:8px;
+    font-family:var(--mono);font-size:10px;color:#0a0f18;font-weight:700}
+  .specbar div span{font-size:8px;font-weight:600;opacity:.7}
+  .grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
+  .grid6 div{font-family:var(--mono);font-size:9.3px;color:#8b9ab2;text-align:center;line-height:1.35}
+  .cadence{display:flex;align-items:center;gap:10px;margin-top:15px}
+  .epoch{flex:1;border-radius:11px;padding:10px 12px;border:1px solid rgba(56,189,248,.22);
+    background:linear-gradient(180deg,rgba(56,189,248,.10),rgba(56,189,248,.03))}
+  .epoch .y{font-family:var(--mono);font-size:18px;color:#fff}
+  .epoch .l{font-size:10.5px;color:#93a3bb;margin-top:2px}
+  .plus6{font-family:var(--mono);font-size:11px;color:#7dd3fc;text-align:center;line-height:1.3;flex:0 0 46px}
+
+  .pipe{display:flex;gap:8px;align-items:stretch;margin:20px 0 16px}
+  .step{flex:1;border-radius:11px;padding:11px 12px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015))}
+  .step .n{font-family:var(--mono);font-size:9.5px;color:#4d7fc4;margin-bottom:5px}
+  .step .t{font-size:13.2px;font-weight:650;line-height:1.25;margin-bottom:5px}
+  .step .d{font-family:var(--mono);font-size:10.3px;color:#8595ad;line-height:1.55}
+  .arw{align-self:center;color:#3d6bb5;font-size:14px;flex:0 0 9px;text-align:center}
+  .techrow{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-family:var(--mono);font-size:10.2px;letter-spacing:.04em;color:#a6dbff;
+    background:rgba(56,189,248,.09);border:1px solid rgba(56,189,248,.22);border-radius:999px;padding:4px 10px}
+
+  .imp{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .imp .card{padding:15px 17px 16px}
+  .imp h3{margin-bottom:6px;color:#fff;font-size:16.5px}
+  .imp p{font-size:13.4px;line-height:1.5;color:#a6b3c9}
+  .next{list-style:none}
+  .next li{display:grid;grid-template-columns:17px 1fr;gap:10px;padding:8.5px 0;
+    border-top:1px solid rgba(255,255,255,.07);font-size:13.8px;color:#bcc9de;line-height:1.4}
+  .next li .a{color:#22d3a5;font-family:var(--mono);font-size:11px}
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .team div{padding:11px 14px;border-radius:11px;
+    background:linear-gradient(180deg,rgba(56,189,248,.09),rgba(56,189,248,.02));
+    border:1px solid rgba(56,189,248,.2)}
+  .team .n{font-size:14.5px;font-weight:650}
+  .team .r{font-size:11px;color:#8b9cb4;margin-top:3px}
+
+  .closing{padding:0;align-items:center;justify-content:center;text-align:center}
+  .closing .bg{position:absolute;inset:0;background:url(astra/cover-stars.png) center 44%/cover no-repeat;opacity:.4}
+  .closing .veil{position:absolute;inset:0;background:
+    radial-gradient(980px 640px at 50% 50%,rgba(4,6,11,.5) 0%,rgba(4,6,11,.94) 60%),
+    linear-gradient(180deg,rgba(4,6,11,.92),rgba(4,6,11,.55) 46%,rgba(4,6,11,.97))}
+  .closing .in{position:relative;max-width:1200px;padding:0 40px}
+  .closing blockquote{font-size:56px;line-height:1.14;letter-spacing:-.03em;font-weight:700;margin:18px 0 0;
+    color:#f4f9ff}
+  .closing .q2{display:block;margin-top:2px;color:#a9b8ff}
+  .closing .kicker{font-size:18px;color:#bcc9de;margin:20px auto 0;max-width:800px;line-height:1.6}
+  .closing .pill2{display:inline-flex;gap:13px;align-items:center;margin-top:30px;padding:13px 24px;
+    border-radius:999px;border:1px solid rgba(56,189,248,.38);background:rgba(56,189,248,.09)}
+  .closing .pill2 span:first-child{font-size:16.5px;font-weight:600;color:#dff0ff}
+  .closing .names{margin-top:26px;font-size:11.5px;color:#8494ac;letter-spacing:.18em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 1 · INTRODUCTION ══════════ -->
+<section class="slide cover">
+  <div class="bg"></div><div class="veil"></div>
+  <div class="wrap">
+    <div class="badge">NASA International Space Apps Challenge <b>2026</b> &nbsp;·&nbsp; Planet X and SPHEREx</div>
+
+    <div class="coverGrid">
+      <div>
+        <h1>ASTRA<span>VIEW</span></h1>
+        <div class="tagline">Explore the Universe. Discover What Changes.</div>
+        <p class="sub">A public web tool that turns NASA's SPHEREx infrared survey into a time machine:
+          pick a patch of sky, put two dates side by side, and see what moved.</p>
+      </div>
+      <div class="hero">
+        <div class="halo"></div>
+        <div class="frame" style="position:relative">
+          <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>
+            <span class="addr">astraview.cloud.run / time-machine</span></div>
+          <img src="astra/timemachine.png" alt="AstraView Time Machine, live">
+        </div>
+      </div>
+    </div>
+
+    <div class="strip">
+      <div><div class="k">Team</div>
+        <div class="v">Ghita Dennoune · Hafida El Mouden · Nour el Houda OKMID</div></div>
+      <div><div class="k">Live app</div><div class="v url">astraview.cloud.run</div></div>
+      <div><div class="k">Source</div>
+        <div class="v url" style="font-size:12.5px">github.com/NourelhoudaOKMID/<br>space-challenge-nasa-sphere-x-astraview</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>ASTRAVIEW · 7-slide presentation</span><span>01 / 07</span></div>
+</section>
+
+<!-- ══════════ 2 · THE SCIENTIFIC CHALLENGE ══════════ -->
+<section class="slide">
+  <div class="top">
+    <div class="eyebrow">02 · The scientific challenge</div>
+    <div class="rail"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <h2>SPHEREx maps the <span class="cy">entire sky every six months</span>, in 102 near-infrared bands.</h2>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1fr 590px;margin-top:22px">
+      <div>
+        <ul class="bullets">
+          <li><b>Since 2025</b>, NASA's SPHEREx telescope sweeps the whole sky in 102 narrow bands between
+            0.75 and 5 µm — more than a billion objects per survey.</li>
+          <li>Each band isolates different molecules — <b>water, carbon dioxide, carbon monoxide</b>, hydrogen-rich
+            dust — the chemistry of clouds, disks and early galaxies.</li>
+          <li>Because the survey <b>repeats every six months</b>, two images of the same sky form a time series:
+            anything that moved, brightened or faded becomes measurable.</li>
+        </ul>
+        <div class="card" style="margin-top:18px;padding:16px 19px;border-color:rgba(56,189,248,.30);
+          background:linear-gradient(100deg,rgba(56,189,248,.11),rgba(167,139,250,.05))">
+          <h4 style="color:#8fb6e6">The challenge, in NASA's words</h4>
+          <div style="font-size:16px;line-height:1.55;color:#dfe9f8;margin-top:7px">“Create a
+            <b>public-facing web tool</b> to display images of the sky from the SPHEREx mission, making it easy for
+            anyone to quickly see how they change over time.”</div>
+        </div>
+      </div>
+      <div>
+        <h4>One survey · six detectors · 102 bands</h4>
+        <div class="specbar" style="margin-top:9px">
+          <div style="background:#bae6fd">0.75<span>µm</span></div>
+          <div style="background:#7dd3fc">1.09<span>µm</span></div>
+          <div style="background:#93c5fd">1.62<span>µm</span></div>
+          <div style="background:#a78bfa;color:#0b0f18">2.41<span>µm</span></div>
+          <div style="background:#c084fc;color:#0b0f18">3.82<span>µm</span></div>
+          <div style="background:#f0abfc;color:#0b0f18">5.00<span>µm</span></div>
+        </div>
+        <div class="grid6">
+          <div>D1 · SWIR<br>0.75–1.09</div><div>D2 · SWIR<br>1.10–1.62</div><div>D3 · SWIR<br>1.63–2.41</div>
+          <div>D4 · MWIR<br>2.42–3.82</div><div>D5 · MWIR<br>3.83–4.41</div><div>D6 · MWIR<br>4.42–5.00</div>
+        </div>
+        <div class="cadence">
+          <div class="epoch"><div class="y">2025</div><div class="l">DR1 — first full-sky survey</div></div>
+          <div class="plus6">+6<br>months</div>
+          <div class="epoch"><div class="y">2026</div><div class="l">QR3 — the same sky, again</div></div>
+        </div>
+
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1.75fr;gap:12px;align-items:stretch">
+      <div class="card stat"><div class="big">3.5<small>°</small></div><div class="s">sky patch per single exposure</div></div>
+      <div class="card stat"><div class="big">2040<small>²</small></div><div class="s">pixels, calibrated in MJy/sr</div></div>
+      <div class="card stat"><div class="big">1 B+</div><div class="s">objects imaged per survey</div></div>
+      <div class="card" style="padding:15px 20px;display:flex;align-items:center;gap:16px;
+        border-color:rgba(56,189,248,.28);background:linear-gradient(100deg,rgba(56,189,248,.10),rgba(167,139,250,.04))">
+        <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc;line-height:1.5;flex:0 0 96px">
+          Why<br>six months<br>matters</div>
+        <div style="font-size:14.5px;line-height:1.5;color:#cfe0f5">A repeat survey turns pictures into
+          measurements: the same sky twice is a time series, and every change between the two epochs is something a
+          citizen can look up themselves.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Source: Space Apps Challenge 2026 — challenge brief “Planet X and SPHEREx”</span><span>02 / 07</span></div>
+</section>
+
+<!-- ══════════ 3 · THE PROBLEM ══════════ -->
+<section class="slide">
+  <div class="top">
+    <div class="eyebrow">03 · The problem</div>
+    <div class="rail"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <h2>The images are public. <span style="color:#fca5a5">Comparing them is not.</span></h2>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1fr 500px;margin-top:24px">
+      <div>
+        <p style="font-size:19.5px;color:#d7e0f0;max-width:780px;margin-bottom:20px">A SPHEREx exposure is a
+          scientific instrument readout, not a photograph. Looking at one tells you nothing about change.</p>
+        <ul class="bullets">
+          <li><b>Volume.</b> 1.63 million calibrated exposures in IRSA across DR1 and QR3. Nobody browses that by hand.</li>
+          <li><b>Format.</b> A multi-extension FITS: 2040 × 2040 float32 pixels, a WCS solution and a flags
+            bitmap — <b>16.6 MB</b> of raw array before any display.</li>
+          <li><b>Two releases, one sky.</b> DR1 covers 2025, QR3 covers 2026. Use one alone and most of the sky
+            shows a single epoch.</li>
+          <li><b>No comparison layer.</b> Archive tools answer “show me this image”. Almost none answer
+            <b>“what changed between these two dates?”</b> — the exact question the challenge asks.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card stat" style="margin-bottom:10px"><div class="big">1 628 230</div>
+          <div class="s">SPHEREx images indexed in <span class="kbd">obscore</span> · MJD 60789.8 → 61318.0</div></div>
+        <div class="card stat" style="margin-bottom:10px"><div class="big">16.6<small> MB</small></div>
+          <div class="s">float32 pixel array per exposure, before colour or stretch</div></div>
+        <div class="card stat" style="margin-bottom:10px"><div class="big">2<small> releases</small></div>
+          <div class="s">DR1 (2025) + QR3 (2026) must be joined to see time</div></div>
+        <div class="card stat" style="border-color:rgba(248,113,113,.38);
+          background:linear-gradient(180deg,rgba(248,113,113,.10),rgba(248,113,113,.03))">
+          <div class="big" style="color:#fca5a5">0</div>
+          <div class="s">public tools that align two epochs, subtract them, and label the result honestly</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:auto;padding:16px 22px;border-color:rgba(56,189,248,.28);
+      background:linear-gradient(100deg,rgba(56,189,248,.10),rgba(167,139,250,.04));
+      display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:center">
+      <div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#7dd3fc;line-height:1.6">
+        What a user<br>actually asks</div>
+      <div style="font-size:17px;line-height:1.5;color:#e2ecfa">“Show me this patch of sky in May 2025 and in
+        May 2026, aligned, and tell me if anything moved.” — <span style="color:#93a3bb">four words of question,
+        an afternoon of code in every existing archive tool.</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>Measured against the IPAC/IRSA catalogue and archive documentation · November 2026</span><span>03 / 07</span></div>
+</section>
+
+<!-- ══════════ 4 · OUR SOLUTION ══════════ -->
+<section class="slide">
+  <div class="top">
+    <div class="eyebrow">04 · Our solution</div>
+    <div class="rail"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+  </div>
+  <h2>ASTRAVIEW — three modules, all running on real SPHEREx files.</h2>
+  <div class="body" style="margin-top:14px">
+    <div class="mods">
+      <div class="modcard card">
+        <div class="frame">
+          <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>
+            <span class="addr">astraview.cloud.run / explorer</span></div>
+          <img src="astra/explorer.png" alt="Explorer" style="height:462px">
+        </div>
+        <div class="modbody">
+          <h3>1 · Explorer <span class="pill">live</span></h3>
+          <p>Search 1 513 indexed Level-2 observations by sky position or object name, band (D1–D6), release
+            (DR1 / QR3), field size and date window. Every card carries ObsID, sky centre, UTC time and the
+            2040 × 2040 exposure grid.</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="modcard card">
+          <div class="frame" style="padding:0">
+            <img src="astra/timemachine.png" alt="Time Machine" style="height:200px">
+          </div>
+          <div class="modbody"><h3>2 · Time Machine <span class="pill">live</span></h3>
+            <p>36 verified multi-epoch pairs, up to 381 days apart. Smart slider, side by side or blink — aligned
+              on sky coordinates in the same band, so the stars sit on top of each other.</p></div>
+        </div>
+        <div class="modcard card">
+          <div class="frame" style="padding:0">
+            <img src="astra/signals.png" alt="Cosmic Signals" style="height:152px">
+          </div>
+          <div class="modbody"><h3>3 · Cosmic Signals <span class="pill">live</span></h3>
+            <p>Pixel-by-pixel <span class="kbd">After − Before</span>, noise measured from the difference itself
+              (σ = 0.0156 MJy/sr). Each candidate is labelled <b>“Unverified”</b> — never sold as a discovery.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>All screenshots: astraview.cloud.run on SPHEREx DR1 / QR3 cutouts — nothing mocked</span><span>04 / 07</span></div>
+</section>
+
+<!-- ══════════ 5 · HOW IT WORKS ══════════ -->
+<section class="slide">
+  <div class="top">
+    <div class="eyebrow">05 · How it works</div>
+    <div class="rail"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+  </div>
+  <h2>From a telescope readout to a comparison you can read.</h2>
+  <div class="body" style="justify-content:flex-start">
+    <div class="pipe" style="margin-top:20px">
+      <div class="step"><div class="n">01</div><div class="t">SPHEREx observations</div>
+        <div class="d">Level-2 calibrated<br>2040×2040 · MJy/sr<br>6 detectors · 102 bands</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="n">02</div><div class="t">NASA / IPAC IRSA</div>
+        <div class="d">SIA2 catalogue<br>IBE cutouts<br>S3 byte-range headers<br>CDS Sesame names</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="n">03</div><div class="t">Retrieval &amp; processing</div>
+        <div class="d">Express + TypeScript<br>FITS MEF parser<br>PNG encoder<br>TAN-SIP alignment<br>difference detector</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="n">04</div><div class="t">ASTRAVIEW client</div>
+        <div class="d">React 19 · Vite<br>canvas FITS viewer<br>asinh / log / sqrt / linear<br>cursor RA·Dec in MJy/sr</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="n">05</div><div class="t">User exploration</div>
+        <div class="d">Explorer<br>Time Machine<br>Cosmic Signals<br>no account needed</div></div>
+    </div>
+    <div class="two" style="grid-template-columns:1fr 520px;margin-top:20px">
+      <div>
+        <div style="border-top:1px solid rgba(255,255,255,.09);padding-top:12px">
+          <h3 style="display:flex;gap:9px;align-items:baseline"><span class="mono" style="font-size:11px;color:#38bdf8">A</span>
+            Nothing to install, nothing to request</h3>
+          <p style="font-size:14.6px;color:#a9b6cc;margin-top:4px">IRSA SIA2, IBE and the NASA S3 mirror are open
+            endpoints — no API key, no token, no account. The whole pipeline runs from a browser tab.</p>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.09);padding-top:12px;margin-top:12px">
+          <h3 style="display:flex;gap:9px;align-items:baseline"><span class="mono" style="font-size:11px;color:#38bdf8">B</span>
+            FITS is parsed server-side, not in a desktop app</h3>
+          <p style="font-size:14.6px;color:#a9b6cc;margin-top:4px">A TypeScript multi-extension parser reads headers
+            and the image HDU straight from the archive — including S3 byte ranges — encodes a display PNG and
+            ships pixels, so a phone can view a 16 MB array.</p>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.09);
+          padding:12px 0;margin-top:12px">
+          <h3 style="display:flex;gap:9px;align-items:baseline"><span class="mono" style="font-size:11px;color:#38bdf8">C</span>
+            Deployed, not demonstrated on a laptop</h3>
+          <p style="font-size:14.6px;color:#a9b6cc;margin-top:4px">The same build runs in a container on Google
+            Cloud Run at <span class="kbd">astraview.cloud.run</span>, with a <span class="kbd">/api/health</span>
+            probe reporting which archive path is answering.</p>
+        </div>
+      </div>
+      <div>
+        <div class="frame">
+          <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>
+            <span class="addr">astraview.cloud.run / how-it-works</span></div>
+          <img src="astra/how.png" alt="How SPHEREx and AstraView work">
+        </div>
+        <div class="cap" style="margin-top:7px">The method is documented inside the app: sky survey → same-band
+          alignment → transparent difference check.</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:auto;padding:13px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#7f8ea6">Verified stack</div>
+      <div class="techrow">
+        <span class="tag">React 19</span><span class="tag">Vite</span><span class="tag">Tailwind v4</span>
+        <span class="tag">Express</span><span class="tag">TypeScript</span><span class="tag">Cloud Run</span>
+      </div>
+      <div style="font-size:11.5px;color:#8b9ab2;margin-left:auto">Read from the public README — nothing assumed</div>
+    </div>
+  </div>
+  <div class="foot"><span>Stack verified from the public repository README and the deployed app</span><span>05 / 07</span></div>
+</section>
+
+<!-- ══════════ 6 · INNOVATION, IMPACT & TEAM ══════════ -->
+<section class="slide">
+  <div class="top">
+    <div class="eyebrow">06 · Innovation, impact and team</div>
+    <div class="rail"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+  </div>
+  <h2>Built by three developers, for anyone curious about the sky.</h2>
+  <div class="body" style="justify-content:flex-start">
+    <div class="imp" style="margin-top:18px">
+      <div class="card"><h3>Accessible by design</h3>
+        <p>A real 2040 × 2040 NASA array, stretched and colour-mapped for the eye, with the sky coordinate under
+          the cursor. No download, no astronomy degree, no install.</p></div>
+      <div class="card"><h3>Honest by design</h3>
+        <p>Every difference is measured against its own noise, labelled “Potential Candidate — Unverified”, and
+          paired with the list of artifacts that could fake it.</p></div>
+      <div class="card"><h3>Reusable by design</h3>
+        <p>The indexer, TAN-SIP alignment and difference detector work on any survey that images the same sky
+          more than once — SPHEREx is the first, not the last.</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:18px">
+      <div>
+        <h4 style="color:#8ff0d4">Shipped this weekend</h4>
+        <ul class="next">
+          <li><span class="a">✓</span><span>Explorer over 1 513 indexed observations — 6 bands, 2 releases, date windows.</span></li>
+          <li><span class="a">✓</span><span>Time Machine with 36 verified pairs and three comparison modes.</span></li>
+          <li><span class="a">✓</span><span>Cosmic Signals with noise-based candidate ranking and a disclaimer.</span></li>
+          <li><span class="a">✓</span><span>Public deployment on Cloud Run — no keys, no account.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Next, not yet built</h4>
+        <ul class="next">
+          <li><span class="a">→</span><span>The five challenge targets as first-class pages with full epoch histories.</span></li>
+          <li><span class="a">→</span><span>Multi-band confirmation: a candidate surviving D1 and D2 outranks a single-band spike.</span></li>
+          <li><span class="a">→</span><span>A nightly indexer so new QR3 weeks appear without manual indexing.</span></li>
+          <li><span class="a">→</span><span>Shareable permalinks for a saved comparison.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="team">
+      <div><div class="n">Ghita Dennoune</div><div class="r">product &amp; interface</div></div>
+      <div><div class="n">Hafida El Mouden</div><div class="r">backend &amp; data pipeline</div></div>
+      <div><div class="n">Nour el Houda OKMID</div><div class="r">astronomy research &amp; validation</div></div>
+    </div>
+    <div class="card" style="margin-top:auto;padding:14px 20px;border-color:rgba(167,139,250,.30);
+      background:linear-gradient(100deg,rgba(167,139,250,.11),rgba(56,189,248,.04));
+      display:flex;gap:16px;align-items:center">
+      <div style="font-family:var(--mono);font-size:34px;color:#c4b5fd;line-height:.7;padding-top:8px">“</div>
+      <div style="font-size:15.5px;line-height:1.5;color:#dbe6f7">We only claim what we can show — a comparison a
+        student can repeat on a laptop, and a scientist can audit line by line.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Three-person team · shared public repository · continuous deploys</span><span>06 / 07</span></div>
+</section>
+
+<!-- ══════════ 7 · CONCLUSION ══════════ -->
+<section class="slide closing">
+  <div class="bg"></div><div class="veil"></div>
+  <div class="in">
+    <div class="eyebrow" style="text-align:center">07 · Conclusion</div>
+    <blockquote>“THE UNIVERSE IS ALWAYS CHANGING.<span class="q2">ARE WE READY TO NOTICE?</span>”</blockquote>
+    <p class="kicker">Every six months, SPHEREx photographs the whole sky again. AstraView makes that repetition
+      visible — one comparison, one click, on real NASA data.</p>
+    <div class="pill2"><span>Try it now</span><span class="url" style="font-size:17px">astraview.cloud.run</span></div>
+    <div class="names">Ghita Dennoune · Hafida El Mouden · Nour el Houda OKMID — NASA Space Apps Challenge 2026</div>
+  </div>
+  <div class="foot"><span>Data: NASA/JPL-Caltech · IPAC/IRSA — SPHEREx DR1 &amp; QR3</span><span>07 / 07</span></div>
+</section>
+
+</body>
+</html>
