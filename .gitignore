@@ -10,3 +10,6 @@ cache/
 .env
 .DS_Store
 *.log
+
+# captures locales, jamais versionnees
+docs/*.png
