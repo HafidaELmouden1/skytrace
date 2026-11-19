@@ -149,11 +149,13 @@ const I18N = {
     'free.starting': 'Collecte lancée — les images arrivent dans une à trois minutes.',
     'free.running': "Collecte en cours : l'archive répond image par image…",
     'free.indexing': 'Indexation des nouvelles images…',
+    'free.timeout': 'La collecte dure plus de vingt minutes : elle continue en tâche de fond, reviens un peu plus tard.',
     'free.failed': "La collecte n'a pas démarré : l'archive n'a pas répondu.",
     'free.loaded': '{n} observations de ce point, du {from} au {to}.',
     'free.single': 'Une seule observation de ce point, le {from}. Rien à comparer dans le temps.',
     'free.none': "L'archive n'a rendu aucune exposition exploitable à cette position : hors de la couverture du relevé, ou entièrement rejetée par la calibration.",
     'free.detectors': 'Détecteurs',
+    'free.pixel': '6,2″ / pixel',
     'free.open': "Ouvrir dans l'explorateur",
     'read.eyebrow': 'Lecture',
     'read.title': 'Ce que chaque nombre veut dire',
@@ -493,11 +495,13 @@ const I18N = {
     'free.starting': 'Collection started — images arrive in one to three minutes.',
     'free.running': 'Collecting: the archive answers image by image…',
     'free.indexing': 'Indexing the new images…',
+    'free.timeout': 'This collection is taking more than twenty minutes: it keeps running in the background, come back a little later.',
     'free.failed': 'The collection did not start: the archive did not answer.',
     'free.loaded': '{n} observations of this point, from {from} to {to}.',
     'free.single': 'A single observation of this point, on {from}. Nothing to compare over time.',
     'free.none': 'The archive returned no usable exposure at this position: outside the survey footprint, or entirely rejected by the calibration.',
     'free.detectors': 'Detectors',
+    'free.pixel': '6.2″ / pixel',
     'free.open': 'Open in the explorer',
     'read.eyebrow': 'Reading guide',
     'read.title': 'What each number means',
@@ -968,9 +972,9 @@ function pollFree() {
   let ticks = 0;
   freePoll = setInterval(async () => {
     ticks += 1;
-    if (ticks > 90) {
+    if (ticks > 150) {
       clearInterval(freePoll);
-      el('collectNote').textContent = t('free.failed');
+      el('collectNote').textContent = t('free.timeout');
       return;
     }
     let status;
@@ -1029,7 +1033,7 @@ function renderFreeResult() {
     (shot ? '<figure class="free-thumb"><img src="' + shot.image + '" alt="' + t('gallery.alt') + ' ' + shot.date + '"></figure>' : '') +
     '<div class="free-body">' +
       '<p class="free-line">' + line + '</p>' +
-      '<p class="note">' + t('free.detectors') + ' ' + detectors.join(' · ') + ' · 6,2″ / pixel</p>' +
+      '<p class="note">' + t('free.detectors') + ' ' + detectors.join(' · ') + ' · ' + t('free.pixel') + '</p>' +
       '<button class="btn btn-sm btn-primary" data-open-field>' + t('free.open') + '</button>' +
     '</div>';
   box.hidden = false;

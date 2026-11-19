@@ -39,6 +39,10 @@ body {
   overflow-x: hidden;
 }
 
+/* Une section masquée le reste : plusieurs blocs sont en display:flex, ce qui
+   annulerait l'attribut hidden seul. */
+[hidden] { display: none !important; }
+
 /* Champ d'étoiles en pur CSS, aucune image externe */
 body::before {
   content: "";
