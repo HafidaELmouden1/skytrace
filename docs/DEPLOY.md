@@ -95,6 +95,43 @@ Le disque monté contient déjà les FITS : `fetch_manifest.py` les voit présen
 et ne télécharge rien. Pour forcer le téléchargement, supprimer `data/frames`
 ou construire l'image sans volume.
 
+## Version statique, hébergée gratuitement
+
+L'application complète demande un serveur, mais l'interface se précalcule :
+`scripts/export_static.py` interroge les mêmes fonctions que l'API, écrit les
+JSON et les images dans `site/`, et injecte un petit intercepteur qui répond à
+chaque appel `/api/…` depuis un fichier. Les pages, la galerie, les époques, le
+catalogue de sources et les comparaisons restent identiques.
+
+```bash
+uv run --python 3.13 --with fastapi --with "uvicorn[standard]" \
+  --with astropy --with numpy --with pillow python scripts/export_static.py --out site
+```
+
+Ce qui est précalculé : toutes les poses (images, métadonnées, descriptions) et
+les comparaisons entre passes consécutives, plus la première et la dernière de
+chaque champ — 304 comparaisons pour 309 poses. Une paire arbitraire n'existe
+pas dans un fichier statique : l'interface l'annonce au lieu d'afficher une
+image fausse.
+
+`site/` se dépose tel quel sur n'importe quel hébergeur de fichiers : GitHub
+Pages (ce qui est en ligne), Cloudflare Pages (glisser le dossier), Netlify.
+`404.html` fait office de page par défaut pour que `/explore`, `/gallery` et
+`/about` fonctionnent sans configuration de routage.
+
+En ligne : <https://hafidaelmouden1.github.io/> — dépôt
+[`HafidaELmouden1.github.io`](https://github.com/HafidaELmouden1/HafidaELmouden1.github.io).
+Pour republier après une nouvelle collecte :
+
+```bash
+python scripts/export_static.py --out site
+rm -rf ../skytrace-site && cp -r site ../skytrace-site
+cd ../skytrace-site && git init -b main && git add -A \
+  && git commit -m "Refresh the static export" \
+  && git remote add origin https://github.com/HafidaELmouden1/HafidaELmouden1.github.io.git \
+  && git push -f origin main
+```
+
 ## Un lien public immédiat, sans hébergeur
 
 Tant que la machine reste allumée, un tunnel Cloudflare expose le serveur local
