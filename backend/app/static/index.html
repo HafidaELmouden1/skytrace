@@ -162,6 +162,83 @@
   </div>
 </section>
 
+<!-- ============================================================ ATLAS -->
+<section class="view" id="view-targets" hidden>
+  <div class="wrap">
+    <header class="explore-head">
+      <div>
+        <p class="eyebrow" data-i18n="targets.eyebrow">Atlas du ciel</p>
+        <h1 data-i18n="targets.title">Choisir où regarder</h1>
+        <p data-i18n="targets.lead">Chaque entrée pointe vers une parcelle réelle du ciel. Choisis une cible du challenge, ou saisis tes propres coordonnées — SPHEREx ne couvre pas encore tout le ciel, certains champs ne renvoient rien.</p>
+      </div>
+    </header>
+
+    <div class="atlas" id="atlas"></div>
+
+    <aside class="sheetbox" id="sheetBox" aria-live="polite" hidden></aside>
+
+    <section class="module" id="freeRegion">
+      <div class="module-head">
+        <span class="module-no">04</span>
+        <div>
+          <p class="module-kicker" data-i18n="free.kicker">Position libre</p>
+          <h2 data-i18n="free.title">Un point du ciel, au choix</h2>
+        </div>
+      </div>
+      <p class="module-lede" data-i18n="free.lede">Deux nombres suffisent : l'ascension droite et la déclinaison. La collecte interroge l'archive IRSA à cette position et rapporte les expositions qu'elle y trouve — parfois aucune.</p>
+
+      <p class="module-kicker" data-i18n="free.presetsLabel">Exemples de coordonnées</p>
+      <div class="region-row" id="freePresets"></div>
+
+      <form id="coordForm" class="coords">
+        <label>RA <input id="inRa" type="number" step="0.0001" min="0" max="360" value="133.7951" required></label>
+        <label>Dec <input id="inDec" type="number" step="0.0001" min="-90" max="90" value="-7.2451" required></label>
+        <button class="btn btn-primary btn-sm" type="submit" data-i18n="targets.collect">Collecter ce champ</button>
+        <span class="coords-sexa" id="coordSexa"></span>
+      </form>
+      <p class="note" id="collectNote"></p>
+      <div class="freeresult" id="freeResult" hidden></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <p class="eyebrow" data-i18n="read.eyebrow">Lecture</p>
+        <h2 data-i18n="read.title">Ce que chaque nombre veut dire</h2>
+        <p class="section-lede" data-i18n="read.lede">Tout ce qui s'affiche pour un champ choisi vient du fichier de la NASA, sans retouche. Voici les six informations à lire avant d'interpréter une image.</p>
+      </div>
+      <div class="readgrid">
+        <article>
+          <h3 data-i18n="read.t1">La taille</h3>
+          <p data-i18n="read.d1">Le cutout fait 0,1° de côté, soit 59 pixels de 6,2″. Deux sources séparées de moins de douze secondes d'arc tombent dans le même pixel.</p>
+        </article>
+        <article>
+          <h3 data-i18n="read.t2">La date</h3>
+          <p data-i18n="read.d2">Date civile en temps universel, lue dans l'en-tête de l'exposition. Deux poses d'une même nuit sont séparées d'environ huit heures.</p>
+        </article>
+        <article>
+          <h3 data-i18n="read.t3">Le détecteur</h3>
+          <p data-i18n="read.d3">D1 à D6, chacun couvre une tranche entre 0,75 et 5 µm. Deux détecteurs différents ne se comparent ni en éclat ni en couleur.</p>
+        </article>
+        <article>
+          <h3 data-i18n="read.t4">Les sources</h3>
+          <p data-i18n="read.d4">Nombre de taches détectées à plus de 5σ, et le pic de la plus brillante, exprimé en σ au-dessus du fond.</p>
+        </article>
+        <article>
+          <h3 data-i18n="read.t5">Les pixels valides</h3>
+          <p data-i18n="read.d5">Part de l'image que la calibration ne rejette pas. En dessous de 50 %, la moitié du champ est vide et les mesures sont fragiles.</p>
+        </article>
+        <article>
+          <h3 data-i18n="read.t6">L'unité et la couleur</h3>
+          <p data-i18n="read.d6">La brillance est en MJy/sr, une brillance de surface. L'image affichée empile le cube spectral en luminance : c'est lisible, ce n'est pas une couleur vraie.</p>
+        </article>
+      </div>
+      <div class="callout">
+        <p data-i18n="read.callout">Une exposition seule ne prouve rien sur un objet. La même parcelle de ciel revient tous les six mois : c'est la répétition, pas l'image unique, qui rend une comparaison possible. Un écart entre deux dates reste un candidat, à confirmer.</p>
+      </div>
+    </section>
+  </div>
+</section>
+
 <!-- ============================================================ SPHEREX -->
 
 <section class="view" id="view-about" hidden>

@@ -111,6 +111,41 @@ const I18N = {
     'sheet.open': 'Voir les images',
     'sheet.source': 'Repères publiés ; les images de cette installation servent à les confronter au ciel, jamais à annoncer une découverte.',
 
+    'free.kicker': 'Position libre',
+    'free.title': 'Un point du ciel, au choix',
+    'free.lede': "Deux nombres suffisent : l'ascension droite et la déclinaison. La collecte interroge l'archive IRSA à cette position et rapporte les expositions qu'elle y trouve — parfois aucune.",
+    'free.presetsLabel': 'Exemples de coordonnées',
+    'free.p1': "Galaxie d'Andromède (M31)",
+    'free.p2': "Nébuleuse d'Orion (M42)",
+    'free.p3': 'Centre galactique',
+    'free.p4': 'Amas de la Vierge',
+    'free.p5': 'Grand Nuage de Magellan',
+    'free.label': 'Position libre',
+    'free.starting': 'Collecte lancée — les images arrivent dans une à trois minutes.',
+    'free.running': "Collecte en cours : l'archive répond image par image…",
+    'free.failed': "La collecte n'a pas démarré : l'archive n'a pas répondu.",
+    'free.loaded': '{n} observations de ce point, du {from} au {to}.',
+    'free.single': 'Une seule observation de ce point, le {from}. Rien à comparer dans le temps.',
+    'free.none': "L'archive n'a rendu aucune exposition exploitable à cette position : hors de la couverture du relevé, ou entièrement rejetée par la calibration.",
+    'free.detectors': 'Détecteurs',
+    'free.open': "Ouvrir dans l'explorateur",
+    'read.eyebrow': 'Lecture',
+    'read.title': 'Ce que chaque nombre veut dire',
+    'read.lede': "Tout ce qui s'affiche pour un champ choisi provient du fichier de la NASA, sans retouche. Voici les six informations à lire avant d'interpréter une image.",
+    'read.t1': 'La taille',
+    'read.d1': "Le cutout fait 0,1° de côté, soit 59 pixels de 6,2″. Deux sources séparées de moins de douze secondes d'arc tombent dans le même pixel.",
+    'read.t2': 'La date',
+    'read.d2': "Date civile en temps universel, lue dans l'en-tête de l'exposition. Deux poses d'une même nuit sont séparées d'environ huit heures.",
+    'read.t3': 'Le détecteur',
+    'read.d3': 'D1 à D6, chacun couvre une tranche entre 0,75 et 5 µm. Deux détecteurs différents ne se comparent ni en éclat ni en couleur.',
+    'read.t4': 'Les sources',
+    'read.d4': 'Nombre de taches détectées à plus de 5σ, et le pic de la plus brillante, exprimé en σ au-dessus du fond.',
+    'read.t5': 'Les pixels valides',
+    'read.d5': "Part de l'image que la calibration ne rejette pas. En dessous de 50 %, la moitié du champ est vide et les mesures sont fragiles.",
+    'read.t6': "L'unité et la couleur",
+    'read.d6': "La brillance est en MJy/sr, une brillance de surface. L'image affichée empile le cube spectral en luminance : c'est lisible, ce n'est pas une couleur vraie.",
+    'read.callout': "Une exposition seule ne prouve rien sur un objet. La même parcelle de ciel revient tous les six mois : c'est la répétition, pas l'image unique, qui rend une comparaison possible. Un écart entre deux dates reste un candidat, à confirmer.",
+
     'home.images': 'images',
     'home.h1a': "Le ciel n'est",
     'home.h1b': 'jamais immobile',
@@ -394,6 +429,41 @@ const I18N = {
     'sheet.open': 'Open the images',
     'sheet.source': 'Published reference values; the images in this installation put them to the test on the sky, and never announce a discovery.',
 
+    'free.kicker': 'Custom position',
+    'free.title': 'Any point in the sky',
+    'free.lede': 'Two numbers are enough: right ascension and declination. The collection queries the IRSA archive at that position and reports the exposures it holds there — sometimes none.',
+    'free.presetsLabel': 'Example coordinates',
+    'free.p1': 'Andromeda galaxy (M31)',
+    'free.p2': 'Orion nebula (M42)',
+    'free.p3': 'Galactic centre',
+    'free.p4': 'Virgo cluster',
+    'free.p5': 'Large Magellanic Cloud',
+    'free.label': 'Custom position',
+    'free.starting': 'Collection started — images arrive in one to three minutes.',
+    'free.running': 'Collecting: the archive answers image by image…',
+    'free.failed': 'The collection did not start: the archive did not answer.',
+    'free.loaded': '{n} observations of this point, from {from} to {to}.',
+    'free.single': 'A single observation of this point, on {from}. Nothing to compare over time.',
+    'free.none': 'The archive returned no usable exposure at this position: outside the survey footprint, or entirely rejected by the calibration.',
+    'free.detectors': 'Detectors',
+    'free.open': 'Open in the explorer',
+    'read.eyebrow': 'Reading guide',
+    'read.title': 'What each number means',
+    'read.lede': 'Everything shown for a chosen field comes from the NASA file, untouched. These are the six pieces of information to read before interpreting an image.',
+    'read.t1': 'Size',
+    'read.d1': 'The cutout is 0.1° across, which is 59 pixels of 6.2″. Two sources closer than twelve arcseconds land on the same pixel.',
+    'read.t2': 'Date',
+    'read.d2': 'Civil date in universal time, read from the exposure header. Two exposures in the same night sit about eight hours apart.',
+    'read.t3': 'Detector',
+    'read.d3': 'D1 to D6, each covering a slice between 0.75 and 5 µm. Two different detectors compare neither in brightness nor in colour.',
+    'read.t4': 'Sources',
+    'read.d4': 'Number of blobs detected above 5σ, and the peak of the brightest one, in σ above the background.',
+    'read.t5': 'Valid pixels',
+    'read.d5': 'Share of the frame the calibration does not reject. Below 50%, half the field is empty and the measurements are fragile.',
+    'read.t6': 'Unit and colour',
+    'read.d6': 'Brightness is in MJy/sr, a surface brightness. The displayed image stacks the spectral cube into luminance: readable, but not true colour.',
+    'read.callout': 'A single exposure proves nothing about an object. The same patch of sky comes back every six months: repetition, not one image, is what makes a comparison possible. A difference between two dates stays a candidate, to be confirmed.',
+
     'home.eyebrow': 'SPHEREx mission · Data Release 1',
     'home.stat3': 'detectors', 'home.stat4': 'spectral channels',
     'home.tag': '0.1° · brown dwarf',
@@ -509,6 +579,8 @@ function applyLang(lang) {
   });
   localStorage.setItem('skytrace.v2.lang', lang);
   renderDynamic();
+  setExploreTitle();
+  if (el('freePresets')) { renderFreePresets(); renderFreeResult(); }
   if (openSlug) renderSheet(openSlug);
   if (cadence.passes.length && !el('compareBox').hidden) { renderCadence(); runCompare(); }
 }
@@ -746,6 +818,183 @@ function pollAtlas() {
     await fetch('/api/refresh', { method: 'POST' });
     loadAtlas();
   }, 8000);
+}
+
+/* ---------------------------------------------------------- position libre */
+
+const FREE_PRESETS = [
+  { key: 'free.p1', ra: 10.6847, dec: 41.2692 },
+  { key: 'free.p2', ra: 83.8221, dec: -5.3911 },
+  { key: 'free.p3', ra: 266.4168, dec: -29.0078 },
+  { key: 'free.p4', ra: 187.7059, dec: 12.3911 },
+  { key: 'free.p5', ra: 80.8938, dec: -69.7561 },
+];
+
+function sexagesimal(ra, dec) {
+  // Round to whole seconds before splitting so the carry can never produce
+  // a "60" field.
+  const arc = Math.round((ra / 15) * 3600);
+  const hh = Math.floor(arc / 3600);
+  const mm = Math.floor((arc - hh * 3600) / 60);
+  const ss = arc - hh * 3600 - mm * 60;
+
+  const sign = dec < 0 ? '−' : '+';
+  const darc = Math.round(Math.abs(dec) * 3600);
+  const dd = Math.floor(darc / 3600);
+  const dm = Math.floor((darc - dd * 3600) / 60);
+  const ds = darc - dd * 3600 - dm * 60;
+
+  const pad = (v) => String(v).padStart(2, '0');
+  return `RA ${hh}h ${pad(mm)}m ${pad(ss)}s · Dec ${sign}${dd}° ${pad(dm)}′ ${pad(ds)}″`;
+}
+
+function updateSexa() {
+  const out = el('coordSexa');
+  if (!out) return;
+  const ra = Number(el('inRa').value);
+  const dec = Number(el('inDec').value);
+  out.textContent = Number.isFinite(ra) && Number.isFinite(dec) && ra >= 0 && ra <= 360
+    ? sexagesimal(ra, dec)
+    : '';
+}
+
+function renderFreePresets() {
+  const row = el('freePresets');
+  if (!row) return;
+  row.innerHTML = FREE_PRESETS.map((p, k) =>
+    '<button type="button" class="region" data-preset="' + k + '">' +
+      '<b>' + t(p.key) + '</b>' +
+      '<span>RA ' + p.ra.toFixed(2) + '° · Dec ' + p.dec.toFixed(2) + '°</span>' +
+    '</button>'
+  ).join('');
+
+  row.querySelectorAll('[data-preset]').forEach((b) => {
+    b.onclick = () => {
+      const p = FREE_PRESETS[Number(b.dataset.preset)];
+      el('inRa').value = p.ra;
+      el('inDec').value = p.dec;
+      updateSexa();
+      el('inRa').focus();
+    };
+  });
+}
+
+let freePoll = null;
+let freeItems = [];
+
+async function collectFree(ra, dec) {
+  const note = el('collectNote');
+  const box = el('freeResult');
+  note.textContent = t('free.starting');
+  if (box) { box.hidden = true; box.innerHTML = ''; }
+
+  try {
+    const res = await fetch(`/api/collect?ra=${ra}&dec=${dec}&slug=custom&limit=12`, { method: 'POST' });
+    if (!res.ok) throw new Error(String(res.status));
+  } catch (err) {
+    note.textContent = t('free.failed');
+    return;
+  }
+  pollFree();
+}
+
+// The collector runs in its own process, so the page watches its state rather
+// than waiting on the request.
+function pollFree() {
+  clearInterval(freePoll);
+  let ticks = 0;
+  freePoll = setInterval(async () => {
+    ticks += 1;
+    if (ticks > 90) {
+      clearInterval(freePoll);
+      el('collectNote').textContent = t('free.failed');
+      return;
+    }
+    let status;
+    try {
+      status = (await fetch('/api/collect/status?slug=custom').then((r) => r.json())).status;
+    } catch (err) {
+      return;
+    }
+    if (status === 'running') {
+      el('collectNote').textContent = t('free.running');
+      return;
+    }
+    clearInterval(freePoll);
+    if (status === 'failed') {
+      el('collectNote').textContent = t('free.none');
+      return;
+    }
+    el('collectNote').textContent = t('free.running');
+    await fetch('/api/refresh', { method: 'POST' }).catch(() => {});
+    galleryCache = null;
+    showFreeResult();
+  }, 7000);
+}
+
+async function showFreeResult() {
+  const note = el('collectNote');
+  try {
+    freeItems = (await fetch('/api/gallery?target=custom').then((r) => r.json())).items || [];
+  } catch (err) {
+    freeItems = [];
+  }
+
+  if (!freeItems.length) {
+    note.textContent = t('free.none');
+    el('freeResult').hidden = true;
+    return;
+  }
+  note.textContent = '';
+  renderFreeResult();
+}
+
+function renderFreeResult() {
+  const box = el('freeResult');
+  if (!box || !freeItems.length) return;
+
+  const first = freeItems[0];
+  const last = freeItems[freeItems.length - 1];
+  const detectors = [...new Set(freeItems.map((i) => i.detector))].sort().map((d) => 'D' + d);
+  const line = freeItems.length > 1
+    ? t('free.loaded').replace('{n}', freeItems.length).replace('{from}', first.date).replace('{to}', last.date)
+    : t('free.single').replace('{from}', first.date);
+
+  box.innerHTML =
+    '<figure class="free-thumb"><img src="' + last.image + '" alt="' + t('gallery.alt') + ' ' + last.date + '"></figure>' +
+    '<div class="free-body">' +
+      '<p class="free-line">' + line + '</p>' +
+      '<p class="note">' + t('free.detectors') + ' ' + detectors.join(' · ') + ' · 6,2″ / pixel</p>' +
+      '<button class="btn btn-sm btn-primary" data-open-field>' + t('free.open') + '</button>' +
+    '</div>';
+  box.hidden = false;
+
+  box.querySelector('[data-open-field]').onclick = () => {
+    state.target = 'custom';
+    localStorage.setItem('skytrace.v2.target', state.target);
+    history.pushState({}, '', '/explore?target=custom');
+    showRoute();
+  };
+}
+
+function bindFreeRegion() {
+  renderFreePresets();
+  updateSexa();
+  ['inRa', 'inDec'].forEach((id) => {
+    const field = el(id);
+    if (field) field.oninput = updateSexa;
+  });
+
+  const form = el('coordForm');
+  if (!form) return;
+  form.onsubmit = (ev) => {
+    ev.preventDefault();
+    const ra = Number(el('inRa').value);
+    const dec = Number(el('inDec').value);
+    if (!Number.isFinite(ra) || !Number.isFinite(dec)) return;
+    if (ra < 0 || ra > 360 || dec < -90 || dec > 90) return;
+    collectFree(ra.toFixed(4), dec.toFixed(4));
+  };
 }
 
 /* ------------------------------------------------------------------- fiches */
