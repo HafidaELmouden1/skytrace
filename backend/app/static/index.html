@@ -21,6 +21,7 @@
     <div class="nav-links">
       <a href="/" data-route data-i18n="nav.home">Home</a>
       <a href="/targets" data-route data-i18n="nav.targets">Sky atlas</a>
+      <a href="/archive" data-route data-i18n="nav.archive">Archive</a>
       <a href="/gallery" data-route data-i18n="nav.gallery">Gallery</a>
       <a href="/explore" data-route data-i18n="nav.explore">Explore</a>
       <a href="/about" data-route data-i18n="nav.about">SPHEREx</a>
@@ -179,7 +180,6 @@
 
     <section class="module" id="freeRegion">
       <div class="module-head">
-        <span class="module-no">04</span>
         <div>
           <p class="module-kicker" data-i18n="free.kicker">Position libre</p>
           <h2 data-i18n="free.title">Un point du ciel, au choix</h2>
@@ -236,6 +236,40 @@
         <p data-i18n="read.callout">Une exposition seule ne prouve rien sur un objet. La même parcelle de ciel revient tous les six mois : c'est la répétition, pas l'image unique, qui rend une comparaison possible. Un écart entre deux dates reste un candidat, à confirmer.</p>
       </div>
     </section>
+  </div>
+</section>
+
+<!-- ============================================================ ARCHIVE -->
+
+<section class="view" id="view-archive" hidden>
+  <div class="wrap">
+    <div class="module-head" style="margin-bottom:18px">
+      <span class="module-no">01</span>
+      <div>
+        <p class="module-kicker" data-i18n="arch.kicker">Relevé infrarouge du ciel entier</p>
+        <h2 data-i18n="arch.title">Archive IRSA en direct</h2>
+      </div>
+    </div>
+    <p class="module-lede" data-i18n="arch.lede">Interroge l'archive de la NASA pour n'importe quelle position. Plus d'un million d'expositions y sont conservées : cette page montre ce qui existe avant tout téléchargement.</p>
+
+    <form class="archive-form" id="archiveForm">
+      <label><span data-i18n="arch.ra">Ascension droite (°)</span>
+        <input id="archRa" type="number" step="0.0001" min="0" max="360" value="133.7951" required></label>
+      <label><span data-i18n="arch.dec">Déclinaison (°)</span>
+        <input id="archDec" type="number" step="0.0001" min="-90" max="90" value="-7.2451" required></label>
+      <label><span data-i18n="arch.radius">Rayon (°)</span>
+        <input id="archRadius" type="number" step="0.01" min="0.01" max="1" value="0.05"></label>
+      <label><span data-i18n="arch.from">Depuis</span>
+        <input id="archFrom" type="date"></label>
+      <label><span data-i18n="arch.to">Jusqu'à</span>
+        <input id="archTo" type="date"></label>
+      <button class="btn btn-primary" type="submit" data-i18n="arch.search">Interroger IRSA</button>
+    </form>
+
+    <div class="region-row" id="archivePresets"></div>
+
+    <p class="note" id="archiveStatus"></p>
+    <div id="archiveResults"></div>
   </div>
 </section>
 

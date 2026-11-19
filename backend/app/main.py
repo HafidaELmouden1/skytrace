@@ -26,6 +26,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .science.align import _wcs, compare_sources, difference, render_difference
 from .science.track import Pose, build_tracks, sky_position, slew_key
+from .science import irsa
 from .science.render import (
     detect_sources,
     load_cutout,
@@ -72,8 +73,11 @@ def discover_frames() -> dict[str, tuple[Path, str]]:
     """Map every FITS under data/frames to its observation and its target."""
     from astropy.io import fits
 
-    candidates = [(path, "wise0855") for path in sorted(FRAMES.glob("*.fits"))]
-    candidates += [(path, path.parent.name) for path in sorted(FRAMES.glob("*/*.fits"))]
+    # Collected folders win over loose files: a file placed in data/frames/<field>
+    # was downloaded for that field on purpose, while a file at the root may
+    # belong to any of them.
+    candidates = [(path, path.parent.name) for path in sorted(FRAMES.glob("*/*.fits"))]
+    candidates += [(path, "wise0855") for path in sorted(FRAMES.glob("*.fits"))]
 
     found: dict[str, tuple[Path, str]] = {}
     for path, slug in candidates:
@@ -204,6 +208,11 @@ def build_frames() -> None:
 
         found = detect_sources(cut)
         ny, nx = cut.image.shape
+        folder_slug = FILES.get(obs_id, (None, "wise0855"))[1]
+        # A file in a named folder was collected for that field; only the loose
+        # files at the root of data/frames need their field guessed from the sky
+        # position.
+        slug = folder_slug if folder_slug not in ("", "wise0855") else (assign_target(cut) or folder_slug or "wise0855")
         _frames[obs_id] = FrameRecord(
             obs_id=obs_id,
             mjd=cut.meta["mjd"],
@@ -213,7 +222,7 @@ def build_frames() -> None:
             valid_fraction=cut.valid_fraction,
             key=pretty_key,
             path=pretty_out,
-            slug=assign_target(cut) or FILES.get(obs_id, (None, "wise0855"))[1],
+            slug=slug,
             sources=int(found["count"]),
             brightest=float(found["peak_sigma"]),
         )
@@ -304,11 +313,61 @@ def collect(
     return _start_collection(slug, ra, dec, limit)
 
 
+@app.get("/api/field/{slug}")
+def field_summary(slug: str) -> dict:
+    """What one collection folder holds, read from the FITS headers alone."""
+    if not re.fullmatch(r"[a-z0-9_-]{3,24}", slug):
+        raise HTTPException(400, "invalid field name")
+    folder = FRAMES / slug
+    if not folder.is_dir():
+        raise HTTPException(404, "no collection for this field")
+
+    from astropy.io import fits
+
+    items = []
+    for path in sorted(folder.glob("*.fits")):
+        try:
+            with fits.open(path, memmap=False) as hdul:
+                head = hdul[1].header
+                obs_id = str(head.get("OBSID", ""))
+                mjd = float(head.get("MJD-OBS", float("nan")))
+                items.append({
+                    "obs_id": obs_id,
+                    "mjd": round(mjd, 5),
+                    "date": str(head.get("DATE-OBS", ""))[:10],
+                    "detector": int(head.get("DETECTOR", 0)),
+                    "image": f"/api/frames/{obs_id}.webp" if obs_id in _frames else None,
+                })
+        except Exception:
+            continue
+
+    items = [i for i in items if i["obs_id"] and i["mjd"] == i["mjd"]]
+    items.sort(key=lambda i: i["mjd"])
+    return {
+        "slug": slug,
+        "status": _jobs.get(slug, "idle"),
+        "count": len(items),
+        "items": items,
+        "dates": [items[0]["date"], items[-1]["date"]] if items else [],
+        "detectors": sorted({i["detector"] for i in items}),
+    }
+
+
+@app.get("/api/collect/status")
+def collect_status(slug: str = Query("custom", max_length=24)) -> dict:
+    """State of the collector started from the atlas."""
+    if not re.fullmatch(r"[a-z0-9_-]{3,24}", slug):
+        raise HTTPException(400, "invalid field name")
+    return {"slug": slug, "status": _jobs.get(slug, "idle")}
+
+
 @app.get("/api/epochs")
 def epochs(target: str = Query("wise0855")) -> dict:
     frames = sorted((f for f in _frames.values() if f.slug == target), key=lambda f: f.mjd)
     if not frames:
         raise HTTPException(404, "no frames for this target")
+
+    field = next((t for t in TARGETS if t["slug"] == target), None)
 
     groups: list[dict] = []
     for i in range(1, len(frames)):
@@ -320,7 +379,12 @@ def epochs(target: str = Query("wise0855")) -> dict:
             groups.append({"axis": axis, "count": 2 if not groups else 1})
 
     return {
-        "field": {"name": "WISE 0855", "ra": 133.7951, "dec": -7.2451, "fov_deg": 0.1},
+        "field": {
+            "name": field["name"] if field else target,
+            "ra": field["ra"] if field else None,
+            "dec": field["dec"] if field else None,
+            "fov_deg": 0.1,
+        },
         "count": len(frames),
         "epochs": [
             {
@@ -340,7 +404,7 @@ def epochs(target: str = Query("wise0855")) -> dict:
             "collection": "spherex_dr1",
             "calib": "l2b-v27",
             "unit": "MJy/sr",
-            "note": "cutouts 0,1° · détecteur D2 · poses consécutives + seconde époque",
+            "note": "cutouts 0,1° · poses consécutives et époques successives",
         },
     }
 
@@ -673,6 +737,31 @@ def bands() -> dict:
     return {"bands": ordered}
 
 
+@app.get("/api/irsa/search")
+def irsa_search(
+    ra: float = Query(..., ge=0, le=360),
+    dec: float = Query(..., ge=-90, le=90),
+    radius: float = Query(0.05, gt=0, le=1.0),
+    date_from: str | None = Query(None, max_length=10),
+    date_to: str | None = Query(None, max_length=10),
+    limit: int = Query(200, ge=1, le=500),
+) -> dict:
+    """Ask IRSA what exists at this position, without downloading anything."""
+    try:
+        result = irsa.search(ra, dec, radius, date_from, date_to, limit)
+    except Exception as exc:
+        raise HTTPException(503, f"IRSA did not answer: {exc}") from exc
+
+    known = set(_frames)
+    for item in result["items"]:
+        item["downloaded"] = item["obs_id"] in known
+    result["loaded"] = sum(1 for i in result["items"] if i["downloaded"])
+    return result
+
+
+@app.get("/api/cache/{key}.webp")
+
+
 @app.get("/api/cache/{key}.webp")
 def cached(key: str) -> FileResponse:
     if not re.fullmatch(r"[0-9a-f]{24}", key):
@@ -750,6 +839,11 @@ def index() -> HTMLResponse:
 
 @app.get("/explore", response_class=HTMLResponse)
 def explore() -> HTMLResponse:
+    return _page()
+
+
+@app.get("/archive", response_class=HTMLResponse)
+def archive_page() -> HTMLResponse:
     return _page()
 
 

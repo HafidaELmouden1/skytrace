@@ -1,0 +1,1 @@
+{"obs_id": "2025W29_2A_0202_1", "text": "A 0.1° field observed on 2025-07-18 by detector D3, in the 1.62–2.44 µm band. No source above 5σ: at this depth the field holds only sky background.", "sources": {"count": 0, "peak_sigma": 0.0, "brightest": null}, "band_um": [1.62, 2.44], "detector": 3, "date": "2025-07-18", "valid_fraction": 0.898}

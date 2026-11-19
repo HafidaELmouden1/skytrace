@@ -64,6 +64,31 @@ const I18N = {
     'cmp.failed': 'La comparaison a échoué.',
     'cmp.diffalt': 'Carte de différence entre les deux passages',
     'cmp.diffnote': '{n} pics au niveau pixel. Rouge : plus brillant en 2026. Bleu : plus brillant en 2025.',
+    'nav.archive': 'Archive',
+    'arch.kicker': 'Relevé infrarouge du ciel entier',
+    'arch.title': 'Archive IRSA en direct',
+    'arch.lede': "Interroge l'archive de la NASA pour n'importe quelle position. Plus d'un million d'expositions y sont conservées : cette page montre ce qui existe avant tout téléchargement.",
+    'arch.ra': 'Ascension droite (°)',
+    'arch.dec': 'Déclinaison (°)',
+    'arch.radius': 'Rayon (°)',
+    'arch.from': 'Depuis',
+    'arch.to': "Jusqu'à",
+    'arch.search': 'Interroger IRSA',
+    'arch.querying': 'Interrogation de l’archive IRSA… (environ 25 secondes)',
+    'arch.failed': "L'archive n'a pas répondu. Réessaie.",
+    'arch.found': '{n} expositions couvrent ce point dans un rayon de {r}°, dont {l} déjà téléchargées.',
+    'arch.empty': 'Aucune exposition à cette position dans cette fenêtre de dates.',
+    'arch.date': 'Date',
+    'arch.det': 'Dét.',
+    'arch.band': 'Bande',
+    'arch.collection': 'Collection',
+    'arch.state': 'État',
+    'arch.loaded': 'chargée',
+    'arch.remote': 'archivée',
+    'arch.open': 'Ouvrir',
+    'arch.download': 'Télécharger',
+    'arch.collecting': 'En cours…',
+    'arch.started': 'Lancé',
     'nav.gallery': 'Galerie',
     'gallery.searchPlaceholder': 'Chercher un objet, une date, un détecteur…',
     'gallery.sort': 'Trier',
@@ -123,6 +148,7 @@ const I18N = {
     'free.label': 'Position libre',
     'free.starting': 'Collecte lancée — les images arrivent dans une à trois minutes.',
     'free.running': "Collecte en cours : l'archive répond image par image…",
+    'free.indexing': 'Indexation des nouvelles images…',
     'free.failed': "La collecte n'a pas démarré : l'archive n'a pas répondu.",
     'free.loaded': '{n} observations de ce point, du {from} au {to}.',
     'free.single': 'Une seule observation de ce point, le {from}. Rien à comparer dans le temps.',
@@ -383,6 +409,31 @@ const I18N = {
     'cmp.failed': 'The comparison failed.',
     'cmp.diffalt': 'Difference map between the two passes',
     'cmp.diffnote': '{n} pixel-level peaks. Red: brighter in 2026. Blue: brighter in 2025.',
+    'nav.archive': 'Archive',
+    'arch.kicker': 'Infrared all-sky survey',
+    'arch.title': 'IRSA archive, live',
+    'arch.lede': "Query the NASA archive for any position. More than a million exposures are stored there: this page shows what exists before anything is downloaded.",
+    'arch.ra': 'Right ascension (°)',
+    'arch.dec': 'Declination (°)',
+    'arch.radius': 'Radius (°)',
+    'arch.from': 'From',
+    'arch.to': 'To',
+    'arch.search': 'Query IRSA',
+    'arch.querying': 'Querying the IRSA archive… (about 25 seconds)',
+    'arch.failed': 'The archive did not answer. Try again.',
+    'arch.found': '{n} exposures cover this point within {r}°, {l} of them already downloaded.',
+    'arch.empty': 'No exposure at this position in this date window.',
+    'arch.date': 'Date',
+    'arch.det': 'Det.',
+    'arch.band': 'Band',
+    'arch.collection': 'Collection',
+    'arch.state': 'State',
+    'arch.loaded': 'loaded',
+    'arch.remote': 'archived',
+    'arch.open': 'Open',
+    'arch.download': 'Download',
+    'arch.collecting': 'Working…',
+    'arch.started': 'Started',
     'nav.gallery': 'Gallery',
     'gallery.searchPlaceholder': 'Search an object, a date, a detector…',
     'gallery.sort': 'Sort',
@@ -441,6 +492,7 @@ const I18N = {
     'free.label': 'Custom position',
     'free.starting': 'Collection started — images arrive in one to three minutes.',
     'free.running': 'Collecting: the archive answers image by image…',
+    'free.indexing': 'Indexing the new images…',
     'free.failed': 'The collection did not start: the archive did not answer.',
     'free.loaded': '{n} observations of this point, from {from} to {to}.',
     'free.single': 'A single observation of this point, on {from}. Nothing to compare over time.',
@@ -587,7 +639,7 @@ function applyLang(lang) {
 
 /* ------------------------------------------------------------------ routage */
 
-const ROUTES = { '/': 'home', '/targets': 'targets', '/gallery': 'gallery', '/about': 'about', '/explore': 'explore', '/learn': 'learn' };
+const ROUTES = { '/': 'home', '/targets': 'targets', '/archive': 'archive', '/gallery': 'gallery', '/about': 'about', '/explore': 'explore', '/learn': 'learn' };
 
 function currentRoute() {
   const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -596,6 +648,9 @@ function currentRoute() {
 
 function showRoute() {
   const name = currentRoute();
+  const params = new URLSearchParams(location.search);
+  const wanted = params.get('target');
+  if (wanted) state.target = wanted;
   document.querySelectorAll('.view').forEach((v) => { v.hidden = v.id !== `view-${name}`; });
   document.querySelectorAll('.nav-links a').forEach((a) => {
     const target = a.getAttribute('href');
@@ -607,6 +662,7 @@ function showRoute() {
   if (name === 'home') { loadStats(); loadHomeModules(); }
   if (name === 'targets') loadAtlas();
   if (name === 'gallery') loadGallery();
+  if (name === 'archive') initArchive();
   if (name === 'about') renderBands();
 }
 
@@ -667,9 +723,16 @@ async function loadStats() {
   }
 }
 
+function setExploreTitle() {
+  const title = el('exploreTitle');
+  if (!title) return;
+  title.textContent = targetLabel(state.target);
+}
+
 async function loadEpochs() {
   const empty = el('viewerEmpty');
   empty.hidden = false;
+  setExploreTitle();
   try {
     const data = await fetch(`/api/epochs?target=${state.target}`).then((r) => r.json());
     state.epochs = data.epochs || [];
@@ -880,7 +943,7 @@ function renderFreePresets() {
 }
 
 let freePoll = null;
-let freeItems = [];
+let freeField = null;
 
 async function collectFree(ra, dec) {
   const note = el('collectNote');
@@ -925,22 +988,22 @@ function pollFree() {
       el('collectNote').textContent = t('free.none');
       return;
     }
-    el('collectNote').textContent = t('free.running');
+    el('collectNote').textContent = t('free.indexing');
     await fetch('/api/refresh', { method: 'POST' }).catch(() => {});
     galleryCache = null;
-    showFreeResult();
+    await showFreeResult();
   }, 7000);
 }
 
 async function showFreeResult() {
   const note = el('collectNote');
   try {
-    freeItems = (await fetch('/api/gallery?target=custom').then((r) => r.json())).items || [];
+    freeField = await fetch('/api/field/custom').then((r) => r.json());
   } catch (err) {
-    freeItems = [];
+    freeField = null;
   }
 
-  if (!freeItems.length) {
+  if (!freeField || !freeField.count) {
     note.textContent = t('free.none');
     el('freeResult').hidden = true;
     return;
@@ -951,17 +1014,19 @@ async function showFreeResult() {
 
 function renderFreeResult() {
   const box = el('freeResult');
-  if (!box || !freeItems.length) return;
+  if (!box || !freeField || !freeField.count) return;
 
-  const first = freeItems[0];
-  const last = freeItems[freeItems.length - 1];
-  const detectors = [...new Set(freeItems.map((i) => i.detector))].sort().map((d) => 'D' + d);
-  const line = freeItems.length > 1
-    ? t('free.loaded').replace('{n}', freeItems.length).replace('{from}', first.date).replace('{to}', last.date)
+  const items = freeField.items;
+  const first = items[0];
+  const last = items[items.length - 1];
+  const shot = items.slice().reverse().find((i) => i.image);
+  const detectors = freeField.detectors.map((d) => 'D' + d);
+  const line = items.length > 1
+    ? t('free.loaded').replace('{n}', items.length).replace('{from}', first.date).replace('{to}', last.date)
     : t('free.single').replace('{from}', first.date);
 
   box.innerHTML =
-    '<figure class="free-thumb"><img src="' + last.image + '" alt="' + t('gallery.alt') + ' ' + last.date + '"></figure>' +
+    (shot ? '<figure class="free-thumb"><img src="' + shot.image + '" alt="' + t('gallery.alt') + ' ' + shot.date + '"></figure>' : '') +
     '<div class="free-body">' +
       '<p class="free-line">' + line + '</p>' +
       '<p class="note">' + t('free.detectors') + ' ' + detectors.join(' · ') + ' · 6,2″ / pixel</p>' +
@@ -1113,6 +1178,134 @@ function closeSheet() {
   openSlug = null;
 }
 
+/* ------------------------------------------------------------------ archive */
+
+const ARCHIVE_FIELDS = [
+  { slug: 'wise0855', ra: 133.7951, dec: -7.2451 },
+  { slug: 'barnard', ra: 269.4521, dec: 4.6933 },
+  { slug: 'r-dra', ra: 248.1680, dec: 66.7547 },
+  { slug: 'south-deep', ra: 59.9, dec: -66.5 },
+  { slug: 'north-deep', ra: 276.0, dec: 65.0 },
+  { slug: 'equator-strip', ra: 170.0, dec: -4.0 },
+];
+
+function initArchive() {
+  const presets = el('archivePresets');
+  if (presets && !presets.dataset.ready) {
+    presets.dataset.ready = '1';
+    presets.innerHTML = ARCHIVE_FIELDS.map((f) =>
+      '<button type="button" class="region" data-ra="' + f.ra + '" data-dec="' + f.dec + '">' +
+      '<b>' + targetLabel(f.slug) + '</b><span>' + f.ra.toFixed(2) + '°, ' + f.dec.toFixed(2) + '°</span></button>'
+    ).join('');
+    presets.querySelectorAll('button').forEach((b) => {
+      b.onclick = () => {
+        el('archRa').value = b.dataset.ra;
+        el('archDec').value = b.dataset.dec;
+        el('archiveForm').requestSubmit();
+      };
+    });
+  }
+
+  const form = el('archiveForm');
+  if (form && !form.dataset.ready) {
+    form.dataset.ready = '1';
+    form.onsubmit = (ev) => {
+      ev.preventDefault();
+      runArchiveSearch();
+    };
+
+    // A link can carry a position, so a shared URL opens the same query.
+    const params = new URLSearchParams(location.search);
+    if (params.get('ra') && params.get('dec')) {
+      el('archRa').value = params.get('ra');
+      el('archDec').value = params.get('dec');
+      if (params.get('radius')) el('archRadius').value = params.get('radius');
+      runArchiveSearch();
+    }
+  }
+}
+
+async function runArchiveSearch() {
+  const status = el('archiveStatus');
+  const out = el('archiveResults');
+  const ra = el('archRa').value;
+  const dec = el('archDec').value;
+  const radius = el('archRadius').value || 0.05;
+  const from = el('archFrom').value;
+  const to = el('archTo').value;
+
+  status.textContent = t('arch.querying');
+  out.innerHTML = '';
+
+  const params = new URLSearchParams({ ra: ra, dec: dec, radius: radius });
+  if (from) params.set('date_from', from);
+  if (to) params.set('date_to', to);
+
+  let data;
+  try {
+    const response = await fetch('/api/irsa/search?' + params.toString());
+    if (!response.ok) throw new Error('search failed');
+    data = await response.json();
+  } catch (err) {
+    status.textContent = t('arch.failed');
+    return;
+  }
+
+  status.textContent = t('arch.found')
+    .replace('{n}', data.total)
+    .replace('{l}', data.loaded)
+    .replace('{r}', radius);
+
+  if (!data.items.length) {
+    out.innerHTML = '<p class="hint">' + t('arch.empty') + '</p>';
+    return;
+  }
+
+  out.innerHTML =
+    '<div class="archive-table"><table><thead><tr>' +
+      '<th>' + t('arch.date') + '</th><th>' + t('arch.det') + '</th>' +
+      '<th>' + t('arch.band') + '</th><th>' + t('arch.collection') + '</th>' +
+      '<th>' + t('arch.state') + '</th><th></th>' +
+    '</tr></thead><tbody>' +
+    data.items.map((it) =>
+      '<tr><td class="mono">' + it.date.slice(0, 16).replace('T', ' ') + '</td>' +
+      '<td class="mono">' + (it.detector ? 'D' + it.detector : '—') + '</td>' +
+      '<td class="mono dim">' + (it.band || '—') + '</td>' +
+      '<td class="mono dim">' + it.collection.replace('spherex_', '') + '</td>' +
+      '<td>' + (it.downloaded
+        ? '<span class="badge ok">' + t('arch.loaded') + '</span>'
+        : '<span class="badge">' + t('arch.remote') + '</span>') + '</td>' +
+      '<td>' + (it.downloaded
+        ? '<a class="link" href="/explore?target=' + nearestField(it.ra, it.dec) + '" data-route>' + t('arch.open') + '</a>'
+        : '<button class="link" data-collect="' + it.obs_id + '" data-ra="' + it.ra + '" data-dec="' + it.dec + '">' + t('arch.download') + '</button>') +
+      '</td></tr>'
+    ).join('') +
+    '</tbody></table></div>';
+
+  out.querySelectorAll('[data-collect]').forEach((b) => {
+    b.onclick = async () => {
+      b.disabled = true;
+      b.textContent = t('arch.collecting');
+      try {
+        await fetch('/api/collect?ra=' + b.dataset.ra + '&dec=' + b.dataset.dec + '&slug=custom&limit=4', { method: 'POST' });
+        b.textContent = t('arch.started');
+      } catch (err) {
+        b.textContent = t('arch.failed');
+      }
+    };
+  });
+}
+
+function nearestField(ra, dec) {
+  let best = 'barnard';
+  let bestSep = 1e9;
+  ARCHIVE_FIELDS.forEach((f) => {
+    const sep = Math.hypot((ra - f.ra) * Math.cos((dec * Math.PI) / 180), dec - f.dec);
+    if (sep < bestSep) { best = f.slug; bestSep = sep; }
+  });
+  return best;
+}
+
 /* ------------------------------------------------------------------ accueil */
 
 const DETECTORS = [
@@ -1202,6 +1395,7 @@ let galleryCache = null;
 const galleryView = { filter: 'all', detector: 'all', query: '', sort: 'recent' };
 
 function targetLabel(slug) {
+  if (slug === 'custom') return t('free.label');
   const found = TARGETS_LIST.find((t) => t.slug === slug);
   if (!found) return slug;
   return state.lang === 'fr' ? found.fr : found.name;
@@ -1890,20 +2084,7 @@ function init() {
   });
 
   const form = el('coordForm');
-  if (form) {
-    form.onsubmit = async (ev) => {
-      ev.preventDefault();
-      const ra = Number(el('inRa').value);
-      const dec = Number(el('inDec').value);
-      el('collectNote').textContent = t('targets.starting');
-      try {
-        await fetch(`/api/collect?ra=${ra}&dec=${dec}&slug=custom&limit=12`, { method: 'POST' });
-        pollAtlas();
-      } catch (err) {
-        el('collectNote').textContent = t('targets.noobs');
-      }
-    };
-  }
+  if (form) bindFreeRegion();
 
   bindControls();
   initReveal();

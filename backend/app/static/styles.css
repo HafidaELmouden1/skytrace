@@ -778,6 +778,39 @@ footer a:hover { color: var(--ink); }
 .sheet-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
 .sheet-foot .note { margin: 0; flex: 1 1 320px; }
 
+/* ---------------------------------------------------------- position libre */
+
+button.region { text-align: left; font: inherit; cursor: pointer; }
+button.region:focus-visible { outline: 2px solid rgba(122, 162, 255, .55); outline-offset: 2px; }
+
+.coords-sexa {
+  font: 11.5px var(--font-mono); color: var(--ink-faint);
+  padding-bottom: 10px; align-self: flex-end;
+}
+
+.freeresult {
+  display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  margin-top: 16px; padding: 14px; border-radius: 12px;
+  border: 1px solid #1b3a63; background: rgba(44, 111, 214, .07);
+}
+.freeresult .free-thumb {
+  margin: 0; width: 132px; height: 132px; flex: 0 0 auto;
+  border-radius: 10px; overflow: hidden; border: 1px solid var(--line);
+  background: #05080f;
+}
+.freeresult .free-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.freeresult .free-body { flex: 1 1 260px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.freeresult .free-line { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+.freeresult .note { margin: 0; }
+
+.readgrid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.readgrid article {
+  padding: 16px 18px; border-radius: 12px;
+  border: 1px solid var(--line-soft); background: rgba(16, 26, 46, .6);
+}
+.readgrid h3 { font: 600 12.5px var(--font-display); color: var(--ink); margin-bottom: 7px; }
+.readgrid p { font-size: 12.5px; line-height: 1.6; color: var(--ink-dim); }
+
 /* --------------------------------------------------------- modules accueil */
 
 .module {
@@ -865,3 +898,53 @@ footer a:hover { color: var(--ink); }
   .module h2 { font-size: 19px; }
   .module-no { font-size: 11px; }
 }
+
+/* ---------------------------------------------------------- archive IRSA */
+
+.archive-form {
+  display: grid; gap: 10px; margin: 18px 0 14px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  align-items: end;
+}
+.archive-form label { display: flex; flex-direction: column; gap: 5px; }
+.archive-form label span {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-faint);
+}
+.archive-form input {
+  padding: 9px 11px; border-radius: 9px; border: 1px solid var(--line);
+  background: rgba(10,16,30,.85); color: var(--ink); font: 12.5px var(--font-mono);
+}
+.archive-form input:focus { outline: none; border-color: #4c7dff; box-shadow: 0 0 0 3px rgba(76,125,255,.16); }
+.archive-form button { height: 38px; }
+
+.region[type], button.region {
+  cursor: pointer; text-align: left; font-family: inherit;
+  border: 1px solid var(--line); background: rgba(8,13,25,.6);
+}
+button.region:hover { border-color: #4c7dff; background: rgba(76,125,255,.1); }
+
+.archive-table {
+  max-height: 60vh; overflow: auto; border: 1px solid var(--line);
+  border-radius: 12px; margin-top: 14px; background: rgba(8,13,25,.55);
+}
+.archive-table table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.archive-table thead th {
+  position: sticky; top: 0; z-index: 1; text-align: left;
+  padding: 9px 12px; background: #0c1424; color: var(--ink-faint);
+  font: 600 10px var(--font-mono); text-transform: uppercase; letter-spacing: .07em;
+  border-bottom: 1px solid var(--line);
+}
+.archive-table td { padding: 8px 12px; border-bottom: 1px solid rgba(28,44,72,.5); color: var(--ink-dim); }
+.archive-table tr:hover td { background: rgba(76,125,255,.07); color: var(--ink); }
+.mono { font-family: var(--font-mono); font-size: 11.5px; }
+.dim { color: var(--ink-faint); }
+.badge {
+  display: inline-block; padding: 2px 7px; border-radius: 5px;
+  font: 600 10px var(--font-mono); border: 1px solid var(--line); color: var(--ink-faint);
+}
+.badge.ok { color: #8ce8bd; border-color: rgba(76,217,156,.4); background: rgba(76,217,156,.08); }
+.link {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: #7aa2ff; font: 600 11.5px var(--font-mono); text-decoration: none;
+}
+.link:hover { color: #a8c4ff; text-decoration: underline; }
