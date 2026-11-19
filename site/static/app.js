@@ -149,6 +149,7 @@ const I18N = {
     'free.starting': 'Collecte lancée — les images arrivent dans une à trois minutes.',
     'free.running': "Collecte en cours : l'archive répond image par image…",
     'free.indexing': 'Indexation des nouvelles images…',
+    'free.timeout': 'La collecte dure plus de vingt minutes : elle continue en tâche de fond, reviens un peu plus tard.',
     'free.failed': "La collecte n'a pas démarré : l'archive n'a pas répondu.",
     'free.loaded': '{n} observations de ce point, du {from} au {to}.',
     'free.single': 'Une seule observation de ce point, le {from}. Rien à comparer dans le temps.',
@@ -493,6 +494,7 @@ const I18N = {
     'free.starting': 'Collection started — images arrive in one to three minutes.',
     'free.running': 'Collecting: the archive answers image by image…',
     'free.indexing': 'Indexing the new images…',
+    'free.timeout': 'This collection is taking more than twenty minutes: it keeps running in the background, come back a little later.',
     'free.failed': 'The collection did not start: the archive did not answer.',
     'free.loaded': '{n} observations of this point, from {from} to {to}.',
     'free.single': 'A single observation of this point, on {from}. Nothing to compare over time.',
@@ -968,9 +970,9 @@ function pollFree() {
   let ticks = 0;
   freePoll = setInterval(async () => {
     ticks += 1;
-    if (ticks > 90) {
+    if (ticks > 150) {
       clearInterval(freePoll);
-      el('collectNote').textContent = t('free.failed');
+      el('collectNote').textContent = t('free.timeout');
       return;
     }
     let status;

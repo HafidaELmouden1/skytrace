@@ -1,0 +1,1 @@
+{"target": "eps-indi-b", "tracks": [], "slews": 3, "detail": [{"slew": "2025W17_4B_0017", "poses": 1}, {"slew": "2025W40_1A_0125", "poses": 1}, {"slew": "2026W18_1A_0475", "poses": 1}], "tracked": 0, "pixel_arcsec": 6.2, "note": "Motion is only observable within one pointing or between pointings hours apart. Across months every moving object has left the field."}

@@ -71,8 +71,9 @@ SHIM = """
       file = `metadata/${u.pathname.split('/').pop()}.json`;
     } else if (u.pathname.startsWith('/api/describe/')) {
       file = `describe/${u.pathname.split('/').pop()}-${u.searchParams.get('lang') || 'fr'}.json`;
-    } else if (u.pathname.startsWith('/api/frames/')) file = u.pathname.slice(5);
-    else if (u.pathname.startsWith('/api/cache/')) file = u.pathname.slice(5);
+    } else if (u.pathname.startsWith('/api/frames/') || u.pathname.startsWith('/api/cache/')) {
+      return real(input, init);
+    }
     if (!file) return Promise.resolve(new Response('{}', { status: 404,
       headers: { 'Content-Type': 'application/json' } }));
 
@@ -141,7 +142,7 @@ def main() -> None:
 
     frames = list(api._frames.values())
     for index, record in enumerate(frames, 1):
-        copy_asset(record.path, api_dir / "frames" / f"{record.obs_id}.webp")
+        copy_asset(record.path, out / "api" / "frames" / f"{record.obs_id}.webp")
         try:
             dump(api_dir / "metadata" / f"{record.obs_id}.json", api.metadata(record.obs_id))
         except Exception as exc:
@@ -161,6 +162,11 @@ def main() -> None:
         try:
             data = api.epochs(target=slug)
         except Exception:
+            # A field with no observation yet still needs a payload, or the
+            # interface shows a network error instead of its empty state.
+            dump(api_dir / f"epochs-{slug}.json",
+                 {"field": {"name": slug}, "count": 0, "epochs": [], "groups": []})
+            dump(api_dir / f"stats-{slug}.json", {"frames": 0})
             continue
         dump(api_dir / f"epochs-{slug}.json", data)
         try:
@@ -168,7 +174,7 @@ def main() -> None:
         except Exception as exc:
             print(f"  stats {slug}: {exc}")
         try:
-            dump(api_dir / f"track-{slug}.json", api.track(target=slug))
+            dump(api_dir / f"track-{slug}.json", api.track(target=slug, threshold=5.0))
         except Exception as exc:
             print(f"  track {slug}: {exc}")
 
@@ -178,13 +184,13 @@ def main() -> None:
             pairs.add((ids[0], ids[-1]))
         for a, b in sorted(pairs):
             try:
-                result = api.diff(a, b)
+                result = api.diff(a, b, threshold=5.0)
             except Exception as exc:
                 print(f"  diff {a}/{b}: {exc}")
                 continue
             dump(api_dir / "diff" / f"{a}--{b}.json", result)
             copy_asset(ROOT / "cache" / Path(result["image"]).name,
-                       api_dir / "cache" / Path(result["image"]).name)
+                       out / "api" / "cache" / Path(result["image"]).name)
             comparisons += 1
         print(f"{slug}: {len(ids)} poses, {len(pairs)} comparaisons")
 

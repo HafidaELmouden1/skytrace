@@ -22,6 +22,7 @@
     const method = (init && init.method) || 'GET';
     const u = new URL(url, location.origin);
     if (!u.pathname.startsWith('/api/')) return real(input, init);
+    if (u.pathname.startsWith('/api/frames/') || u.pathname.startsWith('/api/cache/')) return real(input, init);
     if (method !== 'GET') {
       return Promise.resolve(new Response(
         JSON.stringify({ detail: 'static export: read-only' }),
