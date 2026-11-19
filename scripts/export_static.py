@@ -128,6 +128,12 @@ def main() -> None:
     (out / "404.html").write_text(source, encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
 
+    # One directory per route: a static host answers /explore with 404 unless a
+    # real file sits there, and the interface routes on location.pathname.
+    for route in ("explore", "gallery", "about", "learn", "archive", "targets"):
+        (out / route).mkdir(exist_ok=True)
+        (out / route / "index.html").write_text(source, encoding="utf-8")
+
     api_dir = out / "api-static"
     dump(api_dir / "targets.json", api.targets())
     dump(api_dir / "stats.json", api.stats(target="all"))
